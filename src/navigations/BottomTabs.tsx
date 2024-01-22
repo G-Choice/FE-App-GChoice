@@ -49,11 +49,11 @@ const TabButton: React.FC<TabButtonProps> = (props) => {
   }, [focused]);
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={1} style={[styles.container, styles.textBase]}>
+    <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.container}>
       <Animatable.View ref={viewRef} duration={1000} style={styles.container}>
         <View style={styles.btn}>
           <Animatable.View style={focused ? styles.circlePress : styles.circleBeforePress} />
-          <Icon type={item.type} name={item.icon} color={focused ? Colors.secondaryColor : Colors.primaryColor} />
+          <Icon type={item.type}  name={item.icon} color={focused ? Colors.secondaryColor : Colors.primaryColor} />
         </View>
         <Animatable.Text ref={textRef} style={focused ? styles.textFocused : styles.textBeforeFocus}>
           {item.label}
@@ -67,7 +67,7 @@ const BottomTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         tabBarStyle: styles.tabBar,
       }}
     >
@@ -133,9 +133,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     textAlign: 'center',
     color: Colors.primaryColor,
-  },
-  textBase: {
-    fontFamily: "Poppins-Black"
   }
 });
 
