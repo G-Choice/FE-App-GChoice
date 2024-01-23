@@ -13,7 +13,7 @@ import {RootState} from '../../app/store';
 import GchoiceAxios from '../../api/index';
 import {setAuth} from '../../global-states';
 
-const RegisterLayout = () => {
+const LoginLayout = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
@@ -53,27 +53,16 @@ const RegisterLayout = () => {
     return isValid;
   };
 
-  const validatePhoneNumber = (phone: string) => {
-    const phoneRegex = /^\d+$/;
-    if (phone) {
-      const isValid = phoneRegex.test(phone);
-      setPhoneError(isValid ? '' : 'Invalid phone number');
-      return isValid;
-    }
-  };
 
   const submit = async () => {
     setIsLoading(true);
     let data = {
       email: emailInput.value,
       password: passwordInput.value,
-      username: fullNameInput.value,
-      number_phone: phoneInput.value,
     };
     if (
       !validateEmail(emailInput.value) ||
-      !validatePassword(passwordInput.value) ||
-      !validatePhoneNumber(phoneInput.value)
+      !validatePassword(passwordInput.value) 
     ) {
       return;
     }
@@ -108,7 +97,6 @@ const RegisterLayout = () => {
     navigation.navigate('VerificationScreen', {email: emailInput.value});
   };
   
-
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeAreaView}>
@@ -128,7 +116,7 @@ const RegisterLayout = () => {
               fontWeight: '600',
               fontSize: 25,
             }}>
-            Sign Up
+            Welcome
           </Text>
           <Text
             style={{
@@ -137,7 +125,7 @@ const RegisterLayout = () => {
               fontWeight: '500',
               fontSize: 16,
             }}>
-            Sign up to continue
+            Sign in to continue
           </Text>
           <Text
             style={{
@@ -175,49 +163,20 @@ const RegisterLayout = () => {
             <Text style={styles.errorText}>{passwordError}</Text>
           )}
 
-          <Text
-            style={{
-              color: Colors.darkBlack,
-              marginLeft: 10,
-              fontWeight: '700',
-            }}>
-            Full Name
-          </Text>
-
-          <InputComponent
-            value={fullNameInput.value}
-            placeholder="Enter Name"
-            onChangeText={text => setFullNameInput({value: text})}
-          />
-          <Text
-            style={{color: Colors.darkBlack, marginLeft: 5, fontWeight: '700'}}>
-            {' '}
-            Phone
-          </Text>
-
-          <InputComponent
-            value={phoneInput.value}
-            placeholder="Enter Phone Number"
-            onChangeText={text => setPhoneInput({value: text})}
-          />
-          {phoneError.length > 0 && (
-            <Text style={styles.errorText}>{phoneError}</Text>
-          )}
-
-          <ButtonComponent onPress={() => submit()} buttonText="Sign Up" />
+          <ButtonComponent onPress={() => submit()} buttonText="Sign in" />
 
           <View style={styles.haveAccountContainer}>
             <Text style={styles.haveAccountText}>
-              Do you already have an account?
+            Do not have an account?
             </Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate('LoginScreen')}>
-              <Text style={styles.loginLink}>Login</Text>
+              onPress={() => navigation.navigate('RegisterScreen')}>
+              <Text style={styles.loginLink}>Create Account</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.separatorContainer}>
             <View style={styles.separatorLine} />
-            <Text style={styles.separatorText}>Or Sign Up With</Text>
+            <Text style={styles.separatorText}>Or Sign In With</Text>
             <View style={styles.separatorLine} />
           </View>
           <View style={styles.socialButtonsContainer}>
@@ -257,7 +216,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 30,
+    marginTop: 190,
   },
   logo: {
     width: 300,
@@ -270,7 +229,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
-    marginTop: -500,
+    marginTop: -200,
   },
   input: {
     padding: 10,
@@ -337,4 +296,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {RegisterLayout};
+export {LoginLayout};

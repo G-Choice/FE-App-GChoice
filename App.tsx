@@ -6,9 +6,9 @@ import {BottomTabs} from "./src/navigations";
 import { RegisterLayout } from './src/screens/register/RegisterLayout';
 import SplashScreen from './src/screens/slash/SplashScreen';
 import { Verification } from './src/screens/verification/Verification';
+import {LoginLayout} from './src/screens/login/LoginLayout';
 import {store} from './src/app/store'
 import {Provider} from 'react-redux'
-import { ToastProvider } from 'react-native-toast-message'; 
 
 
 export const Stack = createNativeStackNavigator();
@@ -27,6 +27,7 @@ const App = () => {
         <Stack.Screen options={{title: '', headerShown: false}} name='HomeScreen' component={Home} />
         <Stack.Screen options={{title: '', headerShown: false}} name='RegisterScreen' component={RegisterLayout} />
         <Stack.Screen options={{title: '', headerShown: false}} name='VerificationScreen' component={Verification} />
+        <Stack.Screen options={{title: '', headerShown: false}} name='LoginScreen' component={LoginLayout} />
 
       </Stack.Navigator>
     </NavigationContainer>
