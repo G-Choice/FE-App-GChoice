@@ -1,10 +1,10 @@
-import {Image, StyleSheet, View} from "react-native";
+import {Image, StyleSheet, TouchableOpacity} from "react-native";
 
 const AvatarBubble = () => {
   return (
-    <View>
-      <Image source={require('../../assets/images/avt.png')} style={baseStyle.imgSize}/>
-    </View>
+    <TouchableOpacity >
+      <Image source={require("../../assets/images/avt.png")} style={baseStyle.imgSize}/>
+    </TouchableOpacity>
   )
 }
 
