@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image, TextInput , ActivityIndicator} from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
@@ -8,7 +8,7 @@ import GchoiceAxios from '../../api/index';
 import { setAuth } from '../../global-states';
 import Toast from 'react-native-toast-message';
 
-interface VerificationProps {}
+interface VerificationProps { }
 
 const Verification: React.FC<VerificationProps> = ({ route }) => {
   const navigation = useNavigation();
@@ -47,7 +47,7 @@ const Verification: React.FC<VerificationProps> = ({ route }) => {
 
       console.log('Verification successful');
       setLoading(false);
-      
+
       Toast.show({
         type: 'success',
         position: 'top',
@@ -57,7 +57,8 @@ const Verification: React.FC<VerificationProps> = ({ route }) => {
         onHide: () => {
           navigation.navigate('HomeScreen');
         },
-      });    } catch (error) {
+      });
+    } catch (error) {
       console.error('Verification failed', error);
       setLoading(false);
       setError('OTP is not correct. Please try again!');
@@ -144,12 +145,12 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
-    marginTop:-200
-    
+    marginTop: -200
+
   },
   input: {
     padding: 10,
-    borderBottomWidth: 0.75, 
+    borderBottomWidth: 0.75,
     borderBottomColor: Colors.darkBlack,
     marginBottom: 10,
     color: "#888"
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 15
   },
-  sendAgainButton:{
+  sendAgainButton: {
     padding: 12,
     backgroundColor: Colors.darkGrey,
     borderRadius: 12,

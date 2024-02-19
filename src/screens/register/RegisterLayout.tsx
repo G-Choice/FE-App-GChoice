@@ -1,28 +1,29 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useNavigation} from '@react-navigation/native';
-import {StyleSheet} from 'react-native';
-import {Colors} from '../../assets/colors/index';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../assets/colors/index';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {InputComponent} from '../../components/input/TextField';
-import {ButtonComponent} from '../../components/input/Button';
-import {useDispatch, useSelector} from 'react-redux';
-import {InputStateType} from '../../@type/InputStateType';
-import {RootState} from '../../app/store';
+import { InputComponent } from '../../components/input/TextField';
+import { ButtonComponent } from '../../components/input/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { InputStateType } from '../../@type/InputStateType';
+import { RootState } from '../../app/store';
 import GchoiceAxios from '../../api/index';
-import {setAuth} from '../../global-states';
+import { setAuth } from '../../global-states';
+import { ActivityIndicator } from 'react-native';
 
 const RegisterLayout = () => {
   const navigation = useNavigation();
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  const [fullNameInput, setFullNameInput] = useState({value: ''});
-  const [emailInput, setEmailInput] = useState({value: ''});
-  const [passwordInput, setPasswordInput] = useState({value: ''});
-  const [phoneInput, setPhoneInput] = useState({value: ''});
+  const [fullNameInput, setFullNameInput] = useState({ value: '' });
+  const [emailInput, setEmailInput] = useState({ value: '' });
+  const [passwordInput, setPasswordInput] = useState({ value: '' });
+  const [phoneInput, setPhoneInput] = useState({ value: '' });
 
   const auth = useSelector((state: RootState) => state.auth);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,11 +56,24 @@ const RegisterLayout = () => {
 
   const validatePhoneNumber = (phone: string) => {
     const phoneRegex = /^\d+$/;
-    if (phone) {
-      const isValid = phoneRegex.test(phone);
-      setPhoneError(isValid ? '' : 'Invalid phone number');
-      return isValid;
+    if (!phone) {
+      setPhoneError('Phone number cannot be empty');
+      return false;
     }
+
+    if (!phoneRegex.test(phone) || (phone.length !== 10 && phone.length !== 11)) {
+      setPhoneError('Invalid phone number');
+      return false;
+    }
+
+    setPhoneError('');
+    return true;
+  };
+  const resetForm = () => {
+    setEmailInput({ value: '' });
+    setPasswordInput({ value: '' });
+    setFullNameInput({ value: '' });
+    setPhoneInput({ value: '' });
   };
 
   const submit = async () => {
@@ -75,16 +89,25 @@ const RegisterLayout = () => {
       !validatePassword(passwordInput.value) ||
       !validatePhoneNumber(phoneInput.value)
     ) {
+      setIsLoading(false);
       return;
     }
-  
+
     GchoiceAxios({
       url: 'auth/register',
       method: 'post',
       data,
     })
       .then(res => {
-        dispatch(setAuth({authToken: res.data.authToken}));
+        dispatch(
+          setAuth({
+            authToken: res.data.accessToken,
+            refreshToken: res.data.refreshToken,
+          })
+        );
+        setIsLoading(false);
+        resetForm()
+        navigation.navigate('VerificationScreen', { email: emailInput.value });
       })
       .catch(e => {
         setIsLoading(false);
@@ -92,22 +115,21 @@ const RegisterLayout = () => {
         const status: number = e.response.data.status;
         const errors = e.response.message;
         console.log(errors);
-  
+
         if (errors && errors.length > 0) {
           const emailExistsError = errors.find(
             error => error.message === 'Username or email already exists',
           );
-  
+
           if (emailExistsError) {
             setEmailError('Email already exists');
           } else {
           }
         }
       });
-  
-    navigation.navigate('VerificationScreen', {email: emailInput.value});
+
   };
-  
+
 
   return (
     <View style={styles.container}>
@@ -120,7 +142,7 @@ const RegisterLayout = () => {
         </View>
       </SafeAreaView>
       <View style={styles.formContainer}>
-        <View style={{marginBottom: 20}}>
+        <View style={{ marginBottom: 20 }}>
           <Text
             style={{
               color: Colors.darkBlack,
@@ -151,7 +173,7 @@ const RegisterLayout = () => {
           <InputComponent
             value={emailInput.value}
             placeholder="Enter Email"
-            onChangeText={text => setEmailInput({value: text})}
+            onChangeText={text => setEmailInput({ value: text })}
           />
           {emailError.length > 0 && (
             <Text style={styles.errorText}>{emailError}</Text>
@@ -166,14 +188,23 @@ const RegisterLayout = () => {
           </Text>
 
           <InputComponent
-            secureTextEntry
+            secureTextEntry={showPassword}
             value={passwordInput.value}
             placeholder="Enter Password"
-            onChangeText={text => setPasswordInput({value: text})}
+            onChangeText={(text) => setPasswordInput({ value: text })}
           />
           {passwordError.length > 0 && (
             <Text style={styles.errorText}>{passwordError}</Text>
           )}
+          <TouchableOpacity
+            style={styles.eyeIconContainer}
+            onPress={togglePasswordVisibility}>
+            <Icon
+              name={showPassword ? 'eye' : 'eye-slash'}
+              size={20}
+              color={Colors.darkBlack}
+            />
+          </TouchableOpacity>
 
           <Text
             style={{
@@ -187,10 +218,10 @@ const RegisterLayout = () => {
           <InputComponent
             value={fullNameInput.value}
             placeholder="Enter Name"
-            onChangeText={text => setFullNameInput({value: text})}
+            onChangeText={text => setFullNameInput({ value: text })}
           />
           <Text
-            style={{color: Colors.darkBlack, marginLeft: 5, fontWeight: '700'}}>
+            style={{ color: Colors.darkBlack, marginLeft: 5, fontWeight: '700' }}>
             {' '}
             Phone
           </Text>
@@ -198,14 +229,16 @@ const RegisterLayout = () => {
           <InputComponent
             value={phoneInput.value}
             placeholder="Enter Phone Number"
-            onChangeText={text => setPhoneInput({value: text})}
+            onChangeText={text => setPhoneInput({ value: text })}
           />
           {phoneError.length > 0 && (
             <Text style={styles.errorText}>{phoneError}</Text>
           )}
 
           <ButtonComponent onPress={() => submit()} buttonText="Sign Up" />
-
+          {isLoading && (
+            <ActivityIndicator size="large" color={Colors.primaryColor} style={styles.loadingIndicator} />
+          )}
           <View style={styles.haveAccountContainer}>
             <Text style={styles.haveAccountText}>
               Do you already have an account?
@@ -224,19 +257,19 @@ const RegisterLayout = () => {
             <TouchableOpacity style={styles.socialButton}>
               <Image
                 source={require('../../assets/icons/google.png')}
-                style={{width: 25, height: 25}}
+                style={{ width: 25, height: 25 }}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialButton}>
               <Image
                 source={require('../../assets/icons/Facebook.png')}
-                style={{width: 14, height: 25}}
+                style={{ width: 14, height: 25 }}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialButton}>
               <Image
                 source={require('../../assets/icons/Apple.png')}
-                style={{width: 21, height: 25}}
+                style={{ width: 21, height: 25 }}
               />
             </TouchableOpacity>
           </View>
@@ -335,6 +368,18 @@ const styles = StyleSheet.create({
     color: 'red',
     marginLeft: 10,
   },
+  loadingIndicator: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginLeft: -25,
+    marginTop: -25,
+  },
+  eyeIconContainer: {
+    position: 'absolute',
+    top: 180,
+    right: 20,
+  },
 });
 
-export {RegisterLayout};
+export { RegisterLayout };

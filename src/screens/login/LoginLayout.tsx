@@ -1,38 +1,48 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useNavigation} from '@react-navigation/native';
-import {StyleSheet} from 'react-native';
-import {Colors} from '../../assets/colors/index';
+import React, { useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../assets/colors/index';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {InputComponent} from '../../components/input/TextField';
-import {ButtonComponent} from '../../components/input/Button';
-import {useDispatch, useSelector} from 'react-redux';
-import {InputStateType} from '../../@type/InputStateType';
-import {RootState} from '../../app/store';
+import { InputComponent } from '../../components/input/TextField';
+import { ButtonComponent } from '../../components/input/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 import GchoiceAxios from '../../api/index';
-import {setAuth} from '../../global-states';
+import { setAuth } from '../../global-states';
+import Toast from 'react-native-toast-message';
 
-const LoginLayout = () => {
+interface EmailInput {
+  value: string;
+}
+
+interface PasswordInput {
+  value: string;
+}
+
+const LoginLayout: React.FC = () => {
   const navigation = useNavigation();
-  const [showPassword, setShowPassword] = useState(false);
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  const [fullNameInput, setFullNameInput] = useState({value: ''});
-  const [emailInput, setEmailInput] = useState({value: ''});
-  const [passwordInput, setPasswordInput] = useState({value: ''});
-  const [phoneInput, setPhoneInput] = useState({value: ''});
+
+  const [emailInput, setEmailInput] = useState<EmailInput>({ value: '' });
+  const [passwordInput, setPasswordInput] = useState<PasswordInput>({ value: '' });
 
   const auth = useSelector((state: RootState) => state.auth);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-
+  const resetForm = () => {
+    setEmailInput({ value: '' });
+    setPasswordInput({ value: '' });
+  };
   const [emailError, setEmailError] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string>('');
-  const [phoneError, setPhoneError] = useState<string>('');
 
-  const validateEmail = (email: string) => {
+  const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
       setEmailError('Email cannot be empty');
@@ -43,7 +53,7 @@ const LoginLayout = () => {
     return isValid;
   };
 
-  const validatePassword = (password: string) => {
+  const validatePassword = (password: string): boolean => {
     if (!password) {
       setPasswordError('Password cannot be empty');
       return false;
@@ -53,50 +63,57 @@ const LoginLayout = () => {
     return isValid;
   };
 
-
   const submit = async () => {
     setIsLoading(true);
+
     let data = {
       email: emailInput.value,
       password: passwordInput.value,
     };
-    if (
-      !validateEmail(emailInput.value) ||
-      !validatePassword(passwordInput.value) 
-    ) {
+
+    if (!validateEmail(emailInput.value) || !validatePassword(passwordInput.value)) {
+      setIsLoading(false);
       return;
     }
-  
-    GchoiceAxios({
-      url: 'auth/register',
-      method: 'post',
-      data,
-    })
-      .then(res => {
-        dispatch(setAuth({authToken: res.data.authToken}));
-      })
-      .catch(e => {
-        setIsLoading(false);
-        console.log(e);
-        const status: number = e.response.data.status;
-        const errors = e.response.message;
-        console.log(errors);
-  
-        if (errors && errors.length > 0) {
-          const emailExistsError = errors.find(
-            error => error.message === 'Username or email already exists',
-          );
-  
-          if (emailExistsError) {
-            setEmailError('Email already exists');
-          } else {
-          }
-        }
+
+    try {
+      const response = await GchoiceAxios({
+        url: 'auth/login',
+        method: 'post',
+        data: data,
       });
-  
-    navigation.navigate('VerificationScreen', {email: emailInput.value});
+      dispatch(
+        setAuth({
+          authToken: response.data.accessToken,
+          refreshToken: response.data.refreshToken,
+        })
+      );
+      setIsLoading(false);
+
+      if (response.status === 201) {
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Login Successfully!',
+          visibilityTime: 2000,
+          autoHide: true,
+          onHide: () => {
+            resetForm()
+            navigation.navigate('HomeScreen');
+          },
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Incorrect email or password!',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+    }
   };
-  
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeAreaView}>
@@ -108,7 +125,7 @@ const LoginLayout = () => {
         </View>
       </SafeAreaView>
       <View style={styles.formContainer}>
-        <View style={{marginBottom: 20}}>
+        <View style={{ marginBottom: 20 }}>
           <Text
             style={{
               color: Colors.darkBlack,
@@ -139,7 +156,7 @@ const LoginLayout = () => {
           <InputComponent
             value={emailInput.value}
             placeholder="Enter Email"
-            onChangeText={text => setEmailInput({value: text})}
+            onChangeText={text => setEmailInput({ value: text })}
           />
           {emailError.length > 0 && (
             <Text style={styles.errorText}>{emailError}</Text>
@@ -152,22 +169,32 @@ const LoginLayout = () => {
             }}>
             Password
           </Text>
-
           <InputComponent
-            secureTextEntry
+            secureTextEntry={!showPassword}
             value={passwordInput.value}
             placeholder="Enter Password"
-            onChangeText={text => setPasswordInput({value: text})}
+            onChangeText={(text) => setPasswordInput({ value: text })}
           />
           {passwordError.length > 0 && (
             <Text style={styles.errorText}>{passwordError}</Text>
           )}
+          <TouchableOpacity
+            style={styles.eyeIconContainer}
+            onPress={togglePasswordVisibility}>
+            <Icon
+              name={showPassword ? 'eye' : 'eye-slash'}
+              size={20}
+              color={Colors.darkBlack}
+            />
+          </TouchableOpacity>
 
           <ButtonComponent onPress={() => submit()} buttonText="Sign in" />
-
+          {isLoading && (
+            <ActivityIndicator size="large" color={Colors.primaryColor} style={styles.loadingIndicator} />
+          )}
           <View style={styles.haveAccountContainer}>
             <Text style={styles.haveAccountText}>
-            Do not have an account?
+              Do not have an account?
             </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('RegisterScreen')}>
@@ -183,24 +210,25 @@ const LoginLayout = () => {
             <TouchableOpacity style={styles.socialButton}>
               <Image
                 source={require('../../assets/icons/google.png')}
-                style={{width: 25, height: 25}}
+                style={{ width: 25, height: 25 }}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialButton}>
               <Image
                 source={require('../../assets/icons/Facebook.png')}
-                style={{width: 14, height: 25}}
+                style={{ width: 14, height: 25 }}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialButton}>
               <Image
                 source={require('../../assets/icons/Apple.png')}
-                style={{width: 21, height: 25}}
+                style={{ width: 21, height: 25 }}
               />
             </TouchableOpacity>
           </View>
         </View>
       </View>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 };
@@ -290,10 +318,22 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 12,
   },
+  eyeIconContainer: {
+    position: 'absolute',
+    top: 190,
+    right: 20,
+  },
   errorText: {
     color: 'red',
     marginLeft: 10,
   },
+  loadingIndicator: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginLeft: -25,
+    marginTop: -25,
+  },
 });
 
-export {LoginLayout};
+export { LoginLayout };

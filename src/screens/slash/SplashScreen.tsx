@@ -5,7 +5,7 @@ import { Colors } from '../../assets/colors';
 const SplashScreen = ({ navigation }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('RegisterScreen');
+      navigation.replace('LoginScreen');
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 331, 
-    height: 90, 
+    width: 331,
+    height: 90,
     resizeMode: 'contain',
   },
 });

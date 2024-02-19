@@ -1,21 +1,48 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios"
+import axios from "axios";
 
 const GchoiceAxios = axios.create({
-  baseURL: 'https://62e6-2402-800-6294-436f-2c66-aed4-eae9-46ad.ngrok-free.app/',
-  headers: {'Authorization': 'bearer token...'}
+  baseURL: 'https://7e8c-2402-9d80-412-d1a9-253e-3f24-263b-e58e.ngrok-free.app',
 });
 
-GchoiceAxios.interceptors.request.use(async function (config) {
-  let accessToken = await AsyncStorage.getItem("accessToken")
-  config.headers.Authorization = `bearer ${accessToken}`
-  // config.headers["Content-Type"] = 'multipart/form-data'
-  // config.headers["Content-Type"] = 'application/json-pact+json'
-  // config.headers["Content-Type"] = 'application/*'
-  return config;
-}, function (error) {
-  return Promise.reject(error);
-});
+GchoiceAxios.interceptors.request.use(
+  async function (config) {
+    let accessToken = await AsyncStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  async function (error) {
+    return Promise.reject(error);
+  }
+);
 
+GchoiceAxios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  async function (error) {
+    const originalRequest = error.config;
 
-export default GchoiceAxios
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = await AsyncStorage.getItem("refreshToken");
+      try {
+        const response = await GchoiceAxios.post('/auth/refresh', {
+          refreshToken: refreshToken
+        });
+        const newAccessToken = response.data.accessToken;
+        await AsyncStorage.setItem("accessToken", newAccessToken);
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return GchoiceAxios(originalRequest);
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export default GchoiceAxios;

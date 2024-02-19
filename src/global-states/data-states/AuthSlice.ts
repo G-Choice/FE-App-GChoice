@@ -1,57 +1,57 @@
-import {createSlice} from '@reduxjs/toolkit'
-import {type PayloadAction} from '@reduxjs/toolkit'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
+import GchoiceAxios from '../../api';
 
-export interface AuthTokenType
-{
-  accessToken: string,
-  refreshToken: string
+
+interface AuthState {
+  authToken: string;
+  refreshToken: string;
 }
 
-export interface ProfileType
-{
-  id: string,
-  fullName: string,
-  avatarUrl: string,
-  description: string
-}
+const initialState: AuthState = {
+  authToken: '',
+  refreshToken: '',
+};
 
-export interface AuthStateType 
-{
-  authToken: AuthTokenType,
-  profile: ProfileType
-}
+export const refreshAccessToken = createAsyncThunk(
+  'auth/refresh',
+  async (_, { getState, dispatch, rejectWithValue }) => {
+    const { refreshToken } = (getState() as RootState).auth;
 
-const initialState: AuthStateType = {
-  authToken: {
-    accessToken: '',
-    refreshToken: ''
-  },
-  profile: {
-    id: '',
-    fullName: '',
-    avatarUrl: '',
-    description: ''
-  }
-}
+    try {
+      const response = await GchoiceAxios.post('/auth/refresh', {
+        refreshToken: refreshToken
+      });
 
-export const AuthSlice = createSlice({
-  name: "auth",
-  initialState,
-  reducers: {
-    setAuth: (state, action: PayloadAction<AuthTokenType>) => {
-      AsyncStorage.setItem("accessToken", action.payload.accessToken)
-      state.authToken = action.payload
-    },
-    setProfile: (state, action: PayloadAction<ProfileType>) => {
-      AsyncStorage.setItem("profile", JSON.stringify(action.payload))
-      state.profile = action.payload
+      const newAccessToken = response.data.accessToken;
+
+      dispatch(setAuth({ authToken: newAccessToken, refreshToken }));
+
+      return newAccessToken;
+    } catch (error) {
+      dispatch(logout());
+      return rejectWithValue(error.response.data);
     }
   }
-})
+);
 
-export const {setAuth, setProfile} = AuthSlice.actions
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    setAuth: (state, action: PayloadAction<AuthState>) => {
+      state.authToken = action.payload.authToken;
+      state.refreshToken = action.payload.refreshToken;
+    },
+    logout: (state) => {
+      state.authToken = '';
+      state.refreshToken = '';
+    },
+  },
+});
 
-const AuthReducer = AuthSlice.reducer;
+export const { setAuth, logout } = authSlice.actions;
 
-export {AuthReducer};
+const AuthReducer = authSlice.reducer;
+
+export { AuthReducer };
