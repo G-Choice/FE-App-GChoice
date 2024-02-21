@@ -1,5 +1,6 @@
 import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Colors} from "../../assets/colors";
+import { useNavigation } from '@react-navigation/native';
 
 const getWidthOfScreen = Dimensions.get("screen").width
 
@@ -17,8 +18,10 @@ interface ProductCardProps {
 }
 
 const Card = (props: ProductCardProps) => {
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity style={{width: "50%"}}>
+    <TouchableOpacity style={{width: "50%"}} onPress={() => navigation.navigate('ProductDetail')}>
       <View style={styles.cardWrapper}>
         <Image style={styles.productImgPreview} source={{uri: props.image}} />
         <View style={{margin: 5}}>
