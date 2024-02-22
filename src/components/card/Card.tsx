@@ -1,20 +1,10 @@
 import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Colors} from "../../assets/colors";
+import {ProductsResApiType} from "../../@types/ProductsResApiType.ts";
 
 const getWidthOfScreen = Dimensions.get("screen").width
 
-interface ProductCardProps {
-  id?: string,
-  image?: string,
-  title?: string,
-  description?: string,
-  price?: number,
-  rating?: number,
-  coupon?: any,
-  sold?: number,
-  stock?: number,
-  status?: number
-}
+interface ProductCardProps extends ProductsResApiType {}
 
 const Card = (props: ProductCardProps) => {
   return (
@@ -22,7 +12,7 @@ const Card = (props: ProductCardProps) => {
       <View style={styles.cardWrapper}>
         <Image style={styles.productImgPreview} source={{uri: props.image}} />
         <View style={{margin: 5}}>
-          <Text style={styles.productTitle} numberOfLines={2}>{props.title}</Text>
+          <Text style={styles.productTitle} numberOfLines={2}>{props.product_name}</Text>
           <View style={{height: 25}}></View>
           <View style={{flexDirection: "row", justifyContent: "space-between"}}>
             <Text style={styles.productPrice}>₫{props.price}</Text>
