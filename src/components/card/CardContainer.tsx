@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {FlatList, StyleSheet, View, VirtualizedList} from "react-native";
+import { FlatList, StyleSheet, View, VirtualizedList } from "react-native";
 import { Card } from "./Card.tsx";
 import GchoiceAxios from "../../api";
-import {ProductsResApiType} from "../../@types/ProductsResApiType.ts";
+import { ProductsResApiType } from "../../@types/ProductsResApiType.ts";
 
 const CardContainer = () => {
+  const [productList, setProductList] = useState<ProductsResApiType[]>([]);
 
-  const [productList, setProductList] = useState<ProductsResApiType[]>([])
-
-  const productCount = () => productList.length
-  const getProducts = (products: ProductsResApiType[], index: number) => productList[index];
-
-  const [page, setPage] = useState<number>(1)
-  const take = 8
+  const [page, setPage] = useState<number>(1);
+  const take = 8;
 
   useEffect(() => {
     fetchData();
@@ -20,14 +16,14 @@ const CardContainer = () => {
 
   const fetchData = () => {
     GchoiceAxios({
-      method: 'get',
+      method: "get",
       url: `products?page=${page}&take=${take}`,
-      responseType: 'json'
+      responseType: "json",
     })
-      .then(res => {
-        setProductList((pre => pre.concat(res.data.data)))
+      .then((res) => {
+        setProductList((prev) => prev.concat(res.data.data));
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -36,26 +32,23 @@ const CardContainer = () => {
 
   return (
     <View style={styles.productContainer}>
-      <VirtualizedList
+      <FlatList
+        numColumns={2} // Set the number of columns to 2
         showsVerticalScrollIndicator={false}
-        style={{ width: '100%' }}
-        data={productList}
-        getItem={getProducts}
-        getItemCount={productCount}
-        contentContainerStyle={{
+        columnWrapperStyle={{
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginLeft: 5,
-          marginRight: 15,
           paddingBottom: 20,
           gap: 10,
-          flexDirection: "row"
+          marginLeft: 5,
+          marginRight: 15
         }}
+        data={productList}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
-        onEndReachedThreshold={5}
+        onEndReachedThreshold={0.5}
         onEndReached={() => {
-          setPage(pre => pre + 1)
+          setPage((prev) => prev + 1);
         }}
       />
     </View>
@@ -65,19 +58,8 @@ const CardContainer = () => {
 const styles = StyleSheet.create({
   productContainer: {
     margin: 5,
-    marginBottom: 100
+    marginBottom: 100,
   },
-  paginationButton: {
-    backgroundColor: '#3498db',
-    padding: 10,
-    alignSelf: 'center',
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  paginationText: {
-    color: 'white',
-    fontWeight: 'bold',
-  }
 });
 
 export { CardContainer };
