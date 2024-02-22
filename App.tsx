@@ -17,18 +17,17 @@ const App = () => {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Navigator>
         <Stack.Screen
           options={{ title: '', headerShown: false }}
           name='SplashScreen'
           component={SplashScreen}
         />
-        <Stack.Screen options={{title: '', headerShown: false}} name='BottomTabs' component={BottomTabs} />
-        <Stack.Screen options={{title: '', headerShown: false}} name='HomeScreen' component={Home} />
         <Stack.Screen options={{title: '', headerShown: false}} name='RegisterScreen' component={RegisterLayout} />
         <Stack.Screen options={{title: '', headerShown: false}} name='VerificationScreen' component={Verification} />
         <Stack.Screen options={{title: '', headerShown: false}} name='LoginScreen' component={LoginLayout} />
-
+        <Stack.Screen options={{title: '', headerShown: false}} name='BottomTabs' component={BottomTabs} />
+        <Stack.Screen options={{title: '', headerShown: false}} name='HomeScreen' component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>

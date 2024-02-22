@@ -9,9 +9,6 @@ const Header = () => {
 
   return (
     <View style={styles.container}>
-      <Text>
-
-      </Text>
       <Image
         source={ require('../../../public/G-Choice-Logo.png')}
         style={styles.logo}
@@ -31,7 +28,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    margin: 24,
+    padding: 10,
     backgroundColor: Colors.secondaryColor
   }
 })
