@@ -29,8 +29,9 @@ export const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
+    <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="ProductDetail">
+      <Stack.Navigator initialRouteName="HomeScreen">
         <Stack.Screen
           options={{ title: '', headerShown: false }}
           name='SplashScreen'
@@ -42,8 +43,10 @@ const App = () => {
         <Stack.Screen options={{title: '', headerShown: false}} name='VerificationScreen' component={Verification} />
         <Stack.Screen options={{title: '', headerShown: false}} name='LoginScreen' component={LoginLayout} />
         <Stack.Screen options={{title: '', headerShown: true}} name='ProductDetail' component={ProductDetail} />
+
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   )
 }
 

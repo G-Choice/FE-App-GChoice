@@ -7,29 +7,33 @@ const getWidthOfScreen = Dimensions.get("screen").width
 interface ProductCardProps {
   id?: string,
   image?: string,
-  title?: string,
+  product_name?: string,
   description?: string,
   price?: number,
-  rating?: number,
-  coupon?: any,
-  sold?: number,
-  stock?: number,
-  status?: number
+  avgRating?: string,
+//   coupon?: any,
+  product_quantity_sold?: number,
+  quantity_inventory?: number,
+  status?: string
+
 }
 
 const Card = (props: ProductCardProps) => {
   const navigation = useNavigation();
 
+   const handleCardPress = () => {
+       navigation.navigate('ProductDetail', { id: props.id });
+     };
   return (
-    <TouchableOpacity style={{width: "50%"}} onPress={() => navigation.navigate('ProductDetail')}>
+    <TouchableOpacity style={{ width: '50%' }} onPress={handleCardPress}>
       <View style={styles.cardWrapper}>
         <Image style={styles.productImgPreview} source={{uri: props.image}} />
         <View style={{margin: 5}}>
-          <Text style={styles.productTitle} numberOfLines={2}>{props.title}</Text>
+          <Text style={styles.productTitle} numberOfLines={2}>{props.product_name}</Text>
           <View style={{height: 25}}></View>
           <View style={{flexDirection: "row", justifyContent: "space-between"}}>
             <Text style={styles.productPrice}>₫{props.price}</Text>
-            <Text>Đã bán {props.stock}</Text>
+            <Text>Đã bán {props.quantity_inventory}</Text>
           </View>
         </View>
       </View>
