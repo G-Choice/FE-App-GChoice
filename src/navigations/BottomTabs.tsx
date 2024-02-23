@@ -5,6 +5,8 @@ import Icon, { Icons } from '../components/icons/Icons';
 import * as Animatable from 'react-native-animatable';
 import { Colors } from '../assets/colors';
 import { Home, Suggestion } from '../screens/home';
+import {GroupEachProduct} from "../screens/groups";
+
 
 interface TabItem {
   route: string;
@@ -17,7 +19,7 @@ interface TabItem {
 
 const TabArr: TabItem[] = [
   { route: 'Home', label: 'Home', type: Icons.Feather, icon: 'home', component: Home },
-  { route: 'Suggestion', label: 'Suggestion', type: Icons.MaterialCommunityIcons, icon: 'post-outline', component: Suggestion },
+  { route: 'Suggestion', label: 'Suggestion', type: Icons.MaterialCommunityIcons, icon: 'post-outline', component: GroupEachProduct },
   { route: 'Group', label: 'Group', type: Icons.MaterialCommunityIcons, icon: 'select-group', component: Suggestion },
   { route: 'Chat', label: 'Chat', type: Icons.MaterialCommunityIcons, icon: 'chat-processing-outline', component: Suggestion },
   { route: 'Profile', label: 'Profile', type: Icons.FontAwesome, icon: 'user-circle-o', component: Suggestion },
