@@ -1,22 +1,11 @@
 import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Colors} from "../../assets/colors";
+import {ProductsResApiType} from "../../@types/ProductsResApiType.ts";
 import { useNavigation } from '@react-navigation/native';
 
 const getWidthOfScreen = Dimensions.get("screen").width
 
-interface ProductCardProps {
-  id?: string,
-  image?: string,
-  product_name?: string,
-  description?: string,
-  price?: number,
-  avgRating?: string,
-//   coupon?: any,
-  product_quantity_sold?: number,
-  quantity_inventory?: number,
-  status?: string
-
-}
+interface ProductCardProps extends ProductsResApiType {}
 
 const Card = (props: ProductCardProps) => {
   const navigation = useNavigation();
@@ -24,10 +13,12 @@ const Card = (props: ProductCardProps) => {
    const handleCardPress = () => {
        navigation.navigate('ProductDetail', { id: props.id });
      };
+     const imageUrl = props.images && props.images.length > 0 ? props.images[0] : '';
+     
   return (
     <TouchableOpacity style={{ width: '50%' }} onPress={handleCardPress}>
       <View style={styles.cardWrapper}>
-        <Image style={styles.productImgPreview} source={{uri: props.image}} />
+      <Image style={styles.productImgPreview} source={{ uri: imageUrl }} />
         <View style={{margin: 5}}>
           <Text style={styles.productTitle} numberOfLines={2}>{props.product_name}</Text>
           <View style={{height: 25}}></View>

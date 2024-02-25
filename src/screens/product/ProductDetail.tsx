@@ -4,7 +4,8 @@ import { Rating } from 'react-native-ratings';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Colors } from '../../assets/colors/index';
 import GChoiceAxios from '../../api/index';
-import { ViewPropTypes } from 'deprecated-react-native-prop-types';  // Import from deprecated-react-native-prop-types
+import Icon from 'react-native-vector-icons/FontAwesome'; 
+import { TouchableOpacity } from 'react-native';
 
 interface ProductDetailProps {
   route: {
@@ -13,18 +14,33 @@ interface ProductDetailProps {
     };
   };
 }
+interface Discount {
+  discountPrice: string;
+}
 
-
+interface Feedback {
+  id: String;
+  rating: number;
+  comment: string;
+  users: {
+    username: string;
+  }
+}
+interface ProductDetails{
+  product_name: string;
+  shop: {
+    shop_name : string;
+  };
+  price: string;
+  description: string;
+  avgrating: number;
+  reviews: Feedback[];
+  discounts: Discount[]
+}
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
   const { id } = route.params;
   const [productDetails, setProductDetails] = useState<any>(null);
-
-  const productImages = [
-    'https://down-vn.img.susercntent.com/file/sg-11134201-7qvds-lhyh9z2ofpve3d',
-    'https://down-vn.img.susercontent.com/file/sg-11134201-7rbk0-lkm4xvkp7ezy4e',
-    'https://down-vn.img.susercontent.com/file/sg-11134201-7qvds-lhyh9z2ofpve3d',
-  ];
 
   const groupInfo = '8 groups are joining';
 
@@ -52,33 +68,30 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
   
 
   return (
-    <ScrollView>
     <View style={styles.container}>
+          <ScrollView>
       <SliderBox
-        images={[productDetails.image]}
+        images={productDetails.images}
         sliderBoxHeight={200}
         dotColor="#FA7189"
         inactiveDotColor="#90A4AE"
         circleLoop
       />
-      
-
       <View style={styles.infoContainer}>
         <View style={styles.textInfoContainer}>
           <View style={styles.nameContainer}>
             <Text style={styles.productName}>{productDetails.product_name}</Text>
+            <Icon name="home" size={20} color={Colors.primaryColor} style={styles.icon} />
             <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
           </View>
         </View>
       </View>
-
       <View style={styles.priceContainer}>
         <Text style={styles.productPrice}>${productDetails.price}</Text>
         <View style={styles.groupInfoContainer}>
           <Text style={styles.groupInfo}>{groupInfo}</Text>
         </View>
       </View>
-
       <View style={styles.safeImagesContainer}>
         <View style={styles.safeImageItem}>
           <Image source={require('../../assets/images/authentic.png')} style={styles.safeImage} />
@@ -103,15 +116,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
       <Text style={styles.titleReviews}>Product reviews</Text>
 
       <View style={styles.ratingContainer}>
-        <Rating type="custom" ratingCount={5} imageSize={20} startingValue={productDetails.avgrating} readonly />
+        <Rating type="custom" ratingCount={5} imageSize={20} startingValue={productDetails.avgrating}  readonly tintColor="#f4f4f4" />
       </View>
-
       <View style={styles.feedbacksContainer}>
-        {productDetails.reviews.map((feedback) => (
+        {productDetails.reviews.map((feedback: any) => (
           <View key={feedback.id} style={styles.feedbackItem}>
             <View style={styles.userReviewInfo}>
               <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
-              <View style={styles.userInfo}>
+              <View>
                 <Text style={styles.userName}>{feedback.users.username}</Text>
                 <Rating
                   type="star"
@@ -119,6 +131,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
                   imageSize={13}
                   startingValue={feedback.rating}
                   readonly
+                  ratingColor={Colors.primaryColor}  
+                  tintColor="#f4f4f4"
                 />
               </View>
             </View>
@@ -132,15 +146,28 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
           <Text style={styles.discountTableHeaderCell}>Quantity</Text>
           <Text style={styles.discountTableHeaderCell}>Price</Text>
         </View>
-        {productDetails.discounts.map((discount, index) => (
+        {productDetails?.discounts.map((discount: Discount, index: number) => (
           <View key={index} style={styles.discountTableRow}>
-            <Text style={styles.discountTableCell}>>{discount.minQuantity}</Text>
-            <Text style={styles.discountTableCell}>>{discount.discountPrice}</Text>
+          <Text style={styles.discountTableCell}> {">"}{discount.discountPrice}</Text>
+            <Text style={styles.discountTableCell}> {discount.discountPrice} $</Text>
           </View>
         ))}
       </View>
+      </ScrollView>
+      <View style={styles.buttonContainer}>
+           <TouchableOpacity style={styles.heartButton}>
+           <Icon name="heart" size={20} color={Colors.primaryColor} style={styles.buttonIcon} />
+           <Text> 2030</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.joinGroupButton}>
+            <Text style={styles.buttonText}>Join Group</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buyNowButton}>
+            <Text style={styles.buttonText}>Buy Now</Text>
+          </TouchableOpacity>
+        </View>
+
     </View>
-    </ScrollView>
   );
 };
 
@@ -160,6 +187,7 @@ const styles = StyleSheet.create({
   nameContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   productName: {
     fontSize: 20,
@@ -168,8 +196,9 @@ const styles = StyleSheet.create({
   shopName: {
     fontSize: 16,
     color: Colors.darkGrey,
-    marginLeft: 8,
-
+  },
+  icon: {
+    marginRight: -200,
   },
   priceContainer: {
     flexDirection: 'row',
@@ -236,11 +265,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginRight: 8,
   },
-  userInfo: {
-    flex: 1,
-    flexDirection:'column'
-    
-  },
+
   userName: {
     fontSize: 14,
     fontWeight: 'bold',
@@ -273,12 +298,67 @@ const styles = StyleSheet.create({
   discountTableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
+
     borderColor: Colors.primaryColor,
     paddingVertical: 8,
   },
   discountTableCell: {
     flex: 1,
     textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center', 
+    marginTop: 16,
+    backgroundColor:'#FFF',
+    // paddingHorizontal:16,
+    // paddingVertical: 10,
+    // shadowColor:'#000',
+    // shadowOffset:{
+    //   width:0,
+    //   height:4,
+    // },
+    // shadowOpacity:0.2,
+    // shadowRadius: 4,
+    // elevation:5
+  },
+  joinGroupButton: {
+    flex: 1,
+    backgroundColor: Colors.primaryColor,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 8,
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  heartButton: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 8,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  buyNowButton: {
+    flex: 1,
+    backgroundColor: Colors.primaryColor,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 8,
+    flexDirection: 'row',
+    marginLeft: 8,
+    justifyContent: 'center',
+
+  },
+  buttonIcon: {
+    marginLeft: 8,
+
+  },
+  buttonText: {
+    color: Colors.secondaryColor,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

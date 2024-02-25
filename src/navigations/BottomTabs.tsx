@@ -5,7 +5,7 @@ import Icon, { Icons } from '../components/icons/Icons';
 import * as Animatable from 'react-native-animatable';
 import { Colors } from '../assets/colors';
 import { Home, Suggestion } from '../screens/home';
-
+import HomeStack from './HomeStack';
 interface TabItem {
   route: string;
   label: string;
@@ -69,6 +69,7 @@ const BottomTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBar,
+        tabBarHideOnKeyboard: true
       }}
     >
       {TabArr.map((item, index) => (
