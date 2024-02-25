@@ -94,9 +94,9 @@ const AuthStack = () => {
 const MainStack = () => {
   // const { authToken, refreshToken } = useSelector((state: RootState) => state.auth);
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='HomeScreen' component={BottomTabs} />
-      <Stack.Screen name='ProductDetail' component={ProductDetail} />
+    <Stack.Navigator>
+      <Stack.Screen options={{title: '', headerShown: false}} name='HomeScreen' component={BottomTabs} />
+      <Stack.Screen  options={{title: '', headerShown: true}} name='ProductDetail' component={ProductDetail} />
     </Stack.Navigator>
   );
 };
