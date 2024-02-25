@@ -43,7 +43,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
   const [productDetails, setProductDetails] = useState<any>(null);
 
   const groupInfo = '8 groups are joining';
+  const [isLiked, setIsLiked] = useState(false);
 
+  const toggleLike = () => {
+    setIsLiked((prev) => !prev);
+  };
 
   const fetchProductDetails = async () => {
     try {
@@ -155,9 +159,17 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
       </View>
       </ScrollView>
       <View style={styles.buttonContainer}>
-           <TouchableOpacity style={styles.heartButton}>
-           <Icon name="heart" size={20} color={Colors.primaryColor} style={styles.buttonIcon} />
-           <Text> 2030</Text>
+          <TouchableOpacity
+            style={styles.heartButton}
+            onPress={toggleLike}
+          >
+            <Icon
+              name={isLiked ? 'heart' : 'heart-o'}
+              size={20}
+              color={isLiked ? Colors.primaryColor : Colors.primaryColor }
+              style={styles.buttonIcon}
+            />
+            <Text> 2030</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.joinGroupButton}>
             <Text style={styles.buttonText}>Join Group</Text>
@@ -286,13 +298,14 @@ const styles = StyleSheet.create({
   },
   discountTableHeader: {
     flexDirection: 'row',
-    backgroundColor: Colors.primaryColor,
     paddingVertical: 8,
+    borderBottomWidth: 0.7, 
+    borderBottomColor: Colors.darkGrey
   },
   discountTableHeaderCell: {
     flex: 1,
     textAlign: 'center',
-    color: '#FFF',
+    color: Colors.darkGrey,
     fontWeight: 'bold',
   },
   discountTableRow: {
@@ -312,16 +325,6 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     marginTop: 16,
     backgroundColor:'#FFF',
-    // paddingHorizontal:16,
-    // paddingVertical: 10,
-    // shadowColor:'#000',
-    // shadowOffset:{
-    //   width:0,
-    //   height:4,
-    // },
-    // shadowOpacity:0.2,
-    // shadowRadius: 4,
-    // elevation:5
   },
   joinGroupButton: {
     flex: 1,
