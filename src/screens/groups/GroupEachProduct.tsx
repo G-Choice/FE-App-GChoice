@@ -5,6 +5,7 @@ import {GroupResApiType} from "../../@types/GroupResApiType.ts";
 import React from "react";
 import Icon from 'react-native-vector-icons/Feather'
 import {Colors} from "../../assets/colors";
+import {SearchBar} from "../../components/input/SearchBar.tsx";
 
 const GroupEachProduct = () => {
   const GroupList: GroupResApiType[] = [
@@ -76,6 +77,8 @@ const GroupEachProduct = () => {
     }
   ]
 
+  const handleBack = () => {};
+  const handleSearch = () => {};
   const renderItem = ({ item }: { item: any }) => <Group {...item} />;
 
   return (
@@ -88,6 +91,7 @@ const GroupEachProduct = () => {
           <TextFormat weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>Create new group</TextFormat>
         </TouchableOpacity>
       </View>
+      <SearchBar placeholder="Search..." onSubmit={handleSearch} onBack={handleBack}/>
       <FlatList data={GroupList} renderItem={renderItem}
                 style={styles.groupContainer} />
     </View>
@@ -100,6 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginLeft:'auto',
     marginRight:'auto',
+    marginTop: 8
   },
   groupGeneralWrapper: {
     flexDirection: "row",
