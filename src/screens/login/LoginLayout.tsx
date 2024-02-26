@@ -63,57 +63,61 @@ const LoginLayout: React.FC = () => {
     return isValid;
   };
 
-  const submit = async () => {
-    setIsLoading(true);
+ const submit = async () => {
+   setIsLoading(true);
 
-    let data = {
-      email: emailInput.value,
-      password: passwordInput.value,
-    };
+   const isEmailValid = validateEmail(emailInput.value);
+   const isPasswordValid = validatePassword(passwordInput.value);
 
-    if (!validateEmail(emailInput.value) || !validatePassword(passwordInput.value)) {
-      setIsLoading(false);
-      return;
-    }
+   if (!isEmailValid || !isPasswordValid) {
+     setIsLoading(false);
+     return;
+   }
 
-    try {
-      const response = await GchoiceAxios({
-        url: 'auth/login',
-        method: 'post',
-        data: data,
-      });
-      dispatch(
-        setAuth({
-          authToken: response.data.accessToken,
-          refreshToken: response.data.refreshToken,
-        })
-      );
-      setIsLoading(false);
+   let data = {
+     email: emailInput.value,
+     password: passwordInput.value,
+   };
 
-      if (response.status === 201) {
-        Toast.show({
-          type: 'success',
-          position: 'top',
-          text1: 'Login Successfully!',
-          visibilityTime: 2000,
-          autoHide: true,
-          onHide: () => {
-            resetForm()
-            navigation.navigate('HomeScreen');
-          },
-        });
-      }
-    } catch (error) {
-      setIsLoading(false);
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Incorrect email or password!',
-        visibilityTime: 3000,
-        autoHide: true,
-      });
-    }
-  };
+   try {
+     const response = await GchoiceAxios({
+       url: 'auth/login',
+       method: 'post',
+       data: data,
+     });
+
+     dispatch(
+       setAuth({
+         authToken: response.data.accessToken,
+         refreshToken: response.data.refreshToken,
+       })
+     );
+     setIsLoading(false);
+
+     if (response.status === 201) {
+       Toast.show({
+         type: 'success',
+         position: 'top',
+         text1: 'Login Successfully!',
+         visibilityTime: 2000,
+         autoHide: true,
+         onHide: () => {
+           resetForm();
+           navigation.navigate('HomeScreen');
+         },
+       });
+     }
+   } catch (error) {
+     setIsLoading(false);
+     Toast.show({
+       type: 'error',
+       position: 'top',
+       text1: 'Incorrect email or password!',
+       visibilityTime: 3000,
+       autoHide: true,
+     });
+   }
+ };
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeAreaView}>

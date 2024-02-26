@@ -7,7 +7,7 @@ interface CsTextProps {
    children: any;
    style?: StyleProp<any>;
    color?: keyof typeof Colors;
-   numberOfLines?: number
+   numberOfLines?: number,
 }
 
 function TextFormat(props: CsTextProps) {
@@ -16,7 +16,7 @@ function TextFormat(props: CsTextProps) {
          numberOfLines={props.numberOfLines}
          style={[
             size[props.size || 'sm'].text,
-            {fontWeight: props.weight || 'normal', color: Colors[props.color || 'E'], alignSelf: 'baseline'},
+            {fontWeight: props.weight || 'normal', color: Colors[props.color || 'primaryColor'], alignSelf: 'baseline'},
             props.style,
          ]}>
          {props.children}

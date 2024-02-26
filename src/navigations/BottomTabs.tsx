@@ -4,9 +4,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon, { Icons } from '../components/icons/Icons';
 import * as Animatable from 'react-native-animatable';
 import { Colors } from '../assets/colors';
-import { Home, Suggestion } from '../screens/home';
-import {GroupEachProduct} from "../screens/groups";
-
+import { Home, Suggestion, GroupEachProduct } from '../screens';
+import HomeStack from './HomeStack';
 
 interface TabItem {
   route: string;
