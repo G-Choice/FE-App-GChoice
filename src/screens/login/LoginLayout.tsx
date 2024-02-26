@@ -109,15 +109,26 @@ const LoginLayout: React.FC = () => {
      }
    } catch (error) {
      setIsLoading(false);
-     Toast.show({
-       type: 'error',
-       position: 'top',
-       text1: 'Incorrect email or password!',
-       visibilityTime: 3000,
-       autoHide: true,
-     });
-   }
- };
+     console.log(error.response.status )
+     if (error.response.status === 401) {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Incorrect email or password!',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+    } else {
+      console.log('An error occurred:', error.message);
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'An error occurred. Please try again later.',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+    }
+  }}
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeAreaView}>
@@ -155,7 +166,7 @@ const LoginLayout: React.FC = () => {
               fontWeight: '700',
               marginTop: 20,
             }}>
-            Email
+            Email <Text style={{ color: 'red' }}>*</Text>
           </Text>
           <InputComponent
             value={emailInput.value}
@@ -171,7 +182,7 @@ const LoginLayout: React.FC = () => {
               marginLeft: 10,
               fontWeight: '700',
             }}>
-            Password
+            Password <Text style={{ color: 'red' }}>*</Text>
           </Text>
           <InputComponent
             secureTextEntry={!showPassword}
@@ -186,7 +197,7 @@ const LoginLayout: React.FC = () => {
             style={styles.eyeIconContainer}
             onPress={togglePasswordVisibility}>
             <Icon
-              name={showPassword ? 'eye' : 'eye-slash'}
+              name={showPassword ? 'eye-slash' : 'eye'}
               size={20}
               color={Colors.darkBlack}
             />

@@ -8,7 +8,7 @@ const getWidthOfScreen = Dimensions.get("screen").width
 interface ProductCardProps extends ProductsResApiType {}
 
 const Card = (props: ProductCardProps) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
    const handleCardPress = () => {
        navigation.navigate('ProductDetail', { id: props.id });

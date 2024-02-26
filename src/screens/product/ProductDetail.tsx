@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Rating } from 'react-native-ratings';
-import { SliderBox } from 'react-native-image-slider-box';
 import { Colors } from '../../assets/colors/index';
 import GChoiceAxios from '../../api/index';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
 import CustomSliderBox from '../../components/slider/SliderBox';
+import { HeaderNavigation } from "../../components/navigation/HeaderNavigation.tsx";
 interface ProductDetailProps {
   route: {
     params: {
@@ -50,21 +50,18 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
   const toggleLike = () => {
     setIsLiked((prev) => !prev);
   };
-
-  const { width, height } = Dimensions.get('window');
-  console.log(width,)
   const fetchProductDetails = async () => {
     try {
       setLoading(true);
       const response = await GChoiceAxios.get(`/products/${id}`);
-      const data = response.data;
-      console.log(data);
-      setProductDetails(data?.data);
+      setProductDetails(response?.data?.data);
     } catch (error) {
       setLoading(false);
       console.error('Error fetching product details:', error);
     }
   };
+
+  const navToGroup = useNavigation<any>()
 
   useEffect(() => {
     fetchProductDetails();
@@ -79,111 +76,129 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
-      <CustomSliderBox
-          images={productDetails.images}
-          sliderBoxHeight={200}
-          borderRadius={10} 
-        />
-        <View style={styles.infoContainer}>
-          <View style={styles.textInfoContainer}>
-            <View style={styles.nameContainer}>
-              <Text style={styles.productName}>{productDetails.product_name}</Text>
-              <Icon name="home" size={20} color={Colors.primaryColor} style={styles.icon} />
-              <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
+    <>
+      <HeaderNavigation type={'secondary'} title="Product" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
+      <View style={styles.container}>
+        <ScrollView>
+          <CustomSliderBox
+            images={productDetails.images}
+            sliderBoxHeight={200}
+            borderRadius={10}
+          />
+          <View style={styles.infoContainer}>
+            <View style={styles.textInfoContainer}>
+              <View style={styles.nameContainer}>
+                <Text style={styles.productName}>{productDetails.product_name}</Text>
+                {/* <Icon name="home" size={20} color={Colors.primaryColor} style={styles.icon} /> */}
+                {/* <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text> */}
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.priceContainer}>
-          <Text style={styles.productPrice}>${productDetails.price}</Text>
-          <TouchableOpacity style={styles.groupInfoContainer}  onPress={() => navigation.navigate('CreateGroup')}>
-            <Text style={styles.groupInfo}>{groupInfo}</Text>
+          <View style={styles.priceContainer}>
+            <Text style={styles.productPrice}>${productDetails.price}</Text>
+            <View style={styles.groupInfoContainer}>
+              <Text style={styles.groupInfo}>{groupInfo}</Text>
+            </View>
+          </View>
+          <View style={styles.safeImagesContainer}>
+            <View style={styles.safeImageItem}>
+              <Image source={require('../../assets/images/authentic.png')} style={styles.safeImage} />
+              <Text style={styles.safeImageLabel}>Authentic</Text>
+            </View>
+            <View style={styles.safeImageItem}>
+              <Image source={require('../../assets/images/guarantee.png')} style={styles.safeImage} />
+              <Text style={styles.safeImageLabel}>Guarantee</Text>
+            </View>
+            <View style={styles.safeImageItem}>
+              <Image source={require('../../assets/images/secure.png')} style={styles.safeImage} />
+              <Text style={styles.safeImageLabel}>Safe & Secure</Text>
+            </View>
+            <View style={styles.safeImageItem}>
+              <Image source={require('../../assets/images/heart.png')} style={styles.safeImage} />
+              <Text style={styles.safeImageLabel}>New</Text>
+            </View>
+          </View>
+          <View style={styles.shopInfoContainer}>
+            <View style={styles.shopAvatarContainer}>
+            <Image source={{ uri: productDetails.shop.shop_image }} style={styles.shopAvatar} />
+            </View>
+            <View style={styles.shopDetailsContainer}>
+              <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
+              <View style={styles.shopAddressContainer}>
+                <Icon name="map-marker" size={18} color={Colors.primaryColor} style={styles.addressIcon} />
+                <Text style={styles.shopAddress}>{productDetails.shop.shop_address}</Text>
+              </View>
+            </View>
+            <TouchableOpacity style={styles.viewShopButton}>
+              <Text style={styles.viewShopButtonText}>View Shop</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.titleReviews}>Product Description</Text>
+          <Text style={styles.productDescription}>{productDetails.description}</Text>
+          <Text style={styles.titleReviews}>Product reviews</Text>
+          <View style={styles.ratingContainer}>
+            <Text style={styles.numberRating}>{productDetails.avgrating}/5</Text>
+            <Rating type="custom" ratingCount={5} imageSize={20} startingValue={productDetails.avgrating} readonly tintColor="#f4f4f4" />
+          </View>
+          <View style={styles.feedbacksContainer}>
+            {productDetails.reviews.map((feedback: any) => (
+              <View key={feedback.id} style={styles.feedbackItem}>
+                <View style={styles.userReviewInfo}>
+                  <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
+                  <View>
+                    <Text style={styles.userName}>{feedback.users.username}</Text>
+                    <Rating
+                      type="star"
+                      ratingCount={5}
+                      imageSize={13}
+                      startingValue={feedback.rating}
+                      readonly
+                      ratingColor={Colors.primaryColor}
+                      tintColor="#f4f4f4"
+                    />
+                  </View>
+                </View>
+                <Text style={styles.reviewText}>{feedback.comment}</Text>
+              </View>
+            ))}
+          </View>
+          <Text style={styles.titleReviews}>Discounts</Text>
+          <View style={styles.discountTableContainer}>
+            <View style={styles.discountTableHeader}>
+              <Text style={styles.discountTableHeaderCell}>Quantity</Text>
+              <Text style={styles.discountTableHeaderCell}>Price</Text>
+            </View>
+            {productDetails?.discounts.map((discount: Discount, index: number) => (
+              <View key={index} style={styles.discountTableRow}>
+                <Text style={styles.discountTableCell}> {">"}{discount.discountPrice}</Text>
+                <Text style={styles.discountTableCell}> {discount.discountPrice} $</Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.heartButton}
+            onPress={toggleLike}
+          >
+            <Icon
+              name={isLiked ? 'heart' : 'heart-o'}
+              size={20}
+              color={isLiked ? Colors.primaryColor : Colors.primaryColor}
+              style={styles.buttonIcon}
+            />
+            <Text> 2030</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.joinGroupButton} onPress={() => navToGroup.navigate("GroupEachProduct", { id: route.params.id })}>
+            <Text style={styles.buttonText}>Join Group</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buyNowButton}>
+            <Text style={styles.buttonText}>Buy Now</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.safeImagesContainer}>
-          <View style={styles.safeImageItem}>
-            <Image source={require('../../assets/images/authentic.png')} style={styles.safeImage} />
-            <Text style={styles.safeImageLabel}>Authentic</Text>
-          </View>
-          <View style={styles.safeImageItem}>
-            <Image source={require('../../assets/images/guarantee.png')} style={styles.safeImage} />
-            <Text style={styles.safeImageLabel}>Guarantee</Text>
-          </View>
-          <View style={styles.safeImageItem}>
-            <Image source={require('../../assets/images/secure.png')} style={styles.safeImage} />
-            <Text style={styles.safeImageLabel}>Safe & Secure</Text>
-          </View>
-          <View style={styles.safeImageItem}>
-            <Image source={require('../../assets/images/heart.png')} style={styles.safeImage} />
-            <Text style={styles.safeImageLabel}>New</Text>
-          </View>
-        </View>
-        <Text style={styles.titleReviews}>Product Description</Text>
-        <Text style={styles.productDescription}>{productDetails.description}</Text>
-        <Text style={styles.titleReviews}>Product reviews</Text>
-        <View style={styles.ratingContainer}>
-          <Text style={styles.numberRating}>{productDetails.avgrating}/5</Text>
-          <Rating type="custom" ratingCount={5} imageSize={20} startingValue={productDetails.avgrating} readonly tintColor="#f4f4f4" />
-        </View>
-        <View style={styles.feedbacksContainer}>
-          {productDetails.reviews.map((feedback: any) => (
-            <View key={feedback.id} style={styles.feedbackItem}>
-              <View style={styles.userReviewInfo}>
-                <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
-                <View>
-                  <Text style={styles.userName}>{feedback.users.username}</Text>
-                  <Rating
-                    type="star"
-                    ratingCount={5}
-                    imageSize={13}
-                    startingValue={feedback.rating}
-                    readonly
-                    ratingColor={Colors.primaryColor}
-                    tintColor="#f4f4f4"
-                  />
-                </View>
-              </View>
-              <Text style={styles.reviewText}>{feedback.comment}</Text>
-            </View>
-          ))}
-        </View>
-        <Text style={styles.titleReviews}>Discounts</Text>
-        <View style={styles.discountTableContainer}>
-          <View style={styles.discountTableHeader}>
-            <Text style={styles.discountTableHeaderCell}>Quantity</Text>
-            <Text style={styles.discountTableHeaderCell}>Price</Text>
-          </View>
-          {productDetails?.discounts.map((discount: Discount, index: number) => (
-            <View key={index} style={styles.discountTableRow}>
-              <Text style={styles.discountTableCell}> {">"}{discount.discountPrice}</Text>
-              <Text style={styles.discountTableCell}> {discount.discountPrice} $</Text>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.heartButton}
-          onPress={toggleLike}
-        >
-          <Icon
-            name={isLiked ? 'heart' : 'heart-o'}
-            size={20}
-            color={isLiked ? Colors.primaryColor : Colors.primaryColor}
-            style={styles.buttonIcon}
-          />
-          <Text> 2030</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.joinGroupButton}>
-          <Text style={styles.buttonText}>Join Group</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buyNowButton}>
-          <Text style={styles.buttonText}>Buy Now</Text>
-        </TouchableOpacity>
-      </View>
 
-    </View>
+      </View>
+    </>
   );
 };
 
@@ -214,10 +229,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  shopName: {
-    fontSize: 16,
-    color: Colors.darkGrey,
-  },
   icon: {
     marginRight: -200,
   },
@@ -230,6 +241,62 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: Colors.primaryColor,
     fontWeight: '600'
+  },
+  shopInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom:20
+
+  },
+  shopAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 8,
+  },
+  shopNameDescription: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.darkGrey,
+  },
+  // shopInfoContainer: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   marginTop: 10,
+  // },
+  shopAvatarContainer: {
+    marginRight: 10,
+  },
+  shopDetailsContainer: {
+    flex: 1,
+  },
+  shopName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.darkGrey,
+  },
+  shopAddressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  addressIcon: {
+    marginRight: 5,
+  },
+  shopAddress: {
+    fontSize: 14,
+    color: Colors.darkGrey,
+  },
+  viewShopButton: {
+    padding: 8,
+    borderRadius: 8,
+    marginLeft: 10,
+    borderColor: Colors.primaryColor,
+    borderWidth: 1
+  },
+  viewShopButtonText: {
+    color: Colors.primaryColor,
+    fontWeight: 'bold',
   },
   productDescription: {
     fontSize: 15,
