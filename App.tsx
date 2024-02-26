@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
@@ -15,7 +8,7 @@ import {
   SplashScreen,
   Verification,
   LoginLayout,
-  ProductDetail,
+  ProductDetail, GroupEachProduct,
 } from './src/screens';
 import {RootState, store} from './src/app/store'
 import {Provider} from 'react-redux'
@@ -39,7 +32,8 @@ const MainStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{title: '', headerShown: false}} name='HomeScreen' component={BottomTabs} />
-      <Stack.Screen  options={{title: '', headerShown: true}} name='ProductDetail' component={ProductDetail} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='ProductDetail' component={ProductDetail} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='GroupEachProduct' component={GroupEachProduct} />
     </Stack.Navigator>
   );
 };
