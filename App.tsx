@@ -47,20 +47,26 @@ const MainStack = () => {
   );
 };
 
+const AuthSelector = () => {
+    const { authToken } = useSelector((state: RootState) => state.auth);
+    
+    return authToken  ? (
+        <MainStack />
+      ) : (
+        <AuthStack />
+      )
+}
+
 const App = () => {
   //const { authToken, refreshToken } = useSelector((state: RootState) => state.auth);
   // console.log(auth,'sss')
   // const { authToken } = useSelector((state: RootState) => state.auth);
   // console.log(authToken,'a')
-  const authTokens = true
+  // const authTokens = true
   return (
     <Provider store={store}>
     <NavigationContainer>
-    {authTokens  ? (
-      <MainStack />
-    ) : (
-      <AuthStack />
-    )}
+      <AuthSelector />
   </NavigationContainer>
 </Provider>
 
