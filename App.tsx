@@ -1,3 +1,11 @@
+
+// /**
+//  * Sample React Native App
+//  * https://github.com/facebook/react-native
+//  *
+//  * @format
+//  */
+
 import React from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
@@ -8,12 +16,13 @@ import {
   SplashScreen,
   Verification,
   LoginLayout,
-  ProductDetail, GroupEachProduct,
+  ProductDetail,
+  CreateGroup,
+  GroupEachProduct,
 } from './src/screens';
-import {RootState, store} from './src/app/store'
-import {Provider} from 'react-redux'
+import { RootState, store } from './src/app/store'
+import { Provider } from 'react-redux'
 import { useSelector } from 'react-redux';
-
 
 export const Stack = createNativeStackNavigator();
 
@@ -31,28 +40,30 @@ const AuthStack = () => {
 const MainStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen options={{title: '', headerShown: false}} name='HomeScreen' component={BottomTabs} />
+      <Stack.Screen options={{ title: '', headerShown: false }} name='HomeScreen' component={BottomTabs} />
+      <Stack.Screen options={{ title: '', headerShown: true }} name='CreateGroup' component={CreateGroup} />
       <Stack.Screen options={{title: '', headerShown: false}} name='ProductDetail' component={ProductDetail} />
       <Stack.Screen options={{title: '', headerShown: false}} name='GroupEachProduct' component={GroupEachProduct} />
     </Stack.Navigator>
   );
 };
 
+const AuthSelector = () => {
+  const { authToken } = useSelector((state: RootState) => state.auth);
+  return authToken ? (
+    <MainStack />
+  ) : (
+    <AuthStack />
+  )
+}
+
 const App = () => {
-  // const { authToken } = useSelector((state: RootState) => state.auth);
-  // console.log(authToken,'a')
-  const authTokens = true
   return (
     <Provider store={store}>
-    <NavigationContainer>
-    {authTokens  ? (
-      <MainStack />
-    ) : (
-      <AuthStack />
-    )}
-  </NavigationContainer>
-</Provider>
-
+      <NavigationContainer>
+        <AuthSelector />
+      </NavigationContainer>
+    </Provider>
   );
 }
 

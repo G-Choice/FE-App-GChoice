@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
 import CustomSliderBox from '../../components/slider/SliderBox';
-import {HeaderNavigation} from "../../components/navigation/HeaderNavigation.tsx";
+import { HeaderNavigation } from "../../components/navigation/HeaderNavigation.tsx";
 interface ProductDetailProps {
   route: {
     params: {
@@ -40,7 +40,7 @@ interface ProductDetails {
 }
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
-
+  const navigation = useNavigation()
   const { id } = route.params;
   const [productDetails, setProductDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -77,7 +77,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
 
   return (
     <>
-      <HeaderNavigation type={'secondary'} title="Product" wrapperStyle={{paddingTop: 1, marginBottom: 10}}/>
+      <HeaderNavigation type={'secondary'} title="Product" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
       <View style={styles.container}>
         <ScrollView>
           <CustomSliderBox
@@ -89,8 +89,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
             <View style={styles.textInfoContainer}>
               <View style={styles.nameContainer}>
                 <Text style={styles.productName}>{productDetails.product_name}</Text>
-                <Icon name="home" size={20} color={Colors.primaryColor} style={styles.icon} />
-                <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
+                {/* <Icon name="home" size={20} color={Colors.primaryColor} style={styles.icon} /> */}
+                {/* <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text> */}
               </View>
             </View>
           </View>
@@ -117,6 +117,21 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
               <Image source={require('../../assets/images/heart.png')} style={styles.safeImage} />
               <Text style={styles.safeImageLabel}>New</Text>
             </View>
+          </View>
+          <View style={styles.shopInfoContainer}>
+            <View style={styles.shopAvatarContainer}>
+            <Image source={{ uri: productDetails.shop.shop_image }} style={styles.shopAvatar} />
+            </View>
+            <View style={styles.shopDetailsContainer}>
+              <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
+              <View style={styles.shopAddressContainer}>
+                <Icon name="map-marker" size={18} color={Colors.primaryColor} style={styles.addressIcon} />
+                <Text style={styles.shopAddress}>{productDetails.shop.shop_address}</Text>
+              </View>
+            </View>
+            <TouchableOpacity style={styles.viewShopButton}>
+              <Text style={styles.viewShopButtonText}>View Shop</Text>
+            </TouchableOpacity>
           </View>
           <Text style={styles.titleReviews}>Product Description</Text>
           <Text style={styles.productDescription}>{productDetails.description}</Text>
@@ -214,10 +229,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  shopName: {
-    fontSize: 16,
-    color: Colors.darkGrey,
-  },
   icon: {
     marginRight: -200,
   },
@@ -230,6 +241,62 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: Colors.primaryColor,
     fontWeight: '600'
+  },
+  shopInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom:20
+
+  },
+  shopAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 8,
+  },
+  shopNameDescription: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.darkGrey,
+  },
+  // shopInfoContainer: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   marginTop: 10,
+  // },
+  shopAvatarContainer: {
+    marginRight: 10,
+  },
+  shopDetailsContainer: {
+    flex: 1,
+  },
+  shopName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.darkGrey,
+  },
+  shopAddressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  addressIcon: {
+    marginRight: 5,
+  },
+  shopAddress: {
+    fontSize: 14,
+    color: Colors.darkGrey,
+  },
+  viewShopButton: {
+    padding: 8,
+    borderRadius: 8,
+    marginLeft: 10,
+    borderColor: Colors.primaryColor,
+    borderWidth: 1
+  },
+  viewShopButtonText: {
+    color: Colors.primaryColor,
+    fontWeight: 'bold',
   },
   productDescription: {
     fontSize: 15,
