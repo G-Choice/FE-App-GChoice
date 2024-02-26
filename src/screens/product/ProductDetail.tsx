@@ -40,7 +40,7 @@ interface ProductDetails {
 }
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
-
+  const navigation = useNavigation()
   const { id } = route.params;
   const [productDetails, setProductDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -97,9 +97,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
         </View>
         <View style={styles.priceContainer}>
           <Text style={styles.productPrice}>${productDetails.price}</Text>
-          <View style={styles.groupInfoContainer}>
+          <TouchableOpacity style={styles.groupInfoContainer}  onPress={() => navigation.navigate('CreateGroup')}>
             <Text style={styles.groupInfo}>{groupInfo}</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.safeImagesContainer}>
           <View style={styles.safeImageItem}>
