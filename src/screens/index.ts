@@ -1,5 +1,6 @@
 export * from './register'
 export * from './home'
-export * from './slash'
+export * from './splash'
 export * from './verification'
 export * from './login'
+export * from './product'

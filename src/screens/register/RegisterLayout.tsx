@@ -200,7 +200,7 @@ const RegisterLayout = () => {
             style={styles.eyeIconContainer}
             onPress={togglePasswordVisibility}>
             <Icon
-              name={showPassword ? 'eye' : 'eye-slash'}
+              name={showPassword ? 'eye-slash' : 'eye'}
               size={20}
               color={Colors.darkBlack}
             />

@@ -33,7 +33,7 @@ const CardContainer = () => {
   return (
     <View style={styles.productContainer}>
       <FlatList
-        numColumns={2} // Set the number of columns to 2
+        numColumns={2} 
         showsVerticalScrollIndicator={false}
         columnWrapperStyle={{
           alignItems: 'center',
