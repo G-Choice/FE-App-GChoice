@@ -12,17 +12,17 @@ interface SearchBarProps
   onBack: () => void
   inputRef?: Ref<TextInput>
   onChangeText?: (text: string) => void
-  error?: string
+  error?: string,
+  onPressIn: () => void
 }
 
 const SearchBar = React.forwardRef<TextInput, SearchBarProps>((props, ref) => {
   return(
     <View style={[defaultStyle.wrapper, props.wrapperStyle]}>
-      <View style={defaultStyle.searchBar}>
+      <View style={defaultStyle.searchBar} >
         <TouchableOpacity onPress={props.onBack} style={{padding: 8}}>
           <Icon name='chevron-left' size={30} />
         </TouchableOpacity>
-        {/* <CsText style={{alignSelf: "center"}} weight={500}>restaurant:</CsText> */}
         <TextInputField
           type='none'
           textFieldStyle={{padding: 5, borderWidth: 0}}
@@ -30,6 +30,7 @@ const SearchBar = React.forwardRef<TextInput, SearchBarProps>((props, ref) => {
           ref={ref}
           wrapperStyle={{width: "50%", border: 0}}
           onChangeText={props.onChangeText} placeholder={props.placeholder}
+          onPressIn={props.onPressIn}
         />
         <TouchableOpacity onPress={props.onSubmit} style={{position: 'absolute', zIndex: 1, right: 0, padding: 8}}>
           <Icon name='search' size={30} />
@@ -49,8 +50,7 @@ const defaultStyle = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     borderWidth: 1,
-    borderColor: Colors.primaryColor,
-    // backgroundColor: "red"
+    borderColor: Colors.primaryColor
   }
 })
 

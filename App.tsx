@@ -13,6 +13,7 @@ import {
 import {RootState, store} from './src/app/store'
 import {Provider} from 'react-redux'
 import { useSelector } from 'react-redux';
+import {Search} from "./src/screens/search";
 
 
 export const Stack = createNativeStackNavigator();
@@ -34,6 +35,7 @@ const MainStack = () => {
       <Stack.Screen options={{title: '', headerShown: false}} name='HomeScreen' component={BottomTabs} />
       <Stack.Screen options={{title: '', headerShown: false}} name='ProductDetail' component={ProductDetail} />
       <Stack.Screen options={{title: '', headerShown: false}} name='GroupEachProduct' component={GroupEachProduct} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='Search' component={Search} />
     </Stack.Navigator>
   );
 };
