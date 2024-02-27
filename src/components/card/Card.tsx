@@ -11,7 +11,7 @@ const Card = (props: ProductCardProps) => {
   const navigation = useNavigation<any>();
 
    const handleCardPress = () => {
-       navigation.navigate('ProductDetail', { id: props.id });
+       navigation.navigate('ProductDetail',  props.id );
      };
      const imageUrl = props.images && props.images.length > 0 ? props.images[0] : '';
      

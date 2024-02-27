@@ -1,62 +1,95 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Modal, ImageBackground } from 'react-native';
 import { Colors } from '../../assets/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
+import moment from 'moment';
+import GchoiceAxios from '../../api';
+
 const CreateGroup = () => {
+  const [selectedTime, setSelectedTime] = useState('');
+  const [isTimeModalVisible, setTimeModalVisible] = useState(false);
+
+  const handleTimeChange = (time) => {
+    setSelectedTime(time);
+    setTimeModalVisible(false);
+  };
+
+  const renderTimeOptions = () => {
+    const timeOptions = ['9 hours', '12 hours', '12 hours 30 minutes', '24 hours', '25 hours 30 minutes', '48 hours'];
+    return timeOptions.map((time) => (
+      <TouchableOpacity
+        key={time}
+        style={[styles.timeOption, selectedTime === time && styles.selectedTimeOption]}
+        onPress={() => handleTimeChange(time)}
+      >
+        <Text style={styles.timeOptionText}>{time}</Text>
+      </TouchableOpacity>
+    ));
+  };
+
   return (
     <>
-        <HeaderNavigation type={'secondary'} title="Create group" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
-    <View style={styles.container}>
-       <View style={styles.avatarContainer}>
-        <View style={styles.avatarWrapper}>
-          <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
-          <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+      <HeaderNavigation type={'secondary'} title="Create group" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
+      <ImageBackground source={require('../../assets/images/background.jpg')} style={styles.container}>
+        <View style={styles.avatarContainer}>
+          <View style={styles.avatarWrapper}>
+            <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
+            <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+          </View>
+          <View style={styles.avatarWrapper}>
+            <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
+            <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+          </View>
+          <View style={styles.avatarWrapper}>
+            <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
+            <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+          </View>
         </View>
-        <View style={styles.avatarWrapper}>
-          <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
-          <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Group name</Text>
+          <TextInput style={styles.input} placeholder="Group name" />
         </View>
-        <View style={styles.avatarWrapper}>
-          <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
-          <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Description</Text>
+          <TextInput style={styles.input} multiline={true} placeholder="Description" />
         </View>
-      </View>
-      
-      
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Product name</Text>
-        <TextInput style={styles.input} placeholder="Product name" />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Quantity expected</Text>
+          <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Quantity expected</Text>
-        <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" />
-      </View>
+        <TouchableOpacity style={styles.inputContainer} onPress={() => setTimeModalVisible(true)}>
+          <Text style={styles.label}>Existing time</Text>
+          <TextInput style={styles.input} placeholder="Select time" editable={false} value={selectedTime} />
+        </TouchableOpacity>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Time</Text>
-        <TextInput style={styles.input} placeholder="Time" />
-      </View>
+        <Modal visible={isTimeModalVisible} animationType="slide" transparent={true}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Select Time</Text>
+              <View style={styles.timeOptionsContainer}>{renderTimeOptions()}</View>
+              <TouchableOpacity style={styles.closeButton} onPress={() => setTimeModalVisible(false)}>
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Number phone</Text>
-        <TextInput style={styles.input} placeholder="Number phone" keyboardType="numeric" />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Quantity</Text>
+          <TextInput style={styles.input} placeholder="Quantity" keyboardType="numeric" />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Address</Text>
-        <TextInput style={styles.input} placeholder="Address" />
-      </View>
-
-      <TouchableOpacity style={styles.button}>
-        <Text>CREATE</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>CREATE</Text>
+        </TouchableOpacity>
+      </ImageBackground>
     </>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -69,7 +102,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   avatarWrapper: {
-    marginRight: 5,
+    marginRight: 3,
     overflow: 'hidden',
     borderRadius: 25,
     position: 'relative',
@@ -81,31 +114,83 @@ const styles = StyleSheet.create({
   },
   activeIcon: {
     position: 'absolute',
-    bottom: -1,
-    right:2 ,
+    bottom: 0,
+    right: 0,
   },
   inputContainer: {
-    marginBottom: 12,
+    marginBottom: 20,
   },
   label: {
     fontSize: 16,
-    marginBottom: 6,
-    color: Colors.primaryColor, // Set the color of the label
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+    backgroundColor: '#fff',
   },
   button: {
     backgroundColor: Colors.primaryColor,
-    paddingVertical: 12,
-    borderRadius: 8,
+    padding: 10,
+    borderRadius: 10,
     alignItems: 'center',
   },
-  
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  timeOptionsContainer: {
+    marginBottom: 20,
+  },
+  timeOption: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginBottom: 10,
+    backgroundColor: '#fff',
+  },
+  selectedTimeOption: {
+    backgroundColor: Colors.primaryColor,
+  },
+  timeOptionText: {
+    fontSize: 16,
+    color: '#000',
+  },
+  closeButton: {
+    backgroundColor: Colors.primaryColor,
+    paddingVertical: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
-export {CreateGroup};
+export { CreateGroup };

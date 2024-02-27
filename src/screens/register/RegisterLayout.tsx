@@ -145,7 +145,7 @@ const RegisterLayout = () => {
       <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.logoContainer}>
           <Image
-            source={require('../../assets/images/logo.png')}
+            source={require('../../assets/images/logo.jpg')}
             style={styles.logo}
           />
         </View>
@@ -265,19 +265,19 @@ const RegisterLayout = () => {
           <View style={styles.socialButtonsContainer}>
             <TouchableOpacity style={styles.socialButton}>
               <Image
-                source={require('../../assets/icons/google.png')}
+                source={require('../../assets/icons/google.jpg')}
                 style={{ width: 25, height: 25 }}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialButton}>
               <Image
-                source={require('../../assets/icons/Facebook.png')}
+                source={require('../../assets/icons/Facebook.jpg')}
                 style={{ width: 14, height: 25 }}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialButton}>
               <Image
-                source={require('../../assets/icons/Apple.png')}
+                source={require('../../assets/icons/Apple.jpg')}
                 style={{ width: 21, height: 25 }}
               />
             </TouchableOpacity>

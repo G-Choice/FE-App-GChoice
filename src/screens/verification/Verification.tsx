@@ -76,7 +76,7 @@ const Verification: React.FC<VerificationProps> = ({ route }) => {
     <View style={styles.container}>
       <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.logoContainer}>
-          <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
+          <Image source={require('../../assets/images/logo.jpg')} style={styles.logo} />
         </View>
       </SafeAreaView>
       <View style={styles.formContainer}>
