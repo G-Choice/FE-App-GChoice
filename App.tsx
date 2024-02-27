@@ -1,3 +1,4 @@
+
 // /**
 //  * Sample React Native App
 //  * https://github.com/facebook/react-native
@@ -16,12 +17,12 @@ import {
   Verification,
   LoginLayout,
   ProductDetail,
-  CreateGroup
+  CreateGroup,
+  GroupEachProduct,
 } from './src/screens';
-import {RootState, store} from './src/app/store'
-import {Provider} from 'react-redux'
+import { RootState, store } from './src/app/store'
+import { Provider } from 'react-redux'
 import { useSelector } from 'react-redux';
-
 
 export const Stack = createNativeStackNavigator();
 
@@ -37,39 +38,32 @@ const AuthStack = () => {
 };
 
 const MainStack = () => {
-  // const { authToken, refreshToken } = useSelector((state: RootState) => state.auth);
   return (
     <Stack.Navigator>
-      <Stack.Screen options={{title: '', headerShown: false}} name='HomeScreen' component={BottomTabs} />
-      <Stack.Screen  options={{title: '', headerShown: true}} name='ProductDetail' component={ProductDetail} />
-      <Stack.Screen  options={{title: '', headerShown: true}} name='CreateGroup' component={CreateGroup} />
+      <Stack.Screen options={{ title: '', headerShown: false }} name='HomeScreen' component={BottomTabs} />
+      <Stack.Screen options={{ title: '', headerShown: false }} name='CreateGroup' component={CreateGroup} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='ProductDetail' component={ProductDetail} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='GroupEachProduct' component={GroupEachProduct} />
     </Stack.Navigator>
   );
 };
 
 const AuthSelector = () => {
-    const { authToken } = useSelector((state: RootState) => state.auth);
-    
-    return authToken  ? (
-        <MainStack />
-      ) : (
-        <AuthStack />
-      )
+  const { authToken } = useSelector((state: RootState) => state.auth);
+  return authToken ? (
+    <MainStack />
+  ) : (
+    <AuthStack />
+  )
 }
 
 const App = () => {
-  //const { authToken, refreshToken } = useSelector((state: RootState) => state.auth);
-  // console.log(auth,'sss')
-  // const { authToken } = useSelector((state: RootState) => state.auth);
-  // console.log(authToken,'a')
-  // const authTokens = true
   return (
     <Provider store={store}>
-    <NavigationContainer>
-      <AuthSelector />
-  </NavigationContainer>
-</Provider>
-
+      <NavigationContainer>
+        <AuthSelector />
+      </NavigationContainer>
+    </Provider>
   );
 }
 

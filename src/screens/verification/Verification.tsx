@@ -55,7 +55,7 @@ const Verification: React.FC<VerificationProps> = ({ route }) => {
         visibilityTime: 2000,
         autoHide: true,
         onHide: () => {
-          navigation.navigate('HomeScreen');
+          navigation.navigate('LoginScreen');
         },
       });
     } catch (error) {

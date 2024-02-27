@@ -1,7 +1,7 @@
 interface ProductsResApiType {
   id?: string,
   product_name: string,
-  image?: string,
+  images?: string,
   description?: string,
   price?: number,
   status?: number,

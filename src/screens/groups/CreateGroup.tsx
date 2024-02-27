@@ -1,13 +1,28 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Colors } from '../../assets/colors';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
 const CreateGroup = () => {
   return (
+    <>
+        <HeaderNavigation type={'secondary'} title="Create group" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
     <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
+       <View style={styles.avatarContainer}>
+        <View style={styles.avatarWrapper}>
+          <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
+          <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+        </View>
+        <View style={styles.avatarWrapper}>
+          <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
+          <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+        </View>
+        <View style={styles.avatarWrapper}>
+          <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
+          <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+        </View>
       </View>
+      
       
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Product name</Text>
@@ -38,6 +53,7 @@ const CreateGroup = () => {
         <Text>CREATE</Text>
       </TouchableOpacity>
     </View>
+    </>
   );
 };
 
@@ -52,11 +68,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
+  avatarWrapper: {
+    marginRight: 5,
+    overflow: 'hidden',
+    borderRadius: 25,
+    position: 'relative',
+  },
   avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 10,
+  },
+  activeIcon: {
+    position: 'absolute',
+    bottom: -1,
+    right:2 ,
   },
   inputContainer: {
     marginBottom: 12,
@@ -79,6 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
   },
+  
 });
 
 export {CreateGroup};

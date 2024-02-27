@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -13,6 +13,7 @@ import { RootState } from '../../app/store';
 import GchoiceAxios from '../../api/index';
 import { setAuth } from '../../global-states';
 import { ActivityIndicator } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 const RegisterLayout = () => {
   const navigation = useNavigation();
@@ -56,19 +57,16 @@ const RegisterLayout = () => {
 
   const validatePhoneNumber = (phone: string) => {
     const phoneRegex = /^\d+$/;
-    if (!phone) {
-      setPhoneError('Phone number cannot be empty');
-      return false;
-    }
-
-    if (!phoneRegex.test(phone) || (phone.length !== 10 && phone.length !== 11)) {
+    
+    if (phone && (!phoneRegex.test(phone) || (phone.length !== 10 && phone.length !== 11))) {
       setPhoneError('Invalid phone number');
       return false;
     }
-
+  
     setPhoneError('');
     return true;
   };
+  
   const resetForm = () => {
     setEmailInput({ value: '' });
     setPasswordInput({ value: '' });
@@ -78,6 +76,17 @@ const RegisterLayout = () => {
 
   const submit = async () => {
     setIsLoading(true);
+    if (!emailInput.value && !passwordInput.value) {
+      setEmailError('Email cannot be empty');
+      setPasswordError('Password cannot be empty');
+      setIsLoading(false);
+      return;
+    }
+  
+    if (!validateEmail(emailInput.value) || !validatePassword(passwordInput.value) || !validatePhoneNumber(phoneInput.value)) {
+      setIsLoading(false);
+      return;
+    }
     let data = {
       email: emailInput.value,
       password: passwordInput.value,
@@ -113,18 +122,18 @@ const RegisterLayout = () => {
         setIsLoading(false);
         console.log(e);
         const status: number = e.response.data.status;
-        const errors = e.response.message;
-        console.log(errors);
-
-        if (errors && errors.length > 0) {
-          const emailExistsError = errors.find(
-            error => error.message === 'Username or email already exists',
-          );
-
-          if (emailExistsError) {
-            setEmailError('Email already exists');
-          } else {
-          }
+        const errors = e.response.data.error;
+        if (errors === 'Username or email already exists') {
+            Toast.show({
+              type: 'error',
+              text1: 'Email already exists',
+              visibilityTime: 3000,
+              autoHide: true,
+            });
+          
+          setEmailError('Email already exists');
+        } else {
+          console.log('Error'); 
         }
       });
 
@@ -168,7 +177,7 @@ const RegisterLayout = () => {
               fontWeight: '700',
               marginTop: 20,
             }}>
-            Email
+            Email <Text style={{ color: 'red' }}>*</Text>
           </Text>
           <InputComponent
             value={emailInput.value}
@@ -184,11 +193,11 @@ const RegisterLayout = () => {
               marginLeft: 10,
               fontWeight: '700',
             }}>
-            Password
+            Password <Text style={{ color: 'red' }}>*</Text>
           </Text>
 
           <InputComponent
-            secureTextEntry={showPassword}
+            secureTextEntry={!showPassword}
             value={passwordInput.value}
             placeholder="Enter Password"
             onChangeText={(text) => setPasswordInput({ value: text })}
@@ -275,6 +284,7 @@ const RegisterLayout = () => {
           </View>
         </View>
       </View>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { Header } from "../../components/child";
 import { Colors } from "../../assets/colors";
-import { CardContainer } from "../../components/card";
+import { CardContainer } from "../../components";
 import PromotionSlider from "../../components/card/PromotionSlider.tsx";
 import { ScrollView } from "react-native-virtualized-view";
 import { SearchBar } from "../../components/input/SearchBar.tsx";
