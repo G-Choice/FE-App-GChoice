@@ -5,16 +5,68 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
 import moment from 'moment';
 import GchoiceAxios from '../../api';
+import { useRoute } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 const CreateGroup = () => {
+    const route = useRoute()
   const [selectedTime, setSelectedTime] = useState('');
   const [isTimeModalVisible, setTimeModalVisible] = useState(false);
-
+  const [groupName, setGroupName] = useState('');
+  const [description, setDescription] = useState('');
+  const [quantityExpected, setQuantityExpected] = useState('');
+  const [quantity, setQuantity] = useState('');
   const handleTimeChange = (time) => {
     setSelectedTime(time);
     setTimeModalVisible(false);
   };
-
+  const productId = route.params
+  console.log(productId)
+  const [hours, minutes] = selectedTime.split(' '); 
+  let parsedTime = parseInt(hours, 10); 
+  console.log(parsedTime,'ss')
+  if (!isNaN(minutes)) {
+    parsedTime += parseFloat(minutes) / 60; 
+  }
+  const postDataToApi = async () => {
+    try {
+      const response = await GchoiceAxios.post('gruops', {
+        group_name: groupName,
+        description: description,
+        groupSize: quantityExpected,
+        hours: parsedTime,
+        // quantity: quantity,
+        productId: productId,
+      });
+      console.log(response.data, 's');
+      if (response.data.message === 'Group created successfully!') {
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Create group successfully!',
+          visibilityTime: 2000,
+          autoHide: true,
+        });
+      } else if (response.data.message === 'Group already exists ') {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'You can not create group!',
+          visibilityTime: 2000,
+          autoHide: true,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'An error occurred. Please try again later.',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+    }
+  };
   const renderTimeOptions = () => {
     const timeOptions = ['9 hours', '12 hours', '12 hours 30 minutes', '24 hours', '25 hours 30 minutes', '48 hours'];
     return timeOptions.map((time) => (
@@ -48,21 +100,21 @@ const CreateGroup = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Group name</Text>
-          <TextInput style={styles.input} placeholder="Group name" />
+          <Text style={styles.label}>Group name <Text style={{ color: 'red' }}>*</Text></Text>
+          <TextInput style={styles.input} placeholder="Group name" onChangeText={(text) => setGroupName(text)} value={groupName} />
         </View>
 
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Description</Text>
-          <TextInput style={styles.input} multiline={true} placeholder="Description" />
+          <TextInput style={styles.input} multiline={true} placeholder="Description" onChangeText={(text) => setDescription(text)} value={description} />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Quantity expected</Text>
-          <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" />
+          <Text style={styles.label}>Quantity expected <Text style={{ color: 'red' }}>*</Text></Text>
+          <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" onChangeText={(text) => setQuantityExpected(text)} value={quantityExpected} />
         </View>
 
         <TouchableOpacity style={styles.inputContainer} onPress={() => setTimeModalVisible(true)}>
-          <Text style={styles.label}>Existing time</Text>
+          <Text style={styles.label}>Existing time <Text style={{ color: 'red' }}>*</Text></Text>
           <TextInput style={styles.input} placeholder="Select time" editable={false} value={selectedTime} />
         </TouchableOpacity>
 
@@ -79,14 +131,15 @@ const CreateGroup = () => {
         </Modal>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Quantity</Text>
-          <TextInput style={styles.input} placeholder="Quantity" keyboardType="numeric" />
+          <Text style={styles.label}>Quantity <Text style={{ color: 'red' }}>*</Text></Text>
+          <TextInput style={styles.input} placeholder="Quantity" keyboardType="numeric" onChangeText={(text) => setQuantity(text)} value={quantity} />
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={postDataToApi}>
           <Text style={styles.buttonText}>CREATE</Text>
         </TouchableOpacity>
       </ImageBackground>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </>
   );
 };

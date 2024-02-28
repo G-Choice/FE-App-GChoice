@@ -6,10 +6,10 @@ import React from "react";
 import Icon from 'react-native-vector-icons/Feather'
 import {Colors} from "../../assets/colors";
 import {SearchBar} from "../../components/input/SearchBar.tsx";
-import { useNavigation } from '@react-navigation/native';
-
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const GroupEachProduct = () => {
+  const route = useRoute()
   const navigation = useNavigation();
   const GroupList: GroupResApiType[] = [
     {
@@ -89,7 +89,7 @@ const GroupEachProduct = () => {
       <HeaderNavigation type={'secondary'} title="Available Groups" wrapperStyle={{paddingTop: 1, marginBottom: 10}}/>
       <View style={styles.groupGeneralWrapper}>
         <TextFormat weight={300} numberOfLines={1} color={'darkBlack'} size={'md'}>Groups ({GroupList?.length})</TextFormat>
-        <TouchableOpacity style={{flexDirection: "row", gap: 2, borderRadius: 5, borderColor: Colors.primaryColor, borderWidth: 1, padding: 8}}    onPress={() => navigation.navigate('CreateGroup')}>
+        <TouchableOpacity style={{flexDirection: "row", gap: 2, borderRadius: 5, borderColor: Colors.primaryColor, borderWidth: 1, padding: 8}}    onPress={() => navigation.navigate("CreateGroup", route.params )}>
           <Icon name="plus" size={20} style={{ color: Colors.primaryColor, paddingTop: 2 }}/>
           <TextFormat weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>Create new group</TextFormat>
         </TouchableOpacity>

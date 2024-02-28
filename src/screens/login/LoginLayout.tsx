@@ -12,6 +12,7 @@ import { RootState } from '../../app/store';
 import GchoiceAxios from '../../api/index';
 import { setAuth } from '../../global-states';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface EmailInput {
   value: string;
@@ -84,6 +85,7 @@ const LoginLayout: React.FC = () => {
       method: 'post',
       data: data,
     });
+    await AsyncStorage.setItem('accessToken', response.data.accessToken);
     dispatch(
       setAuth({
         authToken: response.data.accessToken,

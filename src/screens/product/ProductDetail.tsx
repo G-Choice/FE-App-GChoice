@@ -111,7 +111,7 @@ const ProductDetail = () => {
               <Text style={styles.safeImageLabel}>Guarantee</Text>
             </View>
             <View style={styles.safeImageItem}>
-              <Image source={require('../../assets/images/secure.jpg')} style={styles.safeImage} />
+              <Image source={require('../../assets/images/secures.jpg')} style={styles.safeImage} />
               <Text style={styles.safeImageLabel}>Safe & Secure</Text>
             </View>
             <View style={styles.safeImageItem}>
@@ -261,11 +261,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: Colors.darkGrey,
   },
-  // shopInfoContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   marginTop: 10,
-  // },
   shopAvatarContainer: {
     marginRight: 10,
   },
