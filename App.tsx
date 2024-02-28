@@ -24,6 +24,7 @@ import { RootState, store } from './src/app/store'
 import { Provider } from 'react-redux'
 import { useSelector } from 'react-redux';
 import {Search} from "./src/screens/search";
+import {SearchResult} from "./src/screens/search/SearchResult.tsx";
 
 export const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ const MainStack = () => {
       <Stack.Screen options={{title: '', headerShown: false}} name='ProductDetail' component={ProductDetail} />
       <Stack.Screen options={{title: '', headerShown: false}} name='GroupEachProduct' component={GroupEachProduct} />
       <Stack.Screen options={{title: '', headerShown: false}} name='Search' component={Search} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='SearchResult' component={SearchResult} />
     </Stack.Navigator>
   );
 };

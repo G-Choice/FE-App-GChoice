@@ -50,7 +50,7 @@ const TabButton: React.FC<TabButtonProps> = (props) => {
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={1} style={styles.container}>
-      <Animatable.View ref={viewRef} duration={1000} style={styles.container}>
+      <Animatable.View ref={viewRef} duration={500} style={styles.container}>
         <View style={styles.btn}>
           <Animatable.View style={focused ? styles.circlePress : styles.circleBeforePress} />
           <Icon type={item.type}  name={item.icon} color={focused ? Colors.secondaryColor : Colors.primaryColor} />
@@ -96,9 +96,9 @@ const styles = StyleSheet.create({
   tabBar: {
     height: 70,
     position: 'absolute',
-    bottom: 16,
-    right: 16,
-    left: 16,
+    bottom: 0,
+    right: 10,
+    left: 10,
     borderRadius: 16,
   },
   btn: {

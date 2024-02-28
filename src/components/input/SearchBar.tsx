@@ -9,7 +9,6 @@ interface SearchBarProps
   wrapperStyle?: any
   placeholder: string
   onSubmit: () => void
-  onBack: () => void
   inputRef?: Ref<TextInput>
   onChangeText?: (text: string) => void
   error?: string,
@@ -20,9 +19,6 @@ const SearchBar = React.forwardRef<TextInput, SearchBarProps>((props, ref) => {
   return(
     <View style={[defaultStyle.wrapper, props.wrapperStyle]}>
       <View style={defaultStyle.searchBar} >
-        <TouchableOpacity onPress={props.onBack} style={{padding: 8}}>
-          <Icon name='chevron-left' size={30} />
-        </TouchableOpacity>
         <TextInputField
           type='none'
           textFieldStyle={{padding: 5, borderWidth: 0}}
@@ -42,13 +38,12 @@ const SearchBar = React.forwardRef<TextInput, SearchBarProps>((props, ref) => {
 
 const defaultStyle = StyleSheet.create({
   wrapper: {
-    width: "100%",
+    margin: 5
   },
   searchBar: {
     backgroundColor: "white",
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 100,
     borderWidth: 1,
     borderColor: Colors.primaryColor
   }

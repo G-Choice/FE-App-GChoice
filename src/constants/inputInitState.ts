@@ -1,4 +1,4 @@
-import { InputStateType } from "../@type/InputStateType"
+import { InputStateType } from "../@types/InputStateType.ts"
 const inputInitState: InputStateType = {
   value: '',
   error: ''

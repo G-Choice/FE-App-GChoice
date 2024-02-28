@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { InputComponent } from '../../components/input/TextField';
 import { ButtonComponent } from '../../components/input/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { InputStateType } from '../../@type/InputStateType';
+import { InputStateType } from '../../@types/InputStateType.ts';
 import { RootState } from '../../app/store';
 import GchoiceAxios from '../../api/index';
 import { setAuth } from '../../global-states';

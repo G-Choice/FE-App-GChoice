@@ -16,6 +16,7 @@ const Home = () => {
 
   const navigateToSearch = useNavigation<any>()
 
+
   return (
     <View style={styles.container}>
       <View style={styles.stickyHeader}>
@@ -41,8 +42,8 @@ const styles = StyleSheet.create({
   stickyHeader: {
     position: "absolute",
     top: 5,
-    left: 10,
-    right: 10,
+    left: 5,
+    right: 5,
     zIndex: 10,
     elevation: 2,
   },
