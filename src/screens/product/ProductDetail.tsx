@@ -62,6 +62,13 @@ const ProductDetail = () => {
     }
   };
 
+  const formattedPrice = (props: any) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(props);
+  }
+
   const navToGroup = useNavigation<any>()
 
   useEffect(() => {
@@ -96,10 +103,10 @@ const ProductDetail = () => {
             </View>
           </View>
           <View style={styles.priceContainer}>
-            <Text style={styles.productPrice}>${productDetails.price}</Text>
-            <View style={styles.groupInfoContainer}>
+            <Text style={styles.productPrice}>{formattedPrice(productDetails.price)}</Text>
+            <TouchableOpacity style={styles.groupInfoContainer}  onPress={() => navToGroup.navigate("GroupEachProduct")}>
               <Text style={styles.groupInfo}>{groupInfo}</Text>
-            </View>
+            </TouchableOpacity>
           </View>
           <View style={styles.safeImagesContainer}>
             <View style={styles.safeImageItem}>
@@ -177,7 +184,9 @@ const ProductDetail = () => {
             ))}
           </View>
         </ScrollView>
-        <View style={styles.buttonContainer}>
+       
+      </View>
+      <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.heartButton}
             onPress={toggleLike}
@@ -198,7 +207,6 @@ const ProductDetail = () => {
           </TouchableOpacity>
         </View>
 
-      </View>
     </>
   );
 };
@@ -427,6 +435,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: 'row',
     marginLeft: 8,
+    marginRight: 8,
     justifyContent: 'center',
 
   },

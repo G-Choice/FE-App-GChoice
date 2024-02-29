@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Modal, ImageBackground, KeyboardAvoidingView, Platform,Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Modal, ImageBackground, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { Colors } from '../../assets/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
@@ -11,6 +11,9 @@ import { ScrollView } from 'react-native-virtualized-view';
 
 const CreateGroup = () => {
   const route = useRoute()
+  const getHeightOfScreen = Dimensions.get("screen").height
+
+
   const [selectedTime, setSelectedTime] = useState('');
   const [isTimeModalVisible, setTimeModalVisible] = useState(false);
   const [groupName, setGroupName] = useState('');
@@ -66,7 +69,6 @@ const CreateGroup = () => {
     return isValid;
   };
   const productId = route.params
-  console.log(productId)
   const [hours, minutes] = selectedTime.split(' ');
   let parsedTime = parseInt(hours, 10);
   if (!isNaN(minutes)) {
@@ -85,7 +87,6 @@ const CreateGroup = () => {
         quantity_product: quantity,
         product_id: productId,
       });
-      console.log(response.data, 's');
       if (response.data.message === 'Group created successfully!') {
         Toast.show({
           type: 'success',
@@ -98,7 +99,7 @@ const CreateGroup = () => {
         Toast.show({
           type: 'error',
           position: 'top',
-          text1: 'You can not create group!',
+          text1: 'Group already exists. You can not create group!',
           visibilityTime: 2000,
           autoHide: true,
         });
@@ -130,77 +131,77 @@ const CreateGroup = () => {
   return (
     <>
       <HeaderNavigation type={'secondary'} title="Create group" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'android' ? 'height' : 'padding'}
-          style={{ flex: 1 }}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'android' ? 'height' : 'padding'}
+        style={{ flex: 1 }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="handled">
-      <ImageBackground source={require('../../assets/images/background.jpg')} style={styles.container}>
-          <View style={styles.avatarContainer}>
-            <View style={styles.avatarWrapper}>
-              <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
-              <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
-            </View>
-            <View style={styles.avatarWrapper}>
-              <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
-              <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
-            </View>
-            <View style={styles.avatarWrapper}>
-              <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
-              <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
-            </View>
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Group name <Text style={{ color: 'red' }}>*</Text></Text>
-            <TextInput style={styles.input} placeholder="Group name" onChangeText={(text) => setGroupName(text)} value={groupName} />
-            {groupNameError ? <Text style={styles.errorText}> {groupNameError}</Text> : null}
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Description</Text>
-            <TextInput style={styles.input} multiline={true} placeholder="Description" onChangeText={(text) => setDescription(text)} value={description} />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Quantity expected <Text style={{ color: 'red' }}>*</Text></Text>
-            <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" onChangeText={(text) => setQuantityExpected(text)} value={quantityExpected} />
-            {quantityExpectedError ? <Text style={styles.errorText}> {quantityExpectedError}</Text> : null}
-          </View>
-
-          <TouchableOpacity style={styles.inputContainer} onPress={() => setTimeModalVisible(true)}>
-            <Text style={styles.label}>Existing time <Text style={{ color: 'red' }}>*</Text></Text>
-            <TextInput style={styles.input} placeholder="Select time" editable={false} value={selectedTime} />
-            {selectedTimeError ? <Text style={styles.errorText}> {selectedTimeError}</Text> : null}
-          </TouchableOpacity>
-
-          <Modal visible={isTimeModalVisible} animationType="slide" transparent={true}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Select Time</Text>
-                <View style={styles.timeOptionsContainer}>{renderTimeOptions()}</View>
-                <TouchableOpacity style={styles.closeButton} onPress={() => setTimeModalVisible(false)}>
-                  <Text style={styles.closeButtonText}>Close</Text>
-                </TouchableOpacity>
+            <ImageBackground source={require('../../assets/images/background.jpg')} style={styles.container}>
+              <View style={styles.avatarContainer}>
+                <View style={styles.avatarWrapper}>
+                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
+                  <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+                </View>
+                <View style={styles.avatarWrapper}>
+                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
+                  <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+                </View>
+                <View style={styles.avatarWrapper}>
+                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
+                  <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+                </View>
               </View>
-            </View>
-          </Modal>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Quantity <Text style={{ color: 'red' }}>*</Text></Text>
-            <TextInput style={styles.input} placeholder="Quantity" keyboardType="numeric" onChangeText={(text) => setQuantity(text)} value={quantity} />
-            {quantityError ? <Text style={styles.errorText}> {quantityError}</Text> : null}
-          </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Group name <Text style={{ color: 'red' }}>*</Text></Text>
+                <TextInput style={styles.input} placeholder="Group name" onEndEditing={(e) => setGroupName(e.nativeEvent.text)} defaultValue={groupName} />
+                {groupNameError ? <Text style={styles.errorText}> {groupNameError}</Text> : null}
+              </View>
 
-          <TouchableOpacity style={styles.button} onPress={postDataToApi}>
-            <Text style={styles.buttonText}>CREATE</Text>
-          </TouchableOpacity>
-      </ImageBackground>
-      </ScrollView>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Description</Text>
+                <TextInput style={styles.input} placeholder="Description" onEndEditing={(e) => setDescription(e.nativeEvent.text)} defaultValue={description} />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Quantity expected <Text style={{ color: 'red' }}>*</Text></Text>
+                <TextInput style={styles.input} placeholder="Quantity expected" onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
+                {quantityExpectedError ? <Text style={styles.errorText}> {quantityExpectedError}</Text> : null}
+              </View>
+
+              <TouchableOpacity style={styles.inputContainer} onPress={() => setTimeModalVisible(true)}>
+                <Text style={styles.label}>Existing time <Text style={{ color: 'red' }}>*</Text></Text>
+                <TextInput style={styles.input} placeholder="Select time" editable={false} value={selectedTime} />
+                {selectedTimeError ? <Text style={styles.errorText}> {selectedTimeError}</Text> : null}
+              </TouchableOpacity>
+
+              <Modal visible={isTimeModalVisible} animationType="slide" transparent={true}>
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.modalTitle}>Select Time</Text>
+                    <View style={styles.timeOptionsContainer}>{renderTimeOptions()}</View>
+                    <TouchableOpacity style={styles.closeButton} onPress={() => setTimeModalVisible(false)}>
+                      <Text style={styles.closeButtonText}>Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Quantity <Text style={{ color: 'red' }}>*</Text></Text>
+                <TextInput style={styles.input} placeholder="Quantity" onEndEditing={(e) => setQuantity(e.nativeEvent.text)} defaultValue={quantity} />
+                {quantityError ? <Text style={styles.errorText}> {quantityError}</Text> : null}
+              </View>
+              <TouchableOpacity style={styles.button} onPress={postDataToApi}>
+                <Text style={styles.buttonText}>CREATE</Text>
+              </TouchableOpacity>
+            </ImageBackground>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </>
   );
@@ -210,7 +211,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#f0f0f0',
+    height: Dimensions.get('screen').height
   },
+
   scrollContainer: {
     flexGrow: 1,
   },

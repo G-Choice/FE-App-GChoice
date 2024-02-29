@@ -1,10 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit'
-import {AuthReducer, ProductReducer} from "../global-states"
+import {AuthReducer, ProductReducer, SearchKeyReducer} from "../global-states"
 
 export const store = configureStore({
   reducer: {
     auth: AuthReducer,
-    product: ProductReducer
+    product: ProductReducer,
+    search: SearchKeyReducer
   },
 })
 
