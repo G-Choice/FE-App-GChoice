@@ -1,4 +1,4 @@
-import {Button, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Button, FlatList, Keyboard, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Card, Group, TextFormat} from "../../components";
 import {HeaderNavigation} from "../../components/navigation/HeaderNavigation.tsx";
 import {GroupResApiType} from "../../@types/GroupResApiType.ts";
@@ -77,8 +77,11 @@ const GroupEachProduct = () => {
     }
   ]
 
-  const handleBack = () => {};
+  const handleBack = () => {
+    Keyboard.dismiss()
+  };
   const handleSearch = () => {};
+  const handlePressIn = () => {}
   const renderItem = ({ item }: { item: any }) => <Group {...item} />;
 
   return (
@@ -91,7 +94,7 @@ const GroupEachProduct = () => {
           <TextFormat weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>Create new group</TextFormat>
         </TouchableOpacity>
       </View>
-      <SearchBar placeholder="Search..." onSubmit={handleSearch} onBack={handleBack}/>
+      <SearchBar placeholder="Search..." onSubmit={handleSearch} onBack={handleBack} onPressIn={handlePressIn}/>
       <FlatList data={GroupList} renderItem={renderItem}
                 style={styles.groupContainer} />
     </View>

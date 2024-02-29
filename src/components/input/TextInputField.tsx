@@ -13,6 +13,7 @@ interface TextInputProps {
   error?: string;
   multiline?: boolean
   ref?: Ref<TextInput>;
+  onPressIn: () => void
 }
 
 const TextInputField = React.forwardRef<TextInput, TextInputProps>((props, ref) => {
@@ -26,6 +27,7 @@ const TextInputField = React.forwardRef<TextInput, TextInputProps>((props, ref) 
         style={[defaultStyle.textField, type[props.type ?? 'left'].placeholder, props.textFieldStyle]}
         placeholder={props.placeholder}
         keyboardType={props.keyboardType}
+        onPressIn={props.onPressIn}
       />
       {props.error ? (
         <Text style={defaultStyle.error}>{props.error}</Text>

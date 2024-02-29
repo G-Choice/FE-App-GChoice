@@ -61,6 +61,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
     }
   };
 
+  const formattedPrice = (props: any) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(props);
+  }
+
   const navToGroup = useNavigation<any>()
 
   useEffect(() => {
@@ -95,7 +102,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
             </View>
           </View>
           <View style={styles.priceContainer}>
-            <Text style={styles.productPrice}>${productDetails.price}</Text>
+            <Text style={styles.productPrice}>{formattedPrice(productDetails.price)}</Text>
             <View style={styles.groupInfoContainer}>
               <Text style={styles.groupInfo}>{groupInfo}</Text>
             </View>
