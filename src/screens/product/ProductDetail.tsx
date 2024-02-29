@@ -4,16 +4,16 @@ import { Rating } from 'react-native-ratings';
 import { Colors } from '../../assets/colors/index';
 import GChoiceAxios from '../../api/index';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
 import CustomSliderBox from '../../components/slider/SliderBox';
 import { HeaderNavigation } from "../../components/navigation/HeaderNavigation.tsx";
 interface ProductDetailProps {
-  route: {
-    params: {
-      id: string;
-    };
-  };
+  route:{params: {
+    id: string;
+  };}
+    
+  
 }
 interface Discount {
   discountPrice: string;
@@ -39,9 +39,10 @@ interface ProductDetails {
   discounts: Discount[]
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
+const ProductDetail = () => {
+  const route = useRoute()
   const navigation = useNavigation()
-  const { id } = route.params;
+  const  id  = route.params;
   const [productDetails, setProductDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const groupInfo = '8 groups are joining';
@@ -103,25 +104,25 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.productPrice}>{formattedPrice(productDetails.price)}</Text>
-            <View style={styles.groupInfoContainer}>
+            <TouchableOpacity style={styles.groupInfoContainer}  onPress={() => navToGroup.navigate("GroupEachProduct")}>
               <Text style={styles.groupInfo}>{groupInfo}</Text>
-            </View>
+            </TouchableOpacity>
           </View>
           <View style={styles.safeImagesContainer}>
             <View style={styles.safeImageItem}>
-              <Image source={require('../../assets/images/authentic.png')} style={styles.safeImage} />
+              <Image source={require('../../assets/images/authentic.jpg')} style={styles.safeImage} />
               <Text style={styles.safeImageLabel}>Authentic</Text>
             </View>
             <View style={styles.safeImageItem}>
-              <Image source={require('../../assets/images/guarantee.png')} style={styles.safeImage} />
+              <Image source={require('../../assets/images/guarantee.jpg')} style={styles.safeImage} />
               <Text style={styles.safeImageLabel}>Guarantee</Text>
             </View>
             <View style={styles.safeImageItem}>
-              <Image source={require('../../assets/images/secure.png')} style={styles.safeImage} />
+              <Image source={require('../../assets/images/secures.jpg')} style={styles.safeImage} />
               <Text style={styles.safeImageLabel}>Safe & Secure</Text>
             </View>
             <View style={styles.safeImageItem}>
-              <Image source={require('../../assets/images/heart.png')} style={styles.safeImage} />
+              <Image source={require('../../assets/images/heart.jpg')} style={styles.safeImage} />
               <Text style={styles.safeImageLabel}>New</Text>
             </View>
           </View>
@@ -151,7 +152,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
             {productDetails.reviews.map((feedback: any) => (
               <View key={feedback.id} style={styles.feedbackItem}>
                 <View style={styles.userReviewInfo}>
-                  <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
+                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
                   <View>
                     <Text style={styles.userName}>{feedback.users.username}</Text>
                     <Rating
@@ -183,7 +184,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
             ))}
           </View>
         </ScrollView>
-        <View style={styles.buttonContainer}>
+       
+      </View>
+      <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.heartButton}
             onPress={toggleLike}
@@ -196,7 +199,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
             />
             <Text> 2030</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.joinGroupButton} onPress={() => navToGroup.navigate("GroupEachProduct", { id: route.params.id })}>
+          <TouchableOpacity style={styles.joinGroupButton} onPress={() => navToGroup.navigate("GroupEachProduct", route.params )}>
             <Text style={styles.buttonText}>Join Group</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buyNowButton}>
@@ -204,7 +207,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ route }) => {
           </TouchableOpacity>
         </View>
 
-      </View>
     </>
   );
 };
@@ -267,11 +269,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: Colors.darkGrey,
   },
-  // shopInfoContainer: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   marginTop: 10,
-  // },
   shopAvatarContainer: {
     marginRight: 10,
   },
@@ -438,6 +435,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: 'row',
     marginLeft: 8,
+    marginRight: 8,
     justifyContent: 'center',
 
   },

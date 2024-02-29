@@ -15,7 +15,7 @@ const SplashScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.pinkBackground} />
       <View style={styles.logoContainer}>
-        <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
+        <Image source={require('../../assets/images/logo.jpg')} style={styles.logo} />
       </View>
     </View>
   );

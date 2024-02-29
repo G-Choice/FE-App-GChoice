@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={ require('../../../public/G-Choice-Logo.png')}
+        source={ require('../../../public/G-Choice-Logo.jpg')}
         style={styles.logo}
       />
       <AvatarBubble/>

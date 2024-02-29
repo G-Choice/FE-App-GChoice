@@ -19,6 +19,8 @@ import {
   ProductDetail,
   CreateGroup,
   GroupEachProduct,
+  JoinGroup,
+  GroupChatScreen
 } from './src/screens';
 import { RootState, store } from './src/app/store'
 import { Provider } from 'react-redux'
@@ -43,9 +45,11 @@ const MainStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{ title: '', headerShown: false }} name='HomeScreen' component={BottomTabs} />
-      <Stack.Screen options={{ title: '', headerShown: true }} name='CreateGroup' component={CreateGroup} />
+      <Stack.Screen options={{ title: '', headerShown: false }} name='CreateGroup' component={CreateGroup} />
       <Stack.Screen options={{title: '', headerShown: false}} name='ProductDetail' component={ProductDetail} />
       <Stack.Screen options={{title: '', headerShown: false}} name='GroupEachProduct' component={GroupEachProduct} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='JoinGroup' component={JoinGroup} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='GroupChat' component={GroupChatScreen} />
       <Stack.Screen options={{title: '', headerShown: false}} name='Search' component={Search} />
       <Stack.Screen options={{title: '', headerShown: false}} name='SearchResult' component={SearchResult} />
     </Stack.Navigator>

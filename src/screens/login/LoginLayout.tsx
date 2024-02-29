@@ -12,6 +12,7 @@ import { RootState } from '../../app/store';
 import GchoiceAxios from '../../api/index';
 import { setAuth } from '../../global-states';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface EmailInput {
   value: string;
@@ -78,63 +79,62 @@ const LoginLayout: React.FC = () => {
      email: emailInput.value,
      password: passwordInput.value,
    };
-
    try {
-     const response = await GchoiceAxios({
-       url: 'auth/login',
-       method: 'post',
-       data: data,
-     });
-
-     dispatch(
-       setAuth({
-         authToken: response.data.accessToken,
-         refreshToken: response.data.refreshToken,
-       })
-     );
-     setIsLoading(false);
-
-     if (response.status === 201) {
-       Toast.show({
-         type: 'success',
-         position: 'top',
-         text1: 'Login Successfully!',
-         visibilityTime: 2000,
-         autoHide: true,
-         onHide: () => {
-           resetForm();
-           navigation.navigate('HomeScreen');
-         },
-       });
-     }
-   } catch (error) {
-     setIsLoading(false);
-     console.log(error.response.status )
-     if (error.response.status === 401) {
+    const response = await GchoiceAxios({
+      url: 'auth/login',
+      method: 'post',
+      data: data,
+    });
+    await AsyncStorage.setItem('accessToken', response.data.accessToken);
+    dispatch(
+      setAuth({
+        authToken: response.data.accessToken,
+        refreshToken: response.data.refreshToken,
+      })
+    );
+    setIsLoading(false);
+    if (response.status === 201) {
       Toast.show({
-        type: 'error',
+        type: 'success',
         position: 'top',
-        text1: 'Incorrect email or password!',
-        visibilityTime: 3000,
+        text1: 'Login Successfully!',
+        visibilityTime: 2000,
         autoHide: true,
-      });
-    } else {
-      console.log('An error occurred:', error.message);
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'An error occurred. Please try again later.',
-        visibilityTime: 3000,
-        autoHide: true,
+        onHide: () => {
+          resetForm();
+          navigation.navigate('HomeScreen');
+        },
       });
     }
-  }}
+  } catch (error) {
+    setIsLoading(false);
+    console.log(error.response.status )
+    if (error.response.status === 401) {
+     Toast.show({
+       type: 'error',
+       position: 'top',
+       text1: 'Incorrect email or password!',
+       visibilityTime: 3000,
+       autoHide: true,
+     });
+   } else {
+     console.log('An error occurred:', error.message);
+     Toast.show({
+       type: 'error',
+       position: 'top',
+       text1: 'An error occurred. Please try again later.',
+       visibilityTime: 3000,
+       autoHide: true,
+     });
+   }
+  }
+ }
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.logoContainer}>
           <Image
-            source={require('../../assets/images/logo.png')}
+            source={require('../../assets/images/logo.jpg')}
             style={styles.logo}
           />
         </View>
@@ -224,19 +224,19 @@ const LoginLayout: React.FC = () => {
           <View style={styles.socialButtonsContainer}>
             <TouchableOpacity style={styles.socialButton}>
               <Image
-                source={require('../../assets/icons/google.png')}
+                source={require('../../assets/icons/google.jpg')}
                 style={{ width: 25, height: 25 }}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialButton}>
               <Image
-                source={require('../../assets/icons/Facebook.png')}
+                source={require('../../assets/icons/Facebook.jpg')}
                 style={{ width: 14, height: 25 }}
               />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialButton}>
               <Image
-                source={require('../../assets/icons/Apple.png')}
+                source={require('../../assets/icons/Apple.jpg')}
                 style={{ width: 21, height: 25 }}
               />
             </TouchableOpacity>

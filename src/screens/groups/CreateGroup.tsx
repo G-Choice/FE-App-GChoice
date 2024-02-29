@@ -1,84 +1,321 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Modal, ImageBackground, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { Colors } from '../../assets/colors';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
+import moment from 'moment';
+import GchoiceAxios from '../../api';
+import { useRoute } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
+import { ScrollView } from 'react-native-virtualized-view';
 
 const CreateGroup = () => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <Image source={require('../../assets/images/avt.png')} style={styles.avatar} />
-      </View>
-      
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Product name</Text>
-        <TextInput style={styles.input} placeholder="Product name" />
-      </View>
+  const route = useRoute()
+  const getHeightOfScreen = Dimensions.get("screen").height
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Quantity expected</Text>
-        <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" />
-      </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Time</Text>
-        <TextInput style={styles.input} placeholder="Time" />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Number phone</Text>
-        <TextInput style={styles.input} placeholder="Number phone" keyboardType="numeric" />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Address</Text>
-        <TextInput style={styles.input} placeholder="Address" />
-      </View>
-
-      <TouchableOpacity style={styles.button}>
-        <Text>CREATE</Text>
+  const [selectedTime, setSelectedTime] = useState('');
+  const [isTimeModalVisible, setTimeModalVisible] = useState(false);
+  const [groupName, setGroupName] = useState('');
+  const [description, setDescription] = useState('');
+  const [quantityExpected, setQuantityExpected] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [groupNameError, setGroupNameError] = useState('');
+  const [quantityExpectedError, setQuantityExpectedError] = useState('');
+  const [selectedTimeError, setSelectedTimeError] = useState('');
+  const [quantityError, setQuantityError] = useState('');
+  const handleTimeChange = (time: string) => {
+    setSelectedTime(time);
+    setTimeModalVisible(false);
+  };
+  const validateInputs = () => {
+    let isValid = true;
+    if (!groupName.trim()) {
+      setGroupNameError('Group name is required');
+      isValid = false;
+    } else {
+      setGroupNameError('');
+    }
+    if (!quantityExpected.trim()) {
+      setQuantityExpectedError('Quantity expected is required');
+      isValid = false;
+    } else {
+      setQuantityExpectedError('');
+    }
+    if (!/^\d+$/.test(quantityExpected.trim())) {
+      setQuantityExpectedError('Quantity expected must be a valid number');
+      isValid = false;
+    } else {
+      setQuantityExpectedError('');
+    }
+    if (!selectedTime.trim()) {
+      setSelectedTimeError('Selected time is required');
+      isValid = false;
+    } else {
+      setSelectedTimeError('');
+    }
+    if (!quantity.trim()) {
+      setQuantityError('Quantity is required');
+      isValid = false;
+    } else {
+      setQuantityError('');
+    }
+    if (!/^\d+$/.test(quantity.trim())) {
+      setQuantityError('Quantity must be a valid number');
+      isValid = false;
+    } else {
+      setQuantityError('');
+    }
+    return isValid;
+  };
+  const productId = route.params
+  const [hours, minutes] = selectedTime.split(' ');
+  let parsedTime = parseInt(hours, 10);
+  if (!isNaN(minutes)) {
+    parsedTime += parseFloat(minutes) / 60;
+  }
+  const postDataToApi = async () => {
+    try {
+      if (!validateInputs()) {
+        return;
+      }
+      const response = await GchoiceAxios.post('groups', {
+        group_name: groupName,
+        description: description,
+        group_size: quantityExpected,
+        hours: parsedTime,
+        quantity_product: quantity,
+        product_id: productId,
+      });
+      if (response.data.message === 'Group created successfully!') {
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Create group successfully!',
+          visibilityTime: 2000,
+          autoHide: true,
+        });
+      } else if (response.data.message === 'Group already exists ') {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Group already exists. You can not create group!',
+          visibilityTime: 2000,
+          autoHide: true,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'An error occurred. Please try again later.',
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+    }
+  };
+  const renderTimeOptions = () => {
+    const timeOptions = ['9 hours', '12 hours', '12 hours 30 minutes', '24 hours', '25 hours 30 minutes', '48 hours'];
+    return timeOptions.map((time) => (
+      <TouchableOpacity
+        key={time}
+        style={[styles.timeOption, selectedTime === time && styles.selectedTimeOption]}
+        onPress={() => handleTimeChange(time)}
+      >
+        <Text style={styles.timeOptionText}>{time}</Text>
       </TouchableOpacity>
-    </View>
+    ));
+  };
+
+  return (
+    <>
+      <HeaderNavigation type={'secondary'} title="Create group" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'android' ? 'height' : 'padding'}
+        style={{ flex: 1 }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled">
+            <ImageBackground source={require('../../assets/images/background.jpg')} style={styles.container}>
+              <View style={styles.avatarContainer}>
+                <View style={styles.avatarWrapper}>
+                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
+                  <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+                </View>
+                <View style={styles.avatarWrapper}>
+                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
+                  <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+                </View>
+                <View style={styles.avatarWrapper}>
+                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
+                  <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
+                </View>
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Group name <Text style={{ color: 'red' }}>*</Text></Text>
+                <TextInput style={styles.input} placeholder="Group name" onEndEditing={(e) => setGroupName(e.nativeEvent.text)} defaultValue={groupName} />
+                {groupNameError ? <Text style={styles.errorText}> {groupNameError}</Text> : null}
+              </View>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Description</Text>
+                <TextInput style={styles.input} placeholder="Description" onEndEditing={(e) => setDescription(e.nativeEvent.text)} defaultValue={description} />
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Quantity expected <Text style={{ color: 'red' }}>*</Text></Text>
+                <TextInput style={styles.input} placeholder="Quantity expected" onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
+                {quantityExpectedError ? <Text style={styles.errorText}> {quantityExpectedError}</Text> : null}
+              </View>
+
+              <TouchableOpacity style={styles.inputContainer} onPress={() => setTimeModalVisible(true)}>
+                <Text style={styles.label}>Existing time <Text style={{ color: 'red' }}>*</Text></Text>
+                <TextInput style={styles.input} placeholder="Select time" editable={false} value={selectedTime} />
+                {selectedTimeError ? <Text style={styles.errorText}> {selectedTimeError}</Text> : null}
+              </TouchableOpacity>
+
+              <Modal visible={isTimeModalVisible} animationType="slide" transparent={true}>
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.modalTitle}>Select Time</Text>
+                    <View style={styles.timeOptionsContainer}>{renderTimeOptions()}</View>
+                    <TouchableOpacity style={styles.closeButton} onPress={() => setTimeModalVisible(false)}>
+                      <Text style={styles.closeButtonText}>Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Quantity <Text style={{ color: 'red' }}>*</Text></Text>
+                <TextInput style={styles.input} placeholder="Quantity" onEndEditing={(e) => setQuantity(e.nativeEvent.text)} defaultValue={quantity} />
+                {quantityError ? <Text style={styles.errorText}> {quantityError}</Text> : null}
+              </View>
+              <TouchableOpacity style={styles.button} onPress={postDataToApi}>
+                <Text style={styles.buttonText}>CREATE</Text>
+              </TouchableOpacity>
+            </ImageBackground>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+    </>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
     backgroundColor: '#f0f0f0',
+    height: Dimensions.get('screen').height
+  },
+
+  scrollContainer: {
+    flexGrow: 1,
   },
   avatarContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 20,
   },
+  avatarWrapper: {
+    marginRight: 3,
+    overflow: 'hidden',
+    borderRadius: 25,
+    position: 'relative',
+  },
   avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 10,
+  },
+  activeIcon: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
   inputContainer: {
-    marginBottom: 12,
+    marginBottom: 20,
   },
   label: {
     fontSize: 16,
-    marginBottom: 6,
-    color: Colors.primaryColor, // Set the color of the label
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+    backgroundColor: '#fff',
   },
   button: {
     backgroundColor: Colors.primaryColor,
-    paddingVertical: 12,
-    borderRadius: 8,
+    padding: 10,
+    borderRadius: 10,
     alignItems: 'center',
   },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  timeOptionsContainer: {
+    marginBottom: 20,
+  },
+  timeOption: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginBottom: 10,
+    backgroundColor: '#fff',
+  },
+  selectedTimeOption: {
+    backgroundColor: Colors.primaryColor,
+  },
+  timeOptionText: {
+    fontSize: 16,
+    color: '#000',
+  },
+  closeButton: {
+    backgroundColor: Colors.primaryColor,
+    paddingVertical: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+  }
 });
 
-export {CreateGroup};
+export { CreateGroup };
