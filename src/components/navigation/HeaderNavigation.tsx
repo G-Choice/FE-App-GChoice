@@ -40,7 +40,7 @@ function HeaderNavigation(props: HeaderBackProps)
 
 const style = StyleSheet.create({
   wrapperStyle: {
-    zIndex: 1000,
+    zIndex: -1,
     width: "100%"
   },
   header: {
@@ -61,7 +61,7 @@ const headerStyle = {
   }),
   secondary: StyleSheet.create<any>({
     header: {
-      borderWidth: 1,
+      borderWidth: 0,
       borderColor: Colors.primaryColor,
       padding: 8,
       backgroundColor: "white"

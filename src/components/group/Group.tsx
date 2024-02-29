@@ -4,14 +4,19 @@ import {TextFormat} from "../text";
 import {AvatarBubble} from "../child";
 import {Colors} from "../../assets/colors";
 import {useEffect, useState} from "react";
-
-
+import { useNavigation, useRoute } from "@react-navigation/native";
+import JoinModal from "./JoinModal.tsx";
 const Group = (props: GroupResApiType) => {
+  const navigation = useNavigation()
+  const route = useRoute()
   const [hours, setHours] = useState<number>(5);
   const [minutes, setMinutes] = useState<number>(3);
   const [seconds, setSeconds] = useState<number>(2);
   const [timerActive, setTimerActive] = useState<boolean>(true);
+  const [quantity, setQuantity] = useState<number>(1)
+  const [showPicker, setShowPicker] = useState<boolean>(false);
 
+ 
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -39,7 +44,18 @@ const Group = (props: GroupResApiType) => {
 
     return () => clearInterval(interval);
   }, [timerActive, hours, minutes, seconds]);
+  const handlePressJoin = () => {
+    setShowPicker(true);
+  };
 
+  const handleConfirmJoin = (quantity: number) => {
+    // Perform actions when joining with the selected quantity
+    setShowPicker(false);
+  };
+
+  const handleClosePicker = () => {
+    setShowPicker(false);
+  };
 
   return (
     <View style={styles.groupWrapper}>
@@ -58,10 +74,11 @@ const Group = (props: GroupResApiType) => {
           <Text>:</Text>
           <Text style={styles.timeStyle}>{seconds}</Text>
         </View>
-        <TouchableOpacity style={{backgroundColor: Colors.primaryColor, width: 60, flexDirection: "row", justifyContent: "center", borderRadius: 8}}>
-          <TextFormat weight={600} numberOfLines={1} style={{marginTop: 12}} color={'secondaryColor'} size={'md'}>Join</TextFormat>
+        <TouchableOpacity style={{ backgroundColor: Colors.primaryColor, width: 60, flexDirection: "row", justifyContent: "center", borderRadius: 8 }} onPress={handlePressJoin}>
+          <TextFormat weight={600} numberOfLines={1} style={{ marginTop: 12 }} color={'secondaryColor'} size={'md'}>Join</TextFormat>
         </TouchableOpacity>
       </View>
+      <JoinModal visible={showPicker} onClose={handleClosePicker} onJoin={handleConfirmJoin} />
       <View>
         <TextFormat>{props?.quantity_has_join}/{props?.quantity_total}</TextFormat>
         <ProgressBarAndroid
@@ -71,8 +88,9 @@ const Group = (props: GroupResApiType) => {
           color={Colors.primaryColor}
         />
       </View>
+      
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -98,6 +116,40 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     borderRadius: 2,
     paddingHorizontal: 2
+  },
+  modalWrapper: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  picker: {
+    width: 200,
+    height: 150,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  confirmButton: {
+    backgroundColor: Colors.primaryColor,
+    width: 100,
+    height: 40,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  closeButton: {
+    backgroundColor: Colors.lightGrey,
+    width: 100,
+    height: 40,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 })
 
