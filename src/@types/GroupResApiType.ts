@@ -1,11 +1,15 @@
 interface GroupResApiType {
   id?: number,
-  avatar?: string,
+  image?: string,
   group_name?: string,
-  quantity_total: number,
-  quantity_has_join: number,
-  time: string,
-  radio: number
+  description?: string,
+  groupSize?: number,
+  groupTime?: string,
+  carts:{
+    total_quantity?: number
+  },
+  remainingHours?: number,
+
 }
 
 export {type GroupResApiType}

@@ -178,7 +178,7 @@ const ProductDetail = () => {
             </View>
             {productDetails?.discounts.map((discount: Discount, index: number) => (
               <View key={index} style={styles.discountTableRow}>
-                <Text style={styles.discountTableCell}> {">"}{discount.discountPrice}</Text>
+                <Text style={styles.discountTableCell}> {">"}{discount.minQuantity}</Text>
                 <Text style={styles.discountTableCell}> {discount.discountPrice} $</Text>
               </View>
             ))}

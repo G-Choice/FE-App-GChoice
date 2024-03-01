@@ -3,17 +3,16 @@ import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Modal, Imag
 import { Colors } from '../../assets/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
-import moment from 'moment';
 import GchoiceAxios from '../../api';
 import { useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { ScrollView } from 'react-native-virtualized-view';
+import { useDispatch } from 'react-redux';
+import { updateGroupList } from '../../redux/actions/groupAction';
 
 const CreateGroup = () => {
   const route = useRoute()
-  const getHeightOfScreen = Dimensions.get("screen").height
-
-
+  const dispatch = useDispatch()
   const [selectedTime, setSelectedTime] = useState('');
   const [isTimeModalVisible, setTimeModalVisible] = useState(false);
   const [groupName, setGroupName] = useState('');
@@ -95,6 +94,8 @@ const CreateGroup = () => {
           visibilityTime: 2000,
           autoHide: true,
         });
+        const updatedGroupList = await GchoiceAxios.get(`/groups?product_id=${productId}`);
+        dispatch(updateGroupList(updatedGroupList.data.data));
       } else if (response.data.message === 'Group already exists ') {
         Toast.show({
           type: 'error',
@@ -168,7 +169,7 @@ const CreateGroup = () => {
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Quantity expected <Text style={{ color: 'red' }}>*</Text></Text>
-                <TextInput style={styles.input} placeholder="Quantity expected" onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
+                <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
                 {quantityExpectedError ? <Text style={styles.errorText}> {quantityExpectedError}</Text> : null}
               </View>
 
@@ -192,7 +193,7 @@ const CreateGroup = () => {
 
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Quantity <Text style={{ color: 'red' }}>*</Text></Text>
-                <TextInput style={styles.input} placeholder="Quantity" onEndEditing={(e) => setQuantity(e.nativeEvent.text)} defaultValue={quantity} />
+                <TextInput style={styles.input} placeholder="Quantity" keyboardType="numeric" onEndEditing={(e) => setQuantity(e.nativeEvent.text)} defaultValue={quantity} />
                 {quantityError ? <Text style={styles.errorText}> {quantityError}</Text> : null}
               </View>
               <TouchableOpacity style={styles.button} onPress={postDataToApi}>
@@ -252,7 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     fontSize: 16,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.secondaryColor,
   },
   button: {
     backgroundColor: Colors.primaryColor,
@@ -261,7 +262,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',
+    color: Colors.secondaryColor,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.secondaryColor,
     padding: 20,
     borderRadius: 10,
     width: '80%',
@@ -292,7 +293,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     marginBottom: 10,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.secondaryColor,
   },
   selectedTimeOption: {
     backgroundColor: Colors.primaryColor,
@@ -308,7 +309,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   closeButtonText: {
-    color: '#fff',
+    color: Colors.secondaryColor,
     fontSize: 16,
     fontWeight: 'bold',
   },

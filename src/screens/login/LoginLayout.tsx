@@ -46,7 +46,7 @@ const LoginLayout: React.FC = () => {
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
-      setEmailError('Email cannot be empty');
+      setEmailError('Email is required');
       return false;
     }
     const isValid = emailRegex.test(email);
@@ -56,7 +56,7 @@ const LoginLayout: React.FC = () => {
 
   const validatePassword = (password: string): boolean => {
     if (!password) {
-      setPasswordError('Password cannot be empty');
+      setPasswordError('Password is required');
       return false;
     }
     const isValid = password.length >= 6;

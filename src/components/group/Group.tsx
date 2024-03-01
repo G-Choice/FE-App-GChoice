@@ -6,24 +6,33 @@ import {Colors} from "../../assets/colors";
 import {useEffect, useState} from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import JoinModal from "./JoinModal.tsx";
-import {CountDown} from "../time";
+import moment from 'moment';
+import { CountDown } from "../index.ts";
 const Group = (props: GroupResApiType) => {
-  const navigation = useNavigation<any>()
+  const navigation = useNavigation()
   const route = useRoute()
   const [quantity, setQuantity] = useState<number>(1)
   const [showPicker, setShowPicker] = useState<boolean>(false);
+  const [groupModalId, setGroupModalId] = useState<number | null>(null);
+
+  
   const handlePressJoin = () => {
     setShowPicker(true);
   };
 
   const handleConfirmJoin = (quantity: number) => {
     setShowPicker(false);
+    setGroupModalId(props.id ?? null);
   };
-
   const handleClosePicker = () => {
     setShowPicker(false);
   };
+  const duration = moment.duration(props.remainingHours, 'hours');
+  const hours = Math.floor(duration.asHours());
+  const minutes = duration.minutes();
+  const seconds = duration.seconds();
 
+  const process = (props.carts?.total_quantity ?? 0) /(props.groupSize || 1);
   return (
     <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart")}>
       <View style={{flexDirection: "row", justifyContent: "space-between"}}>
@@ -34,22 +43,25 @@ const Group = (props: GroupResApiType) => {
             <TextFormat weight={300} numberOfLines={1} color={'lightBlue'} size={'md'}>Online Payment</TextFormat>
           </View>
         </View>
-        <CountDown hours={5} minutes={30} seconds={59} />
+        <CountDown hours={hours} minutes={minutes} seconds={seconds} />
         <TouchableOpacity style={{ backgroundColor: Colors.primaryColor, width: 60, flexDirection: "row", justifyContent: "center", borderRadius: 8 }} onPress={handlePressJoin}>
           <TextFormat weight={600} numberOfLines={1} style={{ marginTop: 12 }} color={'secondaryColor'} size={'md'}>Join</TextFormat>
         </TouchableOpacity>
       </View>
-      <JoinModal visible={showPicker} onClose={handleClosePicker} onJoin={handleConfirmJoin} />
+      <JoinModal visible={showPicker} onClose={handleClosePicker} onJoin={handleConfirmJoin} groupId={props.id} groupName={props.group_name} />
       <View>
-        <TextFormat>{props?.quantity_has_join}/{props?.quantity_total}</TextFormat>
-        <ProgressBarAndroid
-          styleAttr="Horizontal"
-          indeterminate={false}
-          progress={props?.radio}
-          color={Colors.primaryColor}
-        />
-      </View>
-      
+      {props.carts && (
+        <>
+          <TextFormat>{props.carts.total_quantity}/{props?.groupSize}</TextFormat>
+          <ProgressBarAndroid
+            styleAttr="Horizontal"
+            indeterminate={false}
+            progress={process}
+            color={Colors.primaryColor}
+          />
+        </>
+      )}
+    </View>
     </TouchableOpacity>
   );
 }
