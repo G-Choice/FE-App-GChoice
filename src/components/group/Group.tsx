@@ -6,50 +6,17 @@ import {Colors} from "../../assets/colors";
 import {useEffect, useState} from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import JoinModal from "./JoinModal.tsx";
+import {CountDown} from "../time";
 const Group = (props: GroupResApiType) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const route = useRoute()
-  const [hours, setHours] = useState<number>(5);
-  const [minutes, setMinutes] = useState<number>(3);
-  const [seconds, setSeconds] = useState<number>(2);
-  const [timerActive, setTimerActive] = useState<boolean>(true);
   const [quantity, setQuantity] = useState<number>(1)
   const [showPicker, setShowPicker] = useState<boolean>(false);
-
- 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-
-    if (timerActive) {
-      interval = setInterval(() => {
-        if (seconds === 0) {
-          if (minutes === 0) {
-            if (hours === 0) {
-              clearInterval(interval);
-              setTimerActive(false);
-            } else {
-              setHours(prevHours => prevHours - 1);
-              setMinutes(59);
-              setSeconds(59);
-            }
-          } else {
-            setMinutes(prevMinutes => prevMinutes - 1);
-            setSeconds(59);
-          }
-        } else {
-          setSeconds(prevSeconds => prevSeconds - 1);
-        }
-      }, 1000);
-    }
-
-    return () => clearInterval(interval);
-  }, [timerActive, hours, minutes, seconds]);
   const handlePressJoin = () => {
     setShowPicker(true);
   };
 
   const handleConfirmJoin = (quantity: number) => {
-    // Perform actions when joining with the selected quantity
     setShowPicker(false);
   };
 
@@ -58,7 +25,7 @@ const Group = (props: GroupResApiType) => {
   };
 
   return (
-    <View style={styles.groupWrapper}>
+    <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart")}>
       <View style={{flexDirection: "row", justifyContent: "space-between"}}>
         <View style={styles.groupContent}>
           <AvatarBubble />
@@ -67,13 +34,7 @@ const Group = (props: GroupResApiType) => {
             <TextFormat weight={300} numberOfLines={1} color={'lightBlue'} size={'md'}>Online Payment</TextFormat>
           </View>
         </View>
-        <View style={{flexDirection: "row", gap: 3, height: 20, marginTop: 15}}>
-          <Text style={styles.timeStyle}>{hours}</Text>
-          <Text>:</Text>
-          <Text style={styles.timeStyle}>{minutes}</Text>
-          <Text>:</Text>
-          <Text style={styles.timeStyle}>{seconds}</Text>
-        </View>
+        <CountDown hours={5} minutes={30} seconds={59} />
         <TouchableOpacity style={{ backgroundColor: Colors.primaryColor, width: 60, flexDirection: "row", justifyContent: "center", borderRadius: 8 }} onPress={handlePressJoin}>
           <TextFormat weight={600} numberOfLines={1} style={{ marginTop: 12 }} color={'secondaryColor'} size={'md'}>Join</TextFormat>
         </TouchableOpacity>
@@ -89,7 +50,7 @@ const Group = (props: GroupResApiType) => {
         />
       </View>
       
-    </View>
+    </TouchableOpacity>
   );
 }
 
