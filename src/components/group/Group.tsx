@@ -6,6 +6,8 @@ import {Colors} from "../../assets/colors";
 import {useEffect, useState} from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import JoinModal from "./JoinModal.tsx";
+import moment from 'moment';
+
 const Group = (props: GroupResApiType) => {
   const navigation = useNavigation()
   const route = useRoute()
@@ -15,8 +17,26 @@ const Group = (props: GroupResApiType) => {
   const [timerActive, setTimerActive] = useState<boolean>(true);
   const [quantity, setQuantity] = useState<number>(1)
   const [showPicker, setShowPicker] = useState<boolean>(false);
+  const [groupModalId, setGroupModalId] = useState<number | null>(null);
 
- 
+  useEffect(() => {
+    const groupTime = moment(props.groupTime);
+    const createAt = moment(props.create_At);
+    const duration = moment.duration(groupTime.diff(createAt));
+    // console.log(duration,'ss')
+
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
+
+    setHours(hours);
+    setMinutes(minutes);
+    setSeconds(seconds);
+
+    setTimerActive(true);
+
+  }, [props.groupTime, props.create_At]);
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -49,8 +69,8 @@ const Group = (props: GroupResApiType) => {
   };
 
   const handleConfirmJoin = (quantity: number) => {
-    // Perform actions when joining with the selected quantity
     setShowPicker(false);
+    setGroupModalId(props.id);
   };
 
   const handleClosePicker = () => {
@@ -74,13 +94,13 @@ const Group = (props: GroupResApiType) => {
           <Text>:</Text>
           <Text style={styles.timeStyle}>{seconds}</Text>
         </View>
-        <TouchableOpacity style={{ backgroundColor: Colors.primaryColor, width: 60, flexDirection: "row", justifyContent: "center", borderRadius: 8 }} onPress={handlePressJoin}>
+        <TouchableOpacity style={{ backgroundColor: Colors.primaryColor, width: 60, height: 50, flexDirection: "row", justifyContent: "center", borderRadius: 16 }} onPress={handlePressJoin}>
           <TextFormat weight={600} numberOfLines={1} style={{ marginTop: 12 }} color={'secondaryColor'} size={'md'}>Join</TextFormat>
         </TouchableOpacity>
       </View>
-      <JoinModal visible={showPicker} onClose={handleClosePicker} onJoin={handleConfirmJoin} />
+      <JoinModal visible={showPicker} onClose={handleClosePicker} onJoin={handleConfirmJoin} groupId={props.id} />
       <View>
-        <TextFormat>{props?.quantity_has_join}/{props?.quantity_total}</TextFormat>
+        <TextFormat>{props?.carts.total_quantity}/{props?.groupSize}</TextFormat>
         <ProgressBarAndroid
           styleAttr="Horizontal"
           indeterminate={false}

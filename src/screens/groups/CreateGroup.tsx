@@ -8,9 +8,12 @@ import GchoiceAxios from '../../api';
 import { useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { ScrollView } from 'react-native-virtualized-view';
+import { useDispatch } from 'react-redux';
+import { updateGroupList } from '../../redux/actions/groupAction';
 
 const CreateGroup = () => {
   const route = useRoute()
+  const dispatch = useDispatch()
   const getHeightOfScreen = Dimensions.get("screen").height
 
 
@@ -95,6 +98,8 @@ const CreateGroup = () => {
           visibilityTime: 2000,
           autoHide: true,
         });
+        const updatedGroupList = await GchoiceAxios.get(`/groups?product_id=${productId}`);
+        dispatch(updateGroupList(updatedGroupList.data.data));
       } else if (response.data.message === 'Group already exists ') {
         Toast.show({
           type: 'error',
@@ -168,7 +173,7 @@ const CreateGroup = () => {
               </View>
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Quantity expected <Text style={{ color: 'red' }}>*</Text></Text>
-                <TextInput style={styles.input} placeholder="Quantity expected" onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
+                <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
                 {quantityExpectedError ? <Text style={styles.errorText}> {quantityExpectedError}</Text> : null}
               </View>
 
@@ -192,7 +197,7 @@ const CreateGroup = () => {
 
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Quantity <Text style={{ color: 'red' }}>*</Text></Text>
-                <TextInput style={styles.input} placeholder="Quantity" onEndEditing={(e) => setQuantity(e.nativeEvent.text)} defaultValue={quantity} />
+                <TextInput style={styles.input} placeholder="Quantity"  keyboardType="numeric" onEndEditing={(e) => setQuantity(e.nativeEvent.text)} defaultValue={quantity} />
                 {quantityError ? <Text style={styles.errorText}> {quantityError}</Text> : null}
               </View>
               <TouchableOpacity style={styles.button} onPress={postDataToApi}>

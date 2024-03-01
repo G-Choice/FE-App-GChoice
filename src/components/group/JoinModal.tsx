@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image, ImageBackground } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Replace with your preferred icon set
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../../assets/colors';
-import { useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import GchoiceAxios from '../../api';
 interface JoinModalProps {
   visible: boolean;
   onClose: () => void;
   onJoin: (quantity: number) => void;
+  groupId: number; 
 }
 
-const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin }) => {
+const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId }) => {
   const [quantity, setQuantity] = useState<number>(1);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
   const handleIncrease = () => {
     setQuantity(prevQuantity => prevQuantity + 1);
   };
@@ -21,13 +24,23 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin }) => {
       setQuantity(prevQuantity => prevQuantity - 1);
     }
   };
+  const handleJoin = async () => {
+    try {
+      const response = await GchoiceAxios.post('/groups/joinGroup', {
+        quantity_product: quantity,
+        group_id: groupId,
+      });
 
-  const handleJoin = () => {
-    onJoin(quantity);
-    navigation.navigate('GroupChat');
-
+      if (response.data.message === 'Joined group successfully') {
+        onJoin(quantity);
+        navigation.navigate('GroupChat');
+      } else {
+        console.error('Failed to join the group:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error during API call:', error);
+    }
   };
-
   return (
     <Modal transparent visible={visible} animationType="slide">
       <View style={styles.modalWrapper}>

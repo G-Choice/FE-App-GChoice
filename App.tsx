@@ -22,13 +22,15 @@ import {
   JoinGroup,
   GroupChatScreen
 } from './src/screens';
-import { RootState, store } from './src/app/store'
+import { RootState } from './src/app/store'
 import { Provider } from 'react-redux'
 import { useSelector } from 'react-redux';
 import {Search} from "./src/screens/search";
 import {SearchResult} from "./src/screens/search/SearchResult.tsx";
+import {store} from './src/redux/store/store.ts';
 
 export const Stack = createNativeStackNavigator();
+
 
 const AuthStack = () => {
   return (
