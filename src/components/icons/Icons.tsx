@@ -31,7 +31,7 @@ export const Icons = {
 
 const Icon: React.FC<IconProps> = ({ type, name, color, size = 24, style }) => {
   const fontSize = 24;
-  const Tag = type as any; // Type assertion for compatibility
+  const Tag = type as any; 
 
   return (
     <>

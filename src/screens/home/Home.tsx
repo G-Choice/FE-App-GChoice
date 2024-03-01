@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   scrollView: {
-    marginTop: 100, // Adjust this value according to the height of the sticky header
+    marginTop: 100, 
   },
 });
 

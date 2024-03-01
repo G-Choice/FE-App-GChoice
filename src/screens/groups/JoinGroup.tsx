@@ -3,54 +3,10 @@ import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Modal, Imag
 import { Colors } from '../../assets/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
-import GchoiceAxios from '../../api';
-import { useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
 const JoinGroup = () => {
-  const route = useRoute()
-    const [quantity, setQuantity] = useState('');
-  const productId = route.params
-//   const postDataToApi = async () => {
-//     try {
-//       const response = await GchoiceAxios.post('gruops', {
-//         group_name: groupName,
-//         description: description,
-//         groupSize: quantityExpected,
-//         hours: parsedTime,
-//         // quantity: quantity,
-//         productId: productId,
-//       });
-//       console.log(response.data, 's');
-//       if (response.data.message === 'Group created successfully!') {
-//         Toast.show({
-//           type: 'success',
-//           position: 'top',
-//           text1: 'Create group successfully!',
-//           visibilityTime: 2000,
-//           autoHide: true,
-//         });
-//       } else if (response.data.message === 'Group already exists ') {
-//         Toast.show({
-//           type: 'error',
-//           position: 'top',
-//           text1: 'You can not create group!',
-//           visibilityTime: 2000,
-//           autoHide: true,
-//         });
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       Toast.show({
-//         type: 'error',
-//         position: 'top',
-//         text1: 'An error occurred. Please try again later.',
-//         visibilityTime: 3000,
-//         autoHide: true,
-//       });
-//     }
-//   };
-
+  const [quantity, setQuantity] = useState('');
   return (
     <>
       <HeaderNavigation type={'secondary'} title="Join group" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
@@ -136,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  
+
 });
 
 export { JoinGroup };

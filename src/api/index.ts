@@ -10,7 +10,6 @@ const GchoiceAxios = axios.create({
 const getToken = async () => {
   try {
     const token = await AsyncStorage.getItem('accessToken'); 
-    console.log(token)
     return token;
   } catch (error) {
     console.error('Error getting token from AsyncStorage:', error);

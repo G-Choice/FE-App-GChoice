@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../../assets/colors';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
 import GchoiceAxios from '../../api';
+
 interface JoinModalProps {
   visible: boolean;
   onClose: () => void;
   onJoin: (quantity: number) => void;
-  groupId: number; 
+  groupId?: number; 
+  groupName?: string
 }
 
-const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId }) => {
+const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId, groupName }) => {
   const [quantity, setQuantity] = useState<number>(1);
   const navigation = useNavigation();
 
@@ -44,19 +46,18 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
   return (
     <Modal transparent visible={visible} animationType="slide">
       <View style={styles.modalWrapper}>
-        <ImageBackground source={require('../../assets/images/background.jpg')} style={styles.picker}>
+        <View style={styles.picker}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text>
-              <Icon name="times" size={23} color="grey" /> {/* Replace with your close icon */}
+              <Icon name="times" size={23} color="grey" /> 
             </Text>
           </TouchableOpacity>
           <View style={styles.avatarContainer}>
-            {/* Replace the source prop with the actual source of your avatars */}
             <Image style={styles.avatar} source={require('../../assets/images/avt.jpg')} />
             <Image style={styles.avatar} source={require('../../assets/images/avt.jpg')} />
             <Image style={styles.avatar} source={require('../../assets/images/avt.jpg')} />
           </View>
-          <Text style={styles.groupName}>Group Name</Text>
+          <Text style={styles.groupName}>{groupName}</Text>
           <Text style={styles.instructions}>Please select the quantity of products:</Text>
           <View style={styles.quantityContainer}>
             <TouchableOpacity onPress={handleDecrease}>
@@ -83,7 +84,7 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
               JOIN
             </Text>
           </TouchableOpacity>
-        </ImageBackground>
+        </View>
       </View>
     </Modal>
   );
@@ -101,6 +102,8 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: Colors.secondaryColor,
     borderRadius: 8,
+    borderWidth: 5,  
+    borderColor: 'pink',  
     alignItems: 'center',
   },
   avatarContainer: {
@@ -114,13 +117,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   groupName: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  welcomeText: {
-    fontSize: 16,
-    color: Colors.primaryColor,
     marginBottom: 10,
   },
   instructions: {
@@ -162,7 +160,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText :{
-    color: Colors.secondaryColor
+    color: Colors.secondaryColor,
+    fontWeight:'600'
   }
 });
 
