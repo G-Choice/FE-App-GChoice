@@ -35,7 +35,7 @@ const Group = (props: GroupResApiType) => {
 
   const process = (props.carts?.total_quantity ?? 0) /(props.groupSize || 1);
   return (
-    <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart", props.id)}>
+    <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart", {data: props})}>
       <View style={{flexDirection: "row", justifyContent: "space-between"}}>
         <View style={styles.groupContent}>
           <AvatarBubble />

@@ -1,4 +1,13 @@
-import {FlatList, Image, ProgressBarAndroid, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  ProgressBarAndroid,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
 import {Cart, CountDown, Group, TextFormat} from "../../components";
 import {HeaderNavigation} from "../../components/navigation/HeaderNavigation.tsx";
 import {Colors} from "../../assets/colors";
@@ -7,55 +16,84 @@ import {formattedPrice} from "../../utils";
 import Icon from 'react-native-vector-icons/Ionicons'
 import GchoiceAxios from "../../api";
 import {useRoute} from "@react-navigation/native";
+import moment from "moment/moment";
+
+type RouteParams = {
+  data: any;
+};
 
 const GroupCart  = () => {
   const route = useRoute()
+  const { data } = route.params as RouteParams;
   const [groupCart, setGroupCart] = useState<any>(null)
+  const [buyingInfo, setBuyingInfo] = useState<any>(null)
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(true);
     GchoiceAxios({
       method: "get",
-      url: `groups/cart_group?id=${route.params}`,
+      url: `groups/cart_group?id=${data.id}`,
       responseType: "json",
     })
       .then((res) => {
-        setGroupCart(res.data.data)
+        setBuyingInfo(res.data.data)
+        setGroupCart(res.data)
+        setLoading(false);
       })
       .catch((e) => {
         console.log(e);
       });
+  }, []);
+
+  const duration = moment.duration(data.remainingHours, 'hours');
+  const hours = Math.floor(duration.asHours());
+  const minutes = duration.minutes();
+  const seconds = duration.seconds();
+
+  const process = (data.carts?.total_quantity ?? 0) /(data.groupSize || 1);
+
   const renderCart = ({ item }: { item: any }) => <Cart {...item} />;
+
+  if (!groupCart) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+      </View>
+    );
+  }
   return (
     <>
       <View>
         <HeaderNavigation type={'secondary'} title="Group Information" wrapperStyle={{ paddingTop: 1 }} />
         <View style={{backgroundColor: Colors.secondaryColor, margin: 5}}>
           <View style={{flexDirection: "row", justifyContent: "space-between",alignItems: "center", marginHorizontal: 5}}>
-            <Text style={{color: Colors.primaryColor, fontWeight: "500"}}>20/15</Text>
-            <CountDown hours={4} minutes={5} seconds={45} />
+            <Text style={{color: Colors.primaryColor, fontWeight: "500"}}>{data.carts.total_quantity}/{data?.groupSize}</Text>
+            <CountDown hours={hours} minutes={minutes} seconds={seconds} />
           </View>
           <ProgressBarAndroid
             styleAttr="Horizontal"
             indeterminate={false}
-            progress={0.4}
+            progress={process}
             color={Colors.primaryColor}
             style={{marginBottom: 5}}
           />
         </View>
         <View style={styles.productContainer}>
-          <Image source={require("../../assets/images/avt.jpg")} style={styles.imgSize} />
+          <Image source={{ uri: groupCart?.productByGroup?.images[0] }} style={styles.imgSize} />
           <View style={{width: "80%"}}>
-            <TextFormat weight={400} numberOfLines={2} color={'darkBlack'} size={'md'}>Casetifg Ốp Điện Thoại Silicon Nhám Từ Tính Chống Sốc Chống Dấu Vân Tay Bảo Vệ Ống Kính Sạc Cho iphone 15 14 13 pro max</TextFormat>
-            <TextFormat weight={600} numberOfLines={1} color={'primaryColor'} size={'lg'}>{formattedPrice(12344)}</TextFormat>
+            <TextFormat weight={400} numberOfLines={2} color={'darkBlack'} size={'md'}>{groupCart?.productByGroup?.product_name}</TextFormat>
+            <TextFormat weight={600} numberOfLines={1} color={'primaryColor'} size={'lg'}>{formattedPrice(groupCart?.productByGroup?.price)}</TextFormat>
           </View>
         </View>
-        <FlatList data={groupCart} renderItem={renderCart} />
+        <FlatList data={buyingInfo} renderItem={renderCart} />
       </View>
       <View style={styles.totalPrice}>
         <TouchableOpacity style={{flexDirection: "row", width: "30%", backgroundColor: "#008081", height: "100%", justifyContent: "center", alignItems: "center"}}>
           <Icon name="chatbubble-ellipses-outline" size={20} color={Colors.secondaryColor}/>
         </TouchableOpacity>
-        <TouchableOpacity style={{flexDirection: "column", alignItems: "center", width: "70%"}}>
-          <TextFormat weight={400} size="md" color="secondaryColor" style={styles.textStyle}>Confirm with 100 products</TextFormat>
-          <TextFormat weight={500} size="lg" color="secondaryColor" style={styles.textStyle}>{formattedPrice(104833)}</TextFormat>
+        <TouchableOpacity style={{flexDirection: "column", alignItems: "center", width: "70%", backgroundColor: Colors.primaryColor,}}>
+          <TextFormat weight={400} size="md" color="secondaryColor" style={styles.textStyle}>Confirm with {data.carts?.total_quantity} products</TextFormat>
+          <TextFormat weight={500} size="lg" color="secondaryColor" style={styles.textStyle}>{formattedPrice(groupCart?.totalPrice)}</TextFormat>
         </TouchableOpacity>
         <View></View>
       </View>
@@ -85,7 +123,6 @@ const styles = StyleSheet.create({
   totalPrice: {
     height: 60,
     width: "100%",
-    backgroundColor: Colors.primaryColor,
     position: "absolute",
     bottom: 0,
     flexDirection: "row"
@@ -93,7 +130,12 @@ const styles = StyleSheet.create({
   textStyle: {
     marginLeft: "auto",
     marginRight: "auto"
-  }
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
 
 export {GroupCart}

@@ -5,38 +5,35 @@ import {Colors} from "../../assets/colors";
 import {formattedPrice} from "../../utils";
 
 interface CartProp {
-  name: string,
+  id: number,
+  cart_id: number
+  user_id: number,
   avatar: string,
-  amount: number,
+  quantity: number,
   price: number,
-  total: number
+  users: {
+    username: string,
+    image: string
+  }
 }
 
-const props: CartProp = {
-  name: "uyen",
-  avatar: "uyen",
-  amount: 20,
-  price: 54354,
-  total: 3254543
-}
-
-const Cart = () => {
+const Cart = (props: CartProp) => {
   return (
     <View style={[styles.aCartContainer, styles.elevation]}>
       <View style={{flexDirection: "row", justifyContent: "space-between"}}>
         <View style={{flexDirection: "row", alignItems: "center", gap: 5}}>
           <AvatarBubble />
-          <Text>{props.name}</Text>
+          <Text>{props?.users?.username}</Text>
         </View>
         <View style={{flexDirection: "row", gap: 3, alignItems: "center"}}>
           <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{formattedPrice(props.price)}</TextFormat>
           <Text>x</Text>
-          <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{props.amount}</TextFormat>
+          <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{props.quantity}</TextFormat>
         </View>
       </View>
       <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-          <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'sm'}>Has join with {props.amount} products</TextFormat>
-          <TextFormat  weight={500} numberOfLines={1} color={'primaryColor'} size={'md'}>{formattedPrice(props.total)}</TextFormat>
+          <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'sm'}>Has join with {props.quantity} products</TextFormat>
+          <TextFormat  weight={500} numberOfLines={1} color={'primaryColor'} size={'md'}>{formattedPrice(props.price)}</TextFormat>
       </View>
     </View>
   )
