@@ -9,6 +9,7 @@ interface GroupResApiType {
     total_quantity?: number
   },
   remainingHours?: number,
+  isJoined ?: boolean
 
 }
 

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../../assets/colors';
-import { useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import GchoiceAxios from '../../api';
 
 interface JoinModalProps {
   visible: boolean;
   onClose: () => void;
   onJoin: (quantity: number) => void;
-  groupId?: number; 
+  groupId?: number;
   groupName?: string
 }
 
@@ -35,7 +35,7 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
 
       if (response.data.message === 'Joined group successfully') {
         onJoin(quantity);
-        navigation.navigate('GroupChat');
+        navigation.navigate('GroupCart');
       } else {
         console.error('Failed to join the group:', response.data.message);
       }
@@ -49,13 +49,11 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
         <View style={styles.picker}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text>
-              <Icon name="times" size={23} color="grey" /> 
+              <Icon name="times" size={23} color="grey" />
             </Text>
           </TouchableOpacity>
           <View style={styles.avatarContainer}>
-            <Image style={styles.avatar} source={require('../../assets/images/avt.jpg')} />
-            <Image style={styles.avatar} source={require('../../assets/images/avt.jpg')} />
-            <Image style={styles.avatar} source={require('../../assets/images/avt.jpg')} />
+            <Image style={styles.avatar} source={require('../../assets/images/defaultGroup.jpg')} />
           </View>
           <Text style={styles.groupName}>{groupName}</Text>
           <Text style={styles.instructions}>Please select the quantity of products:</Text>
@@ -64,15 +62,20 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
               <Icon name="minus" size={24} color={Colors.primaryColor} />
             </TouchableOpacity>
             <TextInput
-              style={styles.quantityInput}
-              keyboardType="numeric"
-              returnKeyType='done'
-              value={quantity.toString()}
-              onChangeText={(text) => {
-                const sanitizedText = text.replace(/[^0-9]/g, '');
-                setQuantity(parseInt(sanitizedText, 10) || 0);
-              }}
-            />
+  style={styles.quantityInput}
+  keyboardType="numeric"
+  returnKeyType='done'
+  value={quantity.toString()}
+  onChangeText={(text) => {
+    const sanitizedText = text.replace(/[^0-9]/g, ''); 
+    const newValue = parseInt(sanitizedText, 10);
+
+    if (!isNaN(newValue) && newValue > 0) {
+      setQuantity(newValue);
+    }
+  }}
+/>
+
             <TouchableOpacity onPress={handleIncrease}>
               <Text>
                 <Icon name="plus" size={24} color={Colors.primaryColor} />
@@ -102,8 +105,8 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: Colors.secondaryColor,
     borderRadius: 8,
-    borderWidth: 5,  
-    borderColor: 'pink',  
+    borderWidth: 5,
+    borderColor: 'pink',
     alignItems: 'center',
   },
   avatarContainer: {
@@ -112,8 +115,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   avatar: {
-    width: 40,
-    height: 40,
+    width: 100,
+    height: 50,
     borderRadius: 20,
   },
   groupName: {
@@ -159,9 +162,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonText :{
+  buttonText: {
     color: Colors.secondaryColor,
-    fontWeight:'600'
+    fontWeight: '600'
   }
 });
 

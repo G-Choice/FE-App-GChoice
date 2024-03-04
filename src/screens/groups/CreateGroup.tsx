@@ -9,10 +9,11 @@ import Toast from 'react-native-toast-message';
 import { ScrollView } from 'react-native-virtualized-view';
 import { useDispatch } from 'react-redux';
 import { updateGroupList } from '../../redux/actions/groupAction';
-
+import { useNavigation } from '@react-navigation/native';
 const CreateGroup = () => {
   const route = useRoute()
   const dispatch = useDispatch()
+  const navigation = useNavigation()
   const [selectedTime, setSelectedTime] = useState('');
   const [isTimeModalVisible, setTimeModalVisible] = useState(false);
   const [groupName, setGroupName] = useState('');
@@ -92,10 +93,12 @@ const CreateGroup = () => {
           position: 'top',
           text1: 'Create group successfully!',
           visibilityTime: 2000,
+          
           autoHide: true,
         });
         const updatedGroupList = await GchoiceAxios.get(`/groups?product_id=${productId}`);
         dispatch(updateGroupList(updatedGroupList.data.data));
+        navigation.navigate("GroupCart");
       } else if (response.data.message === 'Group already exists ') {
         Toast.show({
           type: 'error',
@@ -143,18 +146,16 @@ const CreateGroup = () => {
             keyboardShouldPersistTaps="handled">
             <ImageBackground source={require('../../assets/images/background.jpg')} style={styles.container}>
               <View style={styles.avatarContainer}>
-                <View style={styles.avatarWrapper}>
+              <Image source={require('../../assets/images/defaultGroup.jpg')} style={styles.avatar} />
+                {/* <View style={styles.avatarWrapper}>
                   <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
                   <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
                 </View>
                 <View style={styles.avatarWrapper}>
                   <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
                   <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
-                </View>
-                <View style={styles.avatarWrapper}>
-                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
-                  <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
-                </View>
+                </View> */}
+            
               </View>
 
               <View style={styles.inputContainer}>
@@ -167,6 +168,11 @@ const CreateGroup = () => {
                 <Text style={styles.label}>Description</Text>
                 <TextInput style={styles.input} placeholder="Description" onEndEditing={(e) => setDescription(e.nativeEvent.text)} defaultValue={description} />
               </View>
+              {/* <View style={styles.inputContainer}>
+                <Text style={styles.label}>Quantity Expected</Text>
+                <TextInput style={styles.input} placeholder="Quantity Expected" keyboardType='numeric' onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
+                {quantityExpectedError ? <Text style={styles.errorText}> {quantityExpectedError}</Text> : null}
+              </View> */}
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Quantity expected <Text style={{ color: 'red' }}>*</Text></Text>
                 <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
@@ -174,7 +180,7 @@ const CreateGroup = () => {
               </View>
 
               <TouchableOpacity style={styles.inputContainer} onPress={() => setTimeModalVisible(true)}>
-                <Text style={styles.label}>Existing time <Text style={{ color: 'red' }}>*</Text></Text>
+                <Text style={styles.label}>Expected time<Text style={{ color: 'red' }}>*</Text></Text>
                 <TextInput style={styles.input} placeholder="Select time" editable={false} value={selectedTime} />
                 {selectedTimeError ? <Text style={styles.errorText}> {selectedTimeError}</Text> : null}
               </TouchableOpacity>
@@ -196,7 +202,7 @@ const CreateGroup = () => {
                 <TextInput style={styles.input} placeholder="Quantity" keyboardType="numeric" onEndEditing={(e) => setQuantity(e.nativeEvent.text)} defaultValue={quantity} />
                 {quantityError ? <Text style={styles.errorText}> {quantityError}</Text> : null}
               </View>
-              <TouchableOpacity style={styles.button} onPress={postDataToApi}>
+              <TouchableOpacity style={styles.button} onPress={postDataToApi} >
                 <Text style={styles.buttonText}>CREATE</Text>
               </TouchableOpacity>
             </ImageBackground>
@@ -223,22 +229,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  avatarWrapper: {
-    marginRight: 3,
-    overflow: 'hidden',
-    borderRadius: 25,
-    position: 'relative',
-  },
+  // avatarWrapper: {
+  //   marginRight: 3,
+  //   overflow: 'hidden',
+  //   borderRadius: 25,
+  //   position: 'relative',
+  // },
   avatar: {
-    width: 50,
+    width: 100,
     height: 50,
     borderRadius: 25,
   },
-  activeIcon: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
+  // activeIcon: {
+  //   position: 'absolute',
+  //   bottom: 0,
+  //   right: 0,
+  // },
   inputContainer: {
     marginBottom: 20,
   },

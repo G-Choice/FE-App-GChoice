@@ -1,9 +1,9 @@
-import {ProgressBarAndroid, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {GroupResApiType} from "../../@types/GroupResApiType.ts";
-import {TextFormat} from "../text";
-import {AvatarBubble} from "../child";
-import {Colors} from "../../assets/colors";
-import {useEffect, useState} from "react";
+import { ProgressBarAndroid, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { GroupResApiType } from "../../@types/GroupResApiType.ts";
+import { TextFormat } from "../text";
+import { AvatarBubble } from "../child";
+import { Colors } from "../../assets/colors";
+import { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import JoinModal from "./JoinModal.tsx";
 import moment from 'moment';
@@ -15,7 +15,6 @@ const Group = (props: GroupResApiType) => {
   const [showPicker, setShowPicker] = useState<boolean>(false);
   const [groupModalId, setGroupModalId] = useState<number | null>(null);
 
-  
   const handlePressJoin = () => {
     setShowPicker(true);
   };
@@ -32,10 +31,10 @@ const Group = (props: GroupResApiType) => {
   const minutes = duration.minutes();
   const seconds = duration.seconds();
 
-  const process = (props.carts?.total_quantity ?? 0) /(props.groupSize || 1);
+  const process = (props.carts?.total_quantity ?? 0) / (props.groupSize || 1);
   return (
     <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart")}>
-      <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={styles.groupContent}>
           <AvatarBubble />
           <View>
@@ -44,24 +43,48 @@ const Group = (props: GroupResApiType) => {
           </View>
         </View>
         <CountDown hours={hours} minutes={minutes} seconds={seconds} />
-        <TouchableOpacity style={{ backgroundColor: Colors.primaryColor, width: 60, flexDirection: "row", justifyContent: "center", borderRadius: 8 }} onPress={handlePressJoin}>
-          <TextFormat weight={600} numberOfLines={1} style={{ marginTop: 12 }} color={'secondaryColor'} size={'md'}>Join</TextFormat>
+        <TouchableOpacity
+          style={[
+            {
+              backgroundColor: Colors.primaryColor,
+              width: 60,
+              flexDirection: "row",
+              justifyContent: "center",
+              borderRadius: 8,
+              opacity: props.isJoined ? 0.5 : 1,
+            },
+            props.isJoined && {
+              backgroundColor: Colors.lighterPrimaryColor,
+            },
+          ]}
+          onPress={handlePressJoin}
+          disabled={props.isJoined}
+        >
+          <TextFormat
+            weight={600}
+            numberOfLines={1}
+            style={{ marginTop: 12 }}
+            color={"secondaryColor"}
+            size={"md"}
+          >
+            {props.isJoined ? "Joined" : "Join"}
+          </TextFormat>
         </TouchableOpacity>
       </View>
       <JoinModal visible={showPicker} onClose={handleClosePicker} onJoin={handleConfirmJoin} groupId={props.id} groupName={props.group_name} />
       <View>
-      {props.carts && (
-        <>
-          <TextFormat>{props.carts.total_quantity}/{props?.groupSize}</TextFormat>
-          <ProgressBarAndroid
-            styleAttr="Horizontal"
-            indeterminate={false}
-            progress={process}
-            color={Colors.primaryColor}
-          />
-        </>
-      )}
-    </View>
+        {props.carts && (
+          <>
+            <TextFormat>{props.carts.total_quantity}/{props?.groupSize}</TextFormat>
+            <ProgressBarAndroid
+              styleAttr="Horizontal"
+              indeterminate={false}
+              progress={process}
+              color={Colors.primaryColor}
+            />
+          </>
+        )}
+      </View>
     </TouchableOpacity>
   );
 }
@@ -126,4 +149,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export {Group}
+export { Group }
