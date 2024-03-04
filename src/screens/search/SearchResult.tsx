@@ -53,7 +53,7 @@ const SearchResult = () => {
   const renderItem = ({ item }: { item: any }) => <Card {...item} />;
 
   const handlePressIn = (option: string) => {
-    setSelectedOption(option); // Update selected option
+    setSelectedOption(option); 
   };
 
   return (

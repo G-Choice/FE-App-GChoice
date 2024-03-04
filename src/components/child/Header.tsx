@@ -3,7 +3,6 @@ import {AvatarBubble} from "./AvatarBubbe.tsx";
 import {Colors} from "../../assets/colors";
 
 const getWidthOfScreen = Dimensions.get('window').width
-// const imageWidth = get
 const Header = () => {
 
 

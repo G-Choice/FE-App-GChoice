@@ -8,6 +8,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
 import CustomSliderBox from '../../components/slider/SliderBox';
 import { HeaderNavigation } from "../../components/navigation/HeaderNavigation.tsx";
+import {formattedPrice} from "../../utils";
 interface ProductDetailProps {
   route:{params: {
     id: string;
@@ -17,6 +18,7 @@ interface ProductDetailProps {
 }
 interface Discount {
   discountPrice: string;
+  minQuantity: number
 }
 
 interface Feedback {
@@ -61,13 +63,6 @@ const ProductDetail = () => {
       console.error('Error fetching product details:', error);
     }
   };
-
-  const formattedPrice = (props: any) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(props);
-  }
 
   const navToGroup = useNavigation<any>()
 
@@ -178,7 +173,7 @@ const ProductDetail = () => {
             </View>
             {productDetails?.discounts.map((discount: Discount, index: number) => (
               <View key={index} style={styles.discountTableRow}>
-                <Text style={styles.discountTableCell}> {">"}{discount.discountPrice}</Text>
+                <Text style={styles.discountTableCell}> {">"}{discount.minQuantity}</Text>
                 <Text style={styles.discountTableCell}> {discount.discountPrice} $</Text>
               </View>
             ))}

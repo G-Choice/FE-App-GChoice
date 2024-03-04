@@ -37,7 +37,7 @@ const RegisterLayout = () => {
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
-      setEmailError('Email cannot be empty');
+      setEmailError('Email is required');
       return false;
     }
     const isValid = emailRegex.test(email);
@@ -47,7 +47,7 @@ const RegisterLayout = () => {
 
   const validatePassword = (password: string) => {
     if (!password) {
-      setPasswordError('Password cannot be empty');
+      setPasswordError('Password is required');
       return false;
     }
     const isValid = password.length >= 6;
@@ -77,8 +77,8 @@ const RegisterLayout = () => {
   const submit = async () => {
     setIsLoading(true);
     if (!emailInput.value && !passwordInput.value) {
-      setEmailError('Email cannot be empty');
-      setPasswordError('Password cannot be empty');
+      setEmailError('Email is required');
+      setPasswordError('Password is required');
       setIsLoading(false);
       return;
     }
