@@ -9,7 +9,6 @@ interface GroupResApiType {
     total_quantity?: number
   },
   remainingHours?: number,
-
 }
 
 export {type GroupResApiType}
