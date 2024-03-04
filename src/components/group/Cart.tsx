@@ -22,23 +22,21 @@ const props: CartProp = {
 
 const Cart = () => {
   return (
-    <View style={styles.aCartContainer}>
+    <View style={[styles.aCartContainer, styles.elevation]}>
       <View style={{flexDirection: "row", justifyContent: "space-between"}}>
         <View style={{flexDirection: "row", alignItems: "center", gap: 5}}>
           <AvatarBubble />
           <Text>{props.name}</Text>
         </View>
         <View style={{flexDirection: "row", gap: 3, alignItems: "center"}}>
-          <TextFormat  weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{formattedPrice(props.price)}</TextFormat>
+          <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{formattedPrice(props.price)}</TextFormat>
           <Text>x</Text>
-          <TextFormat  weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{formattedPrice(props.amount)}</TextFormat>
+          <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{props.amount}</TextFormat>
         </View>
       </View>
-      <View  style={{flexDirection: "row", justifyContent: "space-between"}}>
-        <View>
-          <Text>Has join with {props.amount} products</Text>
-        </View>
-          <TextFormat  weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>{props.total}</TextFormat>
+      <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+          <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'sm'}>Has join with {props.amount} products</TextFormat>
+          <TextFormat  weight={500} numberOfLines={1} color={'primaryColor'} size={'md'}>{formattedPrice(props.total)}</TextFormat>
       </View>
     </View>
   )
@@ -51,7 +49,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     marginHorizontal: 5
-  }
+  },
+  elevation: {
+    elevation: 20,
+    shadowColor: "#DFC7C1",
+  },
 })
 
 export {Cart}

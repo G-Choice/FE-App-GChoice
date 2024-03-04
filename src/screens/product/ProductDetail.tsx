@@ -1,49 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Rating } from 'react-native-ratings';
-import { Colors } from '../../assets/colors/index';
+import { Colors } from '../../assets/colors';
 import GChoiceAxios from '../../api/index';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Dimensions } from 'react-native';
 import CustomSliderBox from '../../components/slider/SliderBox';
 import { HeaderNavigation } from "../../components/navigation/HeaderNavigation.tsx";
 import {formattedPrice} from "../../utils";
-interface ProductDetailProps {
-  route:{params: {
-    id: string;
-  };}
-    
-  
-}
 interface Discount {
   discountPrice: string;
   minQuantity: number
 }
 
-interface Feedback {
-  id: String;
-  rating: number;
-  comment: string;
-  users: {
-    username: string;
-  }
-}
-interface ProductDetails {
-  product_name: string;
-  shop: {
-    shop_name: string;
-  };
-  price: string;
-  description: string;
-  avgrating: number;
-  reviews: Feedback[];
-  discounts: Discount[]
-}
-
 const ProductDetail = () => {
   const route = useRoute()
-  const navigation = useNavigation()
   const  id  = route.params;
   const [productDetails, setProductDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
