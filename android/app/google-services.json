@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "578702676032",
+    "project_id": "gchoice-3b866",
+    "storage_bucket": "gchoice-3b866.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578702676032:android:1ff526c5c6728f6628cfa5",
+        "android_client_info": {
+          "package_name": "com.gchoiceapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsY7IiTyRsdUm_vMFTzQzIRmW2IdwIneM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
