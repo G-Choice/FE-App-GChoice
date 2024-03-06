@@ -6,7 +6,7 @@
 //  * @format
 //  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Home} from "./src/screens/home";
@@ -30,6 +30,8 @@ import { useSelector } from 'react-redux';
 import {Search} from "./src/screens/search";
 import {SearchResult} from "./src/screens/search/SearchResult.tsx";
 import {store} from './src/redux/store/store.ts';
+import { requestUserPermission } from './src/utils/notificationService.ts';
+
 
 export const Stack = createNativeStackNavigator();
 
@@ -64,6 +66,7 @@ const MainStack = () => {
 };
 
 const AuthSelector = () => {
+ 
   const { authToken } = useSelector((state: RootState) => state.auth);
   return authToken ? (
     <MainStack />
@@ -73,6 +76,12 @@ const AuthSelector = () => {
 }
 
 const App = () => {
+  useEffect(() => {
+    const requestPermission = async () => {
+      await requestUserPermission();
+    };
+    requestPermission();
+  }, []);
   return (
     <Provider store={store}>
       <NavigationContainer>

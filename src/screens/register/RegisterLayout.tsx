@@ -14,6 +14,7 @@ import GchoiceAxios from '../../api/index';
 import { setAuth } from '../../global-states';
 import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { AsyncStorage } from 'react-native';
 
 const RegisterLayout = () => {
   const navigation = useNavigation<any>();
@@ -88,11 +89,13 @@ const RegisterLayout = () => {
       setIsLoading(false);
       return;
     }
+    let fcmToken = await AsyncStorage.getItem('fcm_token');
     let data = {
       email: emailInput.value,
       password: passwordInput.value,
       username: fullNameInput.value,
       number_phone: phoneInput.value,
+      fcmToken:fcmToken
     };
     if (
       !validateEmail(emailInput.value) ||

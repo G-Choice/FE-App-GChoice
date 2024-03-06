@@ -75,10 +75,11 @@ const LoginLayout: React.FC = () => {
      setIsLoading(false);
      return;
    }
-
+   let fcmToken = await AsyncStorage.getItem('fcm_token');
    let data = {
      email: emailInput.value,
      password: passwordInput.value,
+     fcmToken:fcmToken,
    };
    try {
     const response = await GchoiceAxios({
