@@ -13,7 +13,7 @@ import { updateGroupList} from '../../redux/actions/groupAction.ts'
 import { RootState } from "../../redux/store/store.ts";
 const GroupEachProduct = () => {
   const route = useRoute()
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const dispatch = useDispatch();
   const groupList = useSelector((state: RootState) => state.group.groupList);
 
@@ -41,7 +41,7 @@ const GroupEachProduct = () => {
       fetchGroups();
     }, [dispatch, route.params])
   );
-  const handleBack = () => {};
+  const handleOnPressIn = () => {};
   const handleSearch = () => {};
   const renderItem = ({ item }: { item: any }) => <Group {...item} />;
   return (
@@ -54,11 +54,11 @@ const GroupEachProduct = () => {
           <TextFormat weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>Create new group</TextFormat>
         </TouchableOpacity>
       </View>
-      <SearchBar placeholder="Search..." onSubmit={handleSearch} onBack={handleBack}/>
+      <SearchBar placeholder="Search..." onSubmit={handleSearch} onPressIn={handleOnPressIn} />
       <FlatList data={groupList} renderItem={renderItem}
                 style={styles.groupContainer} />
     </View>
-    )
+  )
 }
 
 const styles = StyleSheet.create({

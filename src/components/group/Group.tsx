@@ -7,15 +7,15 @@ import {useEffect, useState} from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import JoinModal from "./JoinModal.tsx";
 import moment from 'moment';
-import { CountDown } from "../index.ts";
+import { CountDown } from "../time";
 const Group = (props: GroupResApiType) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const route = useRoute()
   const [quantity, setQuantity] = useState<number>(1)
   const [showPicker, setShowPicker] = useState<boolean>(false);
   const [groupModalId, setGroupModalId] = useState<number | null>(null);
 
-  
+
   const handlePressJoin = () => {
     setShowPicker(true);
   };
@@ -24,6 +24,7 @@ const Group = (props: GroupResApiType) => {
     setShowPicker(false);
     setGroupModalId(props.id ?? null);
   };
+
   const handleClosePicker = () => {
     setShowPicker(false);
   };
@@ -34,7 +35,7 @@ const Group = (props: GroupResApiType) => {
 
   const process = (props.carts?.total_quantity ?? 0) /(props.groupSize || 1);
   return (
-    <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart")}>
+    <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart", {data: props})}>
       <View style={{flexDirection: "row", justifyContent: "space-between"}}>
         <View style={styles.groupContent}>
           <AvatarBubble />
@@ -50,18 +51,18 @@ const Group = (props: GroupResApiType) => {
       </View>
       <JoinModal visible={showPicker} onClose={handleClosePicker} onJoin={handleConfirmJoin} groupId={props.id} groupName={props.group_name} />
       <View>
-      {props.carts && (
-        <>
-          <TextFormat>{props.carts.total_quantity}/{props?.groupSize}</TextFormat>
-          <ProgressBarAndroid
-            styleAttr="Horizontal"
-            indeterminate={false}
-            progress={process}
-            color={Colors.primaryColor}
-          />
-        </>
-      )}
-    </View>
+        {props.carts && (
+          <>
+            <TextFormat>{props.carts.total_quantity}/{props?.groupSize}</TextFormat>
+            <ProgressBarAndroid
+              styleAttr="Horizontal"
+              indeterminate={false}
+              progress={process}
+              color={Colors.primaryColor}
+            />
+          </>
+        )}
+      </View>
     </TouchableOpacity>
   );
 }
