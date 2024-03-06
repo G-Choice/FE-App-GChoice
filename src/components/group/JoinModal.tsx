@@ -15,7 +15,7 @@ interface JoinModalProps {
 
 const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId, groupName }) => {
   const [quantity, setQuantity] = useState<number>(1);
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const handleIncrease = () => {
     setQuantity(prevQuantity => prevQuantity + 1);
@@ -35,7 +35,7 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
 
       if (response.data.message === 'Joined group successfully') {
         onJoin(quantity);
-        navigation.navigate('GroupCart');
+        navigation.navigate('GroupCart', {data :response.data.data });
       } else {
         console.error('Failed to join the group:', response.data.message);
       }
@@ -62,19 +62,19 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
               <Icon name="minus" size={24} color={Colors.primaryColor} />
             </TouchableOpacity>
             <TextInput
-  style={styles.quantityInput}
-  keyboardType="numeric"
-  returnKeyType='done'
-  value={quantity.toString()}
-  onChangeText={(text) => {
-    const sanitizedText = text.replace(/[^0-9]/g, ''); 
-    const newValue = parseInt(sanitizedText, 10);
+              style={styles.quantityInput}
+              keyboardType="numeric"
+              returnKeyType='done'
+              value={quantity.toString()}
+              onChangeText={(text) => {
+                const sanitizedText = text.replace(/[^0-9]/g, '');
+                const newValue = parseInt(sanitizedText, 10);
 
-    if (!isNaN(newValue) && newValue > 0) {
-      setQuantity(newValue);
-    }
-  }}
-/>
+                if (!isNaN(newValue) && newValue > 0) {
+                  setQuantity(newValue);
+                }
+              }}
+            />
 
             <TouchableOpacity onPress={handleIncrease}>
               <Text>

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
@@ -65,6 +65,7 @@ const LoginLayout: React.FC = () => {
   };
 
  const submit = async () => {
+   Keyboard.dismiss()
    setIsLoading(true);
 
    const isEmailValid = validateEmail(emailInput.value);
@@ -102,7 +103,8 @@ const LoginLayout: React.FC = () => {
         autoHide: true,
         onHide: () => {
           resetForm();
-          navigation.navigate('HomeScreen');
+          naviga
+          tion.navigate('HomeScreen');
         },
       });
     }

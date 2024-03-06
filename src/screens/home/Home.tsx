@@ -22,7 +22,7 @@ const Home = () => {
       <View style={styles.stickyHeader}>
         <Header />
         <TouchableOpacity onPress={() => navigateToSearch.navigate("Search")}>
-          <SearchBar placeholder="Search..." onSubmit={handleSearch} onBack={handleBack} onPressIn={() => navigateToSearch.navigate("Search")}/>
+          <SearchBar placeholder="Search..." onSubmit={handleSearch} onPressIn={() => navigateToSearch.navigate("Search")}/>
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>

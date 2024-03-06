@@ -20,7 +20,9 @@ import {
   CreateGroup,
   GroupEachProduct,
   GroupChatScreen,
-  GroupCart
+  GroupCart,
+  ConfirmOrder,
+  SetLocation
 } from './src/screens';
 import { RootState } from './src/app/store'
 import { Provider } from 'react-redux'
@@ -54,6 +56,9 @@ const MainStack = () => {
       <Stack.Screen options={{title: '', headerShown: false}} name='Search' component={Search} />
       <Stack.Screen options={{title: '', headerShown: false}} name='SearchResult' component={SearchResult} />
       <Stack.Screen options={{title: '', headerShown: false}} name='GroupCart' component={GroupCart} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='ConfirmOrder' component={ConfirmOrder} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='SetLocation' component={SetLocation} />
+
     </Stack.Navigator>
   );
 };

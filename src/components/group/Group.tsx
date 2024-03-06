@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import JoinModal from "./JoinModal.tsx";
 import moment from 'moment';
-import { CountDown } from "../index.ts";
+import { CountDown } from "../time";
 const Group = (props: GroupResApiType) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const route = useRoute()
   const [quantity, setQuantity] = useState<number>(1)
   const [showPicker, setShowPicker] = useState<boolean>(false);
@@ -31,10 +31,10 @@ const Group = (props: GroupResApiType) => {
   const minutes = duration.minutes();
   const seconds = duration.seconds();
 
-  const process = (props.carts?.total_quantity ?? 0) / (props.groupSize || 1);
+  const process = (props.carts?.total_quantity ?? 0) /(props.groupSize || 1);
   return (
-    <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart")}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+    <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart", {data: props})}>
+      <View style={{flexDirection: "row", justifyContent: "space-between"}}>
         <View style={styles.groupContent}>
           <AvatarBubble />
           <View>

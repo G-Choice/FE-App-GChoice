@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 const CreateGroup = () => {
   const route = useRoute()
   const dispatch = useDispatch()
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
   const [selectedTime, setSelectedTime] = useState('');
   const [isTimeModalVisible, setTimeModalVisible] = useState(false);
   const [groupName, setGroupName] = useState('');
@@ -98,7 +98,7 @@ const CreateGroup = () => {
         });
         const updatedGroupList = await GchoiceAxios.get(`/groups?product_id=${productId}`);
         dispatch(updateGroupList(updatedGroupList.data.data));
-        navigation.navigate("GroupCart");
+        navigation.navigate("GroupEachProduct", {data: updatedGroupList.data.data});
       } else if (response.data.message === 'Group already exists ') {
         Toast.show({
           type: 'error',
