@@ -104,8 +104,7 @@ const LoginLayout: React.FC = () => {
         autoHide: true,
         onHide: () => {
           resetForm();
-          naviga
-          tion.navigate('HomeScreen');
+          navigation.navigate('HomeScreen');
         },
       });
     }

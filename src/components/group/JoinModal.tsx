@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../../assets/colors';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import GchoiceAxios from '../../api';
+import { useDispatch } from 'react-redux';
+import { updateGroupList } from '../../redux/actions/groupAction';
 
 interface JoinModalProps {
   visible: boolean;
@@ -15,8 +17,9 @@ interface JoinModalProps {
 
 const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId, groupName }) => {
   const [quantity, setQuantity] = useState<number>(1);
+  const route = useRoute()
   const navigation = useNavigation<any>();
-
+  const  dispatch = useDispatch()
   const handleIncrease = () => {
     setQuantity(prevQuantity => prevQuantity + 1);
   };
@@ -32,10 +35,14 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
         quantity_product: quantity,
         group_id: groupId,
       });
-
+      console.log(route.params,'aaasss')
       if (response.data.message === 'Joined group successfully') {
         onJoin(quantity);
-        navigation.navigate('GroupCart', {data :response.data.data });
+        // navigation.navigate('GroupCart', {data :response.data.data });
+        const updatedGroupList = await GchoiceAxios.get(`/groups?product_id=${route.params}`);
+        dispatch(updateGroupList(updatedGroupList.data.data));
+        // navigation.navigate("GroupEachProduct", {data: updatedGroupList.data.data});
+        navigation.navigate("GroupEachProduct",  route.params );
       } else {
         console.error('Failed to join the group:', response.data.message);
       }

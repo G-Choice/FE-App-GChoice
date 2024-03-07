@@ -10,7 +10,7 @@ export interface ConfirmOrderParams {
 }
 const ConfirmOrder = ({ navigation }: any) => {
   const route = useRoute<ConfirmOrderParams>();
-  console.log(route,'uuuu')
+  const { name, phoneNumber, address, selectedLocation } = route.params || {};
   return (
     <>
       <HeaderNavigation type={'secondary'} title="Confirm order" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
@@ -22,7 +22,11 @@ const ConfirmOrder = ({ navigation }: any) => {
         </TouchableOpacity>
         <View style={styles.icon_location}>
           <Icon name="map-marker" size={24} color="#6B50F6" style={styles.icon} />
-          <Text style={styles.address}>{route.params?.address || 'No address selected'}</Text>
+          <View>
+          <Text style={styles.infor}>{name }</Text>
+          <Text style={styles.infor}>{phoneNumber }</Text>
+          <Text style={styles.infor}>{address }</Text>
+          </View>
         </View>
       </View>
         <View style={styles.section}>
@@ -51,7 +55,6 @@ const ConfirmOrder = ({ navigation }: any) => {
           </View>
         </View>
 
-        {/* Button */}
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Finish_Order')}>
           <Text style={styles.plOrder}>Confirm Order</Text>
         </TouchableOpacity>
@@ -97,9 +100,9 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
-  address: {
+  infor: {
     marginLeft: 10,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 15,
   },
   seri: {

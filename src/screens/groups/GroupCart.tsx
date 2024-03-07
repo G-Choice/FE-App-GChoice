@@ -46,13 +46,12 @@ const GroupCart  = () => {
       });
   }, []);
 
-  const duration = moment.duration(data.remainingHours, 'hours');
+  const duration = moment.duration(data?.remainingHours, 'hours');
   const hours = Math.floor(duration.asHours());
   const minutes = duration.minutes();
   const seconds = duration.seconds();
 
-  const process = (data.carts?.total_quantity ?? 0) /(data.groupSize || 1);
-// const total_quantity = 200
+  const process = (data?.carts?.total_quantity ?? 0) /(data?.groupSize || 1);
   const renderCart = ({ item }: { item: any }) => <Cart {...item} />;
 
   if (!groupCart) {

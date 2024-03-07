@@ -1,5 +1,3 @@
-// SetLocation.tsx
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, PermissionsAndroid, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
@@ -12,7 +10,14 @@ interface SetLocationProps {
     route: any;
 }
 
+export interface SetLocationParams {
+    name?: string;
+    phoneNumber?: string;
+}
+
 const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
+    const [name, setName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [location, setLocation] = useState('');
     const [selectedLocation, setSelectedLocation] = useState<any>(null);
 
@@ -22,7 +27,6 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
 
     const requestLocationPermission = async () => {
         try {
-            // Request location permission
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                 {
@@ -34,11 +38,9 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
                 }
             );
 
-            // Check if permission is granted
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 getCurrentLocation();
             } else {
-                // Alert the user if permission is denied
                 Alert.alert(
                     'Location Permission Denied',
                     'To use this feature, please enable location services for the app in your device settings.',
@@ -46,20 +48,17 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
                 );
             }
         } catch (error) {
-            // Handle errors during permission request
             console.error('Error requesting location permission:', error);
         }
     };
 
     const getCurrentLocation = () => {
-        // Get the current location if permission is granted
         Geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
                 setSelectedLocation({ latitude, longitude });
             },
             (error) => {
-                // Handle errors when getting the current location
                 console.error('Error getting current location:', error);
             },
             { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
@@ -67,11 +66,7 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
     };
 
     const saveLocation = () => {
-        console.log(selectedLocation,'sss')
-        // Navigate to ConfirmOrder and pass the selected location
-        navigation.navigate('ConfirmOrder', { address: location, selectedLocation });
-
-        // Display the latitude and longitude in the input field
+        navigation.navigate('ConfirmOrder', { name, phoneNumber, address: location, selectedLocation });
         if (selectedLocation) {
             const { latitude, longitude } = selectedLocation;
             setLocation(`Latitude: ${latitude}, Longitude: ${longitude}`);
@@ -85,9 +80,27 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
 
     return (
         <>
-            <HeaderNavigation type={'secondary'} title="Confirm order" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
+            <HeaderNavigation type={'secondary'} title="Set location" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
             <View style={styles.container}>
                 <Text style={styles.title}>Set Delivery Location</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter your name"
+                    value={name}
+                    onChangeText={(text) => setName(text)}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter your phone number"
+                    value={phoneNumber}
+                    onChangeText={(text) => setPhoneNumber(text)}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter your delivery address"
+                    value={location}
+                    onChangeText={(text) => setLocation(text)}
+                />
                 <MapView
                     style={styles.map}
                     initialRegion={{
@@ -103,13 +116,7 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
                     )}
                 </MapView>
 
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter your delivery address"
-                    value={location}
-                    onChangeText={(text) => setLocation(text)}
-                />
-                <TouchableOpacity style={styles.button} onPress={saveLocation}>
+                <TouchableOpacity onPress={saveLocation} style={styles.button}>
                     <Text style={styles.buttonText}>Save location</Text>
                 </TouchableOpacity>
             </View>

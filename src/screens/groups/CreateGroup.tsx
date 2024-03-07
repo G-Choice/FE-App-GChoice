@@ -96,9 +96,11 @@ const CreateGroup = () => {
           
           autoHide: true,
         });
-        const updatedGroupList = await GchoiceAxios.get(`/groups?product_id=${productId}`);
+        console.log('id:', route.params)
+        const updatedGroupList = await GchoiceAxios.get(`/groups?product_id=${route.params}`);
         dispatch(updateGroupList(updatedGroupList.data.data));
-        navigation.navigate("GroupEachProduct", {data: updatedGroupList.data.data});
+        // navigation.navigate("GroupEachProduct", {data: updatedGroupList.data.data});
+        navigation.navigate("GroupEachProduct",  route.params );
       } else if (response.data.message === 'Group already exists ') {
         Toast.show({
           type: 'error',
