@@ -17,13 +17,14 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import GchoiceAxios from "../../api";
 import {useRoute} from "@react-navigation/native";
 import moment from "moment/moment";
-
+import { useNavigation } from "@react-navigation/native";
 type RouteParams = {
   data: any;
 };
 
 const GroupCart  = () => {
   const route = useRoute()
+  const navigation = useNavigation()
   const { data } = route.params as RouteParams;
   const [groupCart, setGroupCart] = useState<any>(null)
   const [buyingInfo, setBuyingInfo] = useState<any>(null)
@@ -45,13 +46,12 @@ const GroupCart  = () => {
       });
   }, []);
 
-  const duration = moment.duration(data.remainingHours, 'hours');
+  const duration = moment.duration(data?.remainingHours, 'hours');
   const hours = Math.floor(duration.asHours());
   const minutes = duration.minutes();
   const seconds = duration.seconds();
 
-  const process = (data.carts?.total_quantity ?? 0) /(data.groupSize || 1);
-
+  const process = (data?.carts?.total_quantity ?? 0) /(data?.groupSize || 1);
   const renderCart = ({ item }: { item: any }) => <Cart {...item} />;
 
   if (!groupCart) {
@@ -67,7 +67,7 @@ const GroupCart  = () => {
         <HeaderNavigation type={'secondary'} title="Group Information" wrapperStyle={{ paddingTop: 1 }} />
         <View style={{backgroundColor: Colors.secondaryColor, margin: 5}}>
           <View style={{flexDirection: "row", justifyContent: "space-between",alignItems: "center", marginHorizontal: 5}}>
-            <Text style={{color: Colors.primaryColor, fontWeight: "500"}}>{data.carts.total_quantity}/{data?.groupSize}</Text>
+            <Text style={{color: Colors.primaryColor, fontWeight: "500"}}>{data.carts?.total_quantity}/{data?.groupSize}</Text>
             <CountDown hours={hours} minutes={minutes} seconds={seconds} />
           </View>
           <ProgressBarAndroid
@@ -88,10 +88,11 @@ const GroupCart  = () => {
         <FlatList data={buyingInfo} renderItem={renderCart} />
       </View>
       <View style={styles.totalPrice}>
-        <TouchableOpacity style={{flexDirection: "row", width: "30%", backgroundColor: "#008081", height: "100%", justifyContent: "center", alignItems: "center"}}>
+        <TouchableOpacity style={{flexDirection: "row", width: "30%", backgroundColor: "#008081", height: "100%", justifyContent: "center", alignItems: "center"}}onPress={() => navigation.navigate('GroupChat')}>
           <Icon name="chatbubble-ellipses-outline" size={20} color={Colors.secondaryColor}/>
         </TouchableOpacity>
-        <TouchableOpacity style={{flexDirection: "column", alignItems: "center", width: "70%", backgroundColor: Colors.primaryColor,}}>
+        <TouchableOpacity style={{flexDirection: "column", alignItems: "center", width: "70%", backgroundColor: Colors.primaryColor,}} onPress={() => navigation.navigate('ConfirmOrder')}>
+
           <TextFormat weight={400} size="md" color="secondaryColor" style={styles.textStyle}>Confirm with {data.carts?.total_quantity} products</TextFormat>
           <TextFormat weight={500} size="lg" color="secondaryColor" style={styles.textStyle}>{formattedPrice(groupCart?.totalPrice)}</TextFormat>
         </TouchableOpacity>

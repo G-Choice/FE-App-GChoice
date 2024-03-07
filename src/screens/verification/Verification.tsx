@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image, TextInput, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput, ActivityIndicator, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
@@ -11,7 +11,7 @@ import Toast from 'react-native-toast-message';
 interface VerificationProps { }
 
 const Verification: React.FC<VerificationProps> = ({ route }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { email } = route.params;
   const [otpValues, setOtpValues] = useState(['', '', '', '', '', '']);
   const otpInputsRefs = useRef<TextInput[]>([...Array(6)].map(() => React.createRef<TextInput>()));
@@ -30,6 +30,7 @@ const Verification: React.FC<VerificationProps> = ({ route }) => {
   };
 
   const submitVerification = async () => {
+    Keyboard.dismiss()
     setLoading(true);
     setError('');
 

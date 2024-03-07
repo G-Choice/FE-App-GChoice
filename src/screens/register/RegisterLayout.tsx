@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
@@ -17,7 +17,7 @@ import Toast from 'react-native-toast-message';
 import { AsyncStorage } from 'react-native';
 
 const RegisterLayout = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -76,6 +76,7 @@ const RegisterLayout = () => {
   };
 
   const submit = async () => {
+    Keyboard.dismiss()
     setIsLoading(true);
     if (!emailInput.value && !passwordInput.value) {
       setEmailError('Email is required');

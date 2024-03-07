@@ -6,5 +6,7 @@ export const Colors = Object.freeze({
   darkGrey: '#777171',
   semiLightGrey: '#F4F6FA',
   lightBlue: '#2A8BF2',
-  activeIconColor: '#00FF00'
+  activeIconColor: '#00FF00',
+  green: '#008000',
+  lighterPrimaryColor: '#FFB6C1'
 });
