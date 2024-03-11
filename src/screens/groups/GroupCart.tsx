@@ -33,7 +33,7 @@ const GroupCart  = () => {
     setLoading(true);
     GchoiceAxios({
       method: "get",
-      url: `groups/cart_group?id=${data.id}`,
+      url: `groups/cart_group?group_id=${data.id}`,
       responseType: "json",
     })
       .then((res) => {
@@ -88,16 +88,55 @@ const GroupCart  = () => {
         <FlatList data={buyingInfo} renderItem={renderCart} />
       </View>
       <View style={styles.totalPrice}>
-        <TouchableOpacity style={{flexDirection: "row", width: "30%", backgroundColor: "#008081", height: "100%", justifyContent: "center", alignItems: "center"}}onPress={() => navigation.navigate('GroupChat')}>
-          <Icon name="chatbubble-ellipses-outline" size={20} color={Colors.secondaryColor}/>
-        </TouchableOpacity>
-        <TouchableOpacity style={{flexDirection: "column", alignItems: "center", width: "70%", backgroundColor: Colors.primaryColor,}} onPress={() => navigation.navigate('ConfirmOrder')}>
-
-          <TextFormat weight={400} size="md" color="secondaryColor" style={styles.textStyle}>Confirm with {data.carts?.total_quantity} products</TextFormat>
-          <TextFormat weight={500} size="lg" color="secondaryColor" style={styles.textStyle}>{formattedPrice(groupCart?.totalPrice)}</TextFormat>
-        </TouchableOpacity>
-        <View></View>
-      </View>
+  {data.isJoined && (
+    <>
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          width: "30%",
+          backgroundColor: "#008081",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onPress={() => navigation.navigate("GroupChat")}
+      >
+        <Icon
+          name="chatbubble-ellipses-outline"
+          size={20}
+          color={Colors.secondaryColor}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          flexDirection: "column",
+          alignItems: "center",
+          width: "70%",
+          backgroundColor: Colors.primaryColor,
+        }}
+        onPress={() => navigation.navigate("ConfirmOrder")}
+      >
+        <TextFormat
+          weight={400}
+          size="md"
+          color="secondaryColor"
+          style={styles.textStyle}
+        >
+          Confirm with {data.carts?.total_quantity} products
+        </TextFormat>
+        <TextFormat
+          weight={500}
+          size="lg"
+          color="secondaryColor"
+          style={styles.textStyle}
+        >
+          {formattedPrice(groupCart?.totalPrice)}
+        </TextFormat>
+      </TouchableOpacity>
+    </>
+  )}
+  <View></View>
+</View>
     </>
   )
 }

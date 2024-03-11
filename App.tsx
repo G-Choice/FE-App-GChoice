@@ -22,7 +22,9 @@ import {
   GroupChatScreen,
   GroupCart,
   ConfirmOrder,
-  SetLocation
+  SetLocation,
+  AccountSetting
+
 } from './src/screens';
 import { RootState } from './src/app/store'
 import { Provider } from 'react-redux'
@@ -60,7 +62,7 @@ const MainStack = () => {
       <Stack.Screen options={{title: '', headerShown: false}} name='GroupCart' component={GroupCart} />
       <Stack.Screen options={{title: '', headerShown: false}} name='ConfirmOrder' component={ConfirmOrder} />
       <Stack.Screen options={{title: '', headerShown: false}} name='SetLocation' component={SetLocation} />
-
+      <Stack.Screen options={{title: '', headerShown: false}} name='AccountSetting' component={AccountSetting} />
     </Stack.Navigator>
   );
 };

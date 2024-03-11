@@ -89,13 +89,13 @@ const RegisterLayout = () => {
       setIsLoading(false);
       return;
     }
-    let fcmToken = await AsyncStorage.getItem('fcm_token');
+    // let fcmToken = await AsyncStorage.getItem('fcm_token');
     let data = {
       email: emailInput.value,
       password: passwordInput.value,
       username: fullNameInput.value,
       number_phone: phoneInput.value,
-      fcmToken:fcmToken
+      // fcmToken:fcmToken
     };
     if (
       !validateEmail(emailInput.value) ||

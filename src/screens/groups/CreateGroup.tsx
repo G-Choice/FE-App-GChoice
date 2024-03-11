@@ -122,7 +122,7 @@ const CreateGroup = () => {
     }
   };
   const renderTimeOptions = () => {
-    const timeOptions = ['9 hours', '12 hours', '12 hours 30 minutes', '24 hours', '25 hours 30 minutes', '48 hours'];
+    const timeOptions = ['1 hour', '12 hours', '12 hours 30 minutes', '24 hours', '25 hours 30 minutes', '48 hours'];
     return timeOptions.map((time) => (
       <TouchableOpacity
         key={time}
