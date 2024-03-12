@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import CustomSliderBox from '../../components/slider/SliderBox';
 import { HeaderNavigation } from "../../components/navigation/HeaderNavigation.tsx";
-import {formattedPrice} from "../../utils";
+import { formattedPrice } from "../../utils";
 interface Discount {
   discountPrice: string;
   minQuantity: number
@@ -15,7 +15,7 @@ interface Discount {
 
 const ProductDetail = () => {
   const route = useRoute()
-  const  id  = route.params;
+  const id = route.params;
   const [productDetails, setProductDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const groupInfo = '8 groups are joining';
@@ -70,7 +70,7 @@ const ProductDetail = () => {
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.productPrice}>{formattedPrice(productDetails.price)}</Text>
-            <TouchableOpacity style={styles.groupInfoContainer}  onPress={() => navToGroup.navigate("GroupEachProduct")}>
+            <TouchableOpacity style={styles.groupInfoContainer} onPress={() => navToGroup.navigate("GroupEachProduct")}>
               <Text style={styles.groupInfo}>{groupInfo}</Text>
             </TouchableOpacity>
           </View>
@@ -94,7 +94,11 @@ const ProductDetail = () => {
           </View>
           <View style={styles.shopInfoContainer}>
             <View style={styles.shopAvatarContainer}>
-            <Image source={{ uri: productDetails.shop.shop_image }} style={styles.shopAvatar} />
+              {/* {productDetails.shop.shop_image ? (
+                <Image source={{ uri: productDetails.shop.shop_image }} style={styles.shopAvatar} />
+              ) : (
+                <Text>No Image Available</Text>
+              )} */}
             </View>
             <View style={styles.shopDetailsContainer}>
               <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
@@ -150,28 +154,28 @@ const ProductDetail = () => {
             ))}
           </View>
         </ScrollView>
-       
+
       </View>
       <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.heartButton}
-            onPress={toggleLike}
-          >
-            <Icon
-              name={isLiked ? 'heart' : 'heart-o'}
-              size={20}
-              color={isLiked ? Colors.primaryColor : Colors.primaryColor}
-              style={styles.buttonIcon}
-            />
-            <Text> 2030</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.joinGroupButton} onPress={() => navToGroup.navigate("GroupEachProduct", route.params )}>
-            <Text style={styles.buttonText}>Join Group</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buyNowButton}>
-            <Text style={styles.buttonText}>Buy Now</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.heartButton}
+          onPress={toggleLike}
+        >
+          <Icon
+            name={isLiked ? 'heart' : 'heart-o'}
+            size={20}
+            color={isLiked ? Colors.primaryColor : Colors.primaryColor}
+            style={styles.buttonIcon}
+          />
+          <Text> 2030</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.joinGroupButton} onPress={() => navToGroup.navigate("GroupEachProduct", route.params)}>
+          <Text style={styles.buttonText}>Join Group</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buyNowButton}>
+          <Text style={styles.buttonText}>Buy Now</Text>
+        </TouchableOpacity>
+      </View>
 
     </>
   );
@@ -221,7 +225,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 20,
-    marginBottom:20
+    marginBottom: 20
 
   },
   shopAvatar: {

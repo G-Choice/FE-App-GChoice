@@ -10,7 +10,7 @@ import { ButtonComponent } from '../../components/input/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import GchoiceAxios from '../../api/index';
-import { setAuth } from '../../global-states';
+import { setAuth ,fetchUserInfo } from '../../global-states';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -75,7 +75,9 @@ const LoginLayout: React.FC = () => {
      setIsLoading(false);
      return;
    }
+   
    let fcmToken = await AsyncStorage.getItem('fcm_token');
+   
    let data = {
      email: emailInput.value,
      password: passwordInput.value,
@@ -91,9 +93,10 @@ const LoginLayout: React.FC = () => {
     dispatch(
       setAuth({
         authToken: response.data.accessToken,
-        refreshToken: response.data.refreshToken,
+        refreshToken: response.data.refreshToken
       })
     );
+    await dispatch(fetchUserInfo(response.data.accessToken));
     setIsLoading(false);
     if (response.status === 201) {
       Toast.show({
@@ -120,7 +123,7 @@ const LoginLayout: React.FC = () => {
        autoHide: true,
      });
    } else {
-     console.log('An error occurred:', error.message);
+     console.log('An error occurred:', error.message, error.response.data);
      Toast.show({
        type: 'error',
        position: 'top',
