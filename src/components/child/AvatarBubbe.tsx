@@ -1,9 +1,12 @@
 import {Image, StyleSheet, TouchableOpacity} from "react-native";
+import { useSelector } from 'react-redux';
 
 const AvatarBubble = () => {
+  const userInfo = useSelector((state: any) => state.auth.userInfo);
+
   return (
     <TouchableOpacity >
-      <Image source={require("../../assets/images/avt.jpg")} style={baseStyle.imgSize}/>
+      <Image source={userInfo?.data?.image ? { uri: userInfo.data.image[0] } : require('../../assets/images/avt.jpg')} style={baseStyle.imgSize}/>
     </TouchableOpacity>
   )
 }

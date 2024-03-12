@@ -18,7 +18,18 @@ const InfoModal: React.FC<InfoModalProps> = ({ title, value, closeModal, modalVi
   useEffect(() => {
     setEditedValue(value);
   }, [value]);
-
+  const getCustomTitle = (originalTitle: string): string => {
+    switch (originalTitle) {
+      case 'number_phone':
+        return 'Number phone'; 
+      case 'username':
+        return 'Name';
+      case 'address':
+        return 'Address';
+      default:
+        return 'originalTitle';
+    }
+  };
   const handleConfirm = async () => {
     const requestData = {
       [title]: editedValue,
@@ -35,15 +46,12 @@ const InfoModal: React.FC<InfoModalProps> = ({ title, value, closeModal, modalVi
     }
   };
   
-
-
-
   return (
     <Modal transparent visible={modalVisible} animationType="fade">
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>{title}</Text>
+          <Text style={styles.modalTitle}>{getCustomTitle(title)}</Text>
             <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
               <IconSimple name="close" size={20} color={Colors.darkBlack} />
             </TouchableOpacity>
@@ -112,6 +120,7 @@ const styles = StyleSheet.create({
     color: Colors.secondaryColor,
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 18
   },
 });
 

@@ -30,8 +30,6 @@ const ProfileScreen = () => {
     const dispatch = useDispatch<any>();
     const userInfo = useSelector((state) => state.auth.userInfo); 
 
-    console.log(userInfo,'aa')
-
     const handleLogout = useCallback(async () => {
         try {
             const response = await GchoiceAxios.post('/auth/logout');
@@ -59,17 +57,8 @@ const ProfileScreen = () => {
             <View style={styles.header}>
             <Image source={userInfo?.data?.image ? { uri: userInfo.data.image[0] } : require('../../assets/images/avt.jpg')} style={styles.avatar} />
                 <Text style={styles.username}>{userInfo ? userInfo.data?.username: 'No Name'}</Text>
-                <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                    <Text style={styles.logoutButtonText}>Logout</Text>
-                    <IconSimple name="login" size={20} color={Colors.primaryColor} />
-                </TouchableOpacity>
             </View>
-            <View style={styles.digitalContainer}>
-                <View style={styles.iconTextWrapper}>
-                    <IconSimple name="handbag" size={20} color={Colors.primaryColor} />
-                    <Text style={styles.infoTitle}> Digital Purchases </Text>
-                </View>
-            </View>
+
             <View style={styles.digitalContainer}>
                 <View style={styles.iconTextWrapper}>
                     <IconSimple name="notebook" size={20} color={Colors.primaryColor} />
@@ -108,6 +97,10 @@ const ProfileScreen = () => {
                 <IconSimple name="question" size={20} color={Colors.primaryColor} style={{ marginRight: 5 }} />
                 <Text style={styles.infoTitle}>Help Center</Text>
             </View>
+            <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                <Text style={styles.logoutButtonText}>Logout</Text>
+                <IconSimple name="login" size={20} color={Colors.primaryColor} />
+            </TouchableOpacity>
 
         </ScrollView>
     );
@@ -123,7 +116,8 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         backgroundColor: Colors.primaryColor,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
+
     },
     avatar: {
         width: 50,
@@ -136,7 +130,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         flex: 1, 
-        color: Colors.secondaryColor
+        color: Colors.secondaryColor,
+        alignSelf:'center'
     },
     editButton: {
         marginTop: 8,
@@ -237,10 +232,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 16,
         borderRadius: 10,
-        backgroundColor: Colors.secondaryColor,
+        backgroundColor: "#F5F5F5",
+        justifyContent:'center',
         alignItems: 'center',
         marginRight: 10,
-        width: 120,
+        width: 300,
         borderWidth: 2,
         borderColor: Colors.primaryColor,
         shadowColor: 'rgba(0, 0, 0, 0.1)',
@@ -248,6 +244,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 4,
         elevation: 3,
+        alignSelf:'center'
     },
 
     logoutButtonText: {

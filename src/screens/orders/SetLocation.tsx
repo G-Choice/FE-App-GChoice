@@ -39,7 +39,7 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
             );
 
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                getCurrentLocation();
+                // getCurrentLocation();
             } else {
                 Alert.alert(
                     'Location Permission Denied',
@@ -52,18 +52,18 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
         }
     };
 
-    const getCurrentLocation = () => {
-        Geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                setSelectedLocation({ latitude, longitude });
-            },
-            (error) => {
-                console.error('Error getting current location:', error);
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-        );
-    };
+    // const getCurrentLocation = () => {
+    //     Geolocation.getCurrentPosition(
+    //         (position) => {
+    //             const { latitude, longitude } = position.coords;
+    //             setSelectedLocation({ latitude, longitude });
+    //         },
+    //         (error) => {
+    //             console.error('Error getting current location:', error);
+    //         },
+    //         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    //     );
+    // };
 
     const saveLocation = () => {
         navigation.navigate('ConfirmOrder', { name, phoneNumber, address: location, selectedLocation });
