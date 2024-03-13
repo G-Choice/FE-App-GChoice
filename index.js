@@ -10,11 +10,11 @@ import messaging from "@react-native-firebase/messaging";
 console.log('index.js blublu')
 
 global.HermesInternal = true;
-// messaging().setBackgroundMessageHandler(async mess => {
+messaging().setBackgroundMessageHandler(async mess => {
 
-// })
+})
 
-// messaging().onNotificationOpenedApp(mess => {
-//     console.log(mess);
-// })
+messaging().onNotificationOpenedApp(mess => {
+    console.log(mess);
+})
 AppRegistry.registerComponent(appName, () => App);
