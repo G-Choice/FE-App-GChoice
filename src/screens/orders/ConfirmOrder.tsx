@@ -55,7 +55,7 @@ const ConfirmOrder = ({ navigation }: any) => {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Finish_Order')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('OrderDetail')}>
           <Text style={styles.plOrder}>Confirm Order</Text>
         </TouchableOpacity>
       </ScrollView>

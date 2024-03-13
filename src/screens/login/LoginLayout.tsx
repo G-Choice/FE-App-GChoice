@@ -13,7 +13,6 @@ import GchoiceAxios from '../../api/index';
 import { setAuth ,fetchUserInfo } from '../../global-states';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 interface EmailInput {
   value: string;
 }
@@ -93,10 +92,12 @@ const LoginLayout: React.FC = () => {
     dispatch(
       setAuth({
         authToken: response.data.accessToken,
-        refreshToken: response.data.refreshToken
+        refreshToken: response.data.refreshToken,
+        userInfo: undefined
       })
     );
-    await dispatch(fetchUserInfo(response.data.accessToken));
+    dispatch(fetchUserInfo(response.data.accessToken));
+
     setIsLoading(false);
     if (response.status === 201) {
       Toast.show({
@@ -111,7 +112,7 @@ const LoginLayout: React.FC = () => {
         },
       });
     }
-  } catch (error) {
+  } catch (error:any) {
     setIsLoading(false);
     console.log(error.response.status )
     if (error.response.status === 401) {
