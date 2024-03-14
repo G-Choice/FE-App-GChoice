@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View, VirtualizedList } from "react-native";
+import {ActivityIndicator, FlatList, StyleSheet, View, VirtualizedList} from "react-native";
 import { Card } from "./Card.tsx";
 import GchoiceAxios from "../../api";
 import { ProductsResApiType } from "../../@types/ProductsResApiType.ts";
+import {Colors} from "../../assets/colors";
 
 const CardContainer = () => {
   const [productList, setProductList] = useState<ProductsResApiType[]>([]);
-
   const [page, setPage] = useState<number>(1);
   const take = 8;
 
@@ -27,6 +27,14 @@ const CardContainer = () => {
         console.log(e);
       });
   };
+
+  if (productList.length <= 0) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+      </View>
+    );
+  }
 
   const renderItem = ({ item }: { item: any }) => <Card {...item} />;
 
@@ -59,6 +67,11 @@ const styles = StyleSheet.create({
   productContainer: {
     margin: 5,
     marginBottom: 100,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
