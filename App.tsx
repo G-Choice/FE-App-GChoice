@@ -24,7 +24,8 @@ import {
   ConfirmOrder,
   SetLocation,
   AccountSetting,
-  OrderDtail
+  OrderDtail,
+  TrackStatus
 
 } from './src/screens';
 import { RootState } from './src/app/store'
@@ -35,44 +36,16 @@ import {SearchResult} from "./src/screens/search/SearchResult.tsx";
 import {store} from './src/redux/store/store.ts';
 import { requestUserPermission } from './src/utils/notificationService.ts';
 
-import messaging, {
-  FirebaseMessagingTypes,
-  firebase
-} from "@react-native-firebase/messaging";
-import NotificationPopup from "react-native-push-notification-popup";
+// import messaging, {
+  // FirebaseMessagingTypes,
+  // firebase
+// } from "@react-native-firebase/messaging";
+// import NotificationPopup from "react-native-push-notification-popup";
 import { Platform } from 'react-native';
 
 export const Stack = createNativeStackNavigator();
 
 console.log('App is starting, blublu');
-console.log('firebase apps', firebase.apps);
-
-if (firebase.apps.length === 0) {
-  const firebaseConfig = {
-    apiKey: 'AIzaSyBsY7IiTyRsdUm_vMFTzQzIRmW2IdwIneM',
-    storageBucket: 'gchoice-3b866.appspot.com',
-    projectId: 'gchoice-3b866',
-    authDomain: 'gchoice-3b866.firebaseapp.com',
-    messagingSenderId: '578702676032',
-    appId: '1:578702676032:android:1ff526c5c6728f6628cfa5',
-    databaseURL: 'https://gchoice-3b866.firebaseio.com'
-  };
-  console.log('initializarion', firebase.initializeApp(firebaseConfig));
-  console.log('firebase configured');
-}
-
-console.log('firebase apps', firebase.apps);
-
-if (firebase.apps.length > 0) {
-  console.log('configuring notifications');
-  messaging().setBackgroundMessageHandler(async mess => {
-
-  })
-
-  messaging().onNotificationOpenedApp(mess => {
-      console.log(mess);
-  })
-}
 
 const AuthStack = () => {
   return (
@@ -86,20 +59,20 @@ const AuthStack = () => {
 };
 
 const MainStack = () => {
-  const notificationPopupRef = useRef<NotificationPopup | null>(null);
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(
-      async (mess: FirebaseMessagingTypes.RemoteMessage) => {
-        if (Platform.OS === "android" && notificationPopupRef.current) {
-          notificationPopupRef.current.show({
-            title: mess.notification?.title,
-            body: mess.notification?.body,
-          });
-        }
-      }
-    );
-    return unsubscribe;
-  });
+  // const notificationPopupRef = useRef<NotificationPopup | null>(null);
+  // useEffect(() => {
+  //   const unsubscribe = messaging().onMessage(
+  //     async (mess: FirebaseMessagingTypes.RemoteMessage) => {
+  //       if (Platform.OS === "android" && notificationPopupRef.current) {
+  //         notificationPopupRef.current.show({
+  //           title: mess.notification?.title,
+  //           body: mess.notification?.body,
+  //         });
+  //       }
+  //     }
+  //   );
+  //   return unsubscribe;
+  // });
   return (
     <>
     <Stack.Navigator>
@@ -115,8 +88,9 @@ const MainStack = () => {
       <Stack.Screen options={{title: '', headerShown: false}} name='SetLocation' component={SetLocation} />
       <Stack.Screen options={{title: '', headerShown: false}} name='AccountSetting' component={AccountSetting} />
       <Stack.Screen options={{title: '', headerShown: false}} name='OrderDetail' component={OrderDtail} />
+      <Stack.Screen options={{title: '', headerShown: false}} name='TrackStatus' component={TrackStatus} />
     </Stack.Navigator>
-    <NotificationPopup ref={notificationPopupRef} />
+    {/* <NotificationPopup ref={notificationPopupRef} /> */}
     </> 
 
   );
@@ -134,7 +108,7 @@ const AuthSelector = () => {
 
 const App = () => {
   
-  console.log('firebase apps in App', firebase.apps);
+  // console.log('firebase apps in App', firebase.apps);
   useEffect(() => {
     const requestPermission = async () => {
       await requestUserPermission();

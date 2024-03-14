@@ -6,24 +6,29 @@ import { Colors } from '../../assets/colors';
 import { useRoute } from '@react-navigation/native';
 import IconFont from 'react-native-vector-icons/FontAwesome';
 import { Image } from 'react-native-animatable';
+import { useNavigation } from '@react-navigation/native';
+import Timeline from 'react-native-timeline-flatlist';
 
 
-const OrderDtail = ({ navigation }: any) => {
-  //   const route = useRoute<ConfirmOrderParams>();
-  //   const { name, phoneNumber, address, selectedLocation } = route.params || {};
+const OrderDtail = () => {
+  const navigation = useNavigation<any>()
   return (
     <>
       <HeaderNavigation type={'secondary'} title="Confirm order" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
       <ScrollView style={styles.container}>
         <View style={styles.sectionNotifycation}>
-          <Text>Your order is on the way </Text>
-          <View style= {styles.titleContent}>
-            <Text>Delivery attempt should be made by 03-12-2023.{'\n'}Please make payment delivery</Text>
-            <Icon name='box' color="#333" size={24}></Icon>
+          <Text style={styles.text} >Your order is on the way </Text>
+          <View style={styles.titleContent}>
+            <Text style={styles.text}>Delivery attempt should be made by 03-12-2023.{'\n'}Please make payment delivery</Text>
+            <Icon name='box' color="#fff" size={35}></Icon>
           </View>
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}><Icon name="truck" size={18} color="#FF69B4" style={styles.editIcon} />  Shipping information</Text>
+          <View style={styles.shipInfor}>
+            <Text style={styles.sectionTitle}><Icon name="truck" size={18} color="#FF69B4" style={styles.editIcon} />  Shipping information</Text>
+            <TouchableOpacity onPress={() =>navigation.navigate('TrackStatus') }><Text style={styles.viewDetail}>View detail</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.icon_location}>
             <View>
               <Text style={styles.infor}>Nhanh</Text>
@@ -64,9 +69,18 @@ const OrderDtail = ({ navigation }: any) => {
               <Text style={styles.price}>$2300 </Text>
             </View>
           </View>
+          <View>
+            <View style={styles.line}></View>
+            <View style={styles.orderTotal}>
+              <Text style={styles.sectionTitle}>
+                Order Total
+              </Text>
+              <Text style={styles.totalPrice}> $41.101</Text>
+            </View>
+          </View>
         </View>
 
-        <View style={[styles.checkout, styles.horizontal]}>
+        {/* <View style={[styles.checkout, styles.horizontal]}>
           <View style={styles.left}>
             <Text style={styles.sub}>Sub - Total</Text>
             <Text style={styles.charge}>Delivery Charge</Text>
@@ -79,7 +93,7 @@ const OrderDtail = ({ navigation }: any) => {
             <Text style={styles.price}>20 $</Text>
             <Text style={styles.Total_price}>150 $</Text>
           </View>
-        </View>
+        </View> */}
 
 
       </ScrollView>
@@ -119,7 +133,7 @@ const styles = StyleSheet.create({
   },
   sectionNotifycation: {
     backgroundColor: '#4BC198',
-    marginBottom: 5,
+    marginBottom: 8,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: {
@@ -153,37 +167,12 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
     fontSize: 15,
   },
-  seri: {
-    marginLeft: 10,
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
-  checkout: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderRadius: 25,
-    padding: 20,
-    marginTop: 20,
-  },
-  horizontal: {
-    justifyContent: 'space-between',
-  },
-  left: {
-    flex: 1,
-  },
-  right: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  sub: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginBottom: 10,
-    color: Colors.darkGrey,
+  text: {
+    color: Colors.secondaryColor
   },
   price: {
     fontWeight: 'bold',
-    color: '#F83758',
+    // color: '#F83758',
     fontSize: 18,
     marginBottom: 5,
     textAlign: 'right'
@@ -195,40 +184,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5
   },
-  charge: {
-    fontWeight: 'bold',
-    fontSize: 14,
-    marginBottom: 5,
-    color: Colors.darkGrey,
-  },
-  discount: {
-    fontWeight: 'bold',
-    fontSize: 14,
-    marginBottom: 5,
-    color: Colors.darkGrey,
-  },
-  total: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginBottom: 5,
-    color: Colors.darkGrey,
-  },
-  Total_price: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: Colors.darkGrey,
-  },
-  button: {
-    backgroundColor: Colors.primaryColor,
-    borderRadius: 14,
-    marginTop: 20,
-    padding: 15,
-    alignItems: 'center',
-  },
-  plOrder: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: Colors.secondaryColor,
+  viewDetail: {
+    color: "#E53131"
   },
   checkInfor: {
     flexDirection: 'row'
@@ -243,10 +200,11 @@ const styles = StyleSheet.create({
 
   },
   productImage: {
-    width: 70,
-    height: 70,
-    marginTop: 10,
-    borderRadius: 16
+    width: 90,
+    height: 90,
+    marginTop: 20,
+    borderRadius: 16,
+    marginBottom: 20
   },
   productInfor: {
     flexDirection: 'row',
@@ -254,14 +212,29 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: '700',
-    fontSize: 18
+    fontSize: 18,
+    marginTop: 20
   },
   line: {
     height: 0.5,
     backgroundColor: Colors.darkGrey,
     flex: 1
   },
-  titleContent:{
+  titleContent: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  orderTotal: {
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    marginTop: 10
+  },
+  totalPrice: {
+    color: "#E53131",
+    fontSize: 19,
+    fontWeight: "500"
+  },
+  shipInfor: {
     flexDirection: "row",
     justifyContent: "space-between"
   }

@@ -23,7 +23,7 @@ const AccountSetting: React.FC = () => {
   const handleInforPress = async (title: string, value: string) => {
     if (title === 'Image') {
       try {
-        setIsLoading(true); // Set loading to true when starting the image upload
+        setIsLoading(true); 
 
         const image = await ImageCropPicker.openPicker({
           mediaType: 'photo',
@@ -36,9 +36,9 @@ const AccountSetting: React.FC = () => {
             type: image.mime,
             name: image.filename || image.path.split('/').pop()
           });
-          const requestData = {
-            ["files"]: [image],
-          };
+          // const requestData = {
+          //   ["files"]: [image],
+          // };
 
           try {
             const response = await GchoiceAxios.patch('/user', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
