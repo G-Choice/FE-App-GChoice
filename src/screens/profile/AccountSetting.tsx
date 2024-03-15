@@ -11,6 +11,7 @@ import ImageCropPicker from 'react-native-image-crop-picker';
 import GchoiceAxios from '../../api';
 import { updateUserInfo } from '../../global-states';
 import { ActivityIndicator } from 'react-native';
+import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
 const AccountSetting: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedInfor, setSelectedInfor] = useState<{ title: string; value: string }>({});
@@ -36,10 +37,6 @@ const AccountSetting: React.FC = () => {
             type: image.mime,
             name: image.filename || image.path.split('/').pop()
           });
-          // const requestData = {
-          //   ["files"]: [image],
-          // };
-
           try {
             const response = await GchoiceAxios.patch('/user', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
@@ -58,12 +55,6 @@ const AccountSetting: React.FC = () => {
       }
     } else {
       let updatedTitle = title;
-
-      // if (title === 'Number phone') {
-      //   updatedTitle = 'number_phonsssse';
-      // } else if (title === 'Name') {
-      //   updatedTitle = 'username';
-      // }
       setSelectedInfor({ title: updatedTitle, value });
       setModalVisible(true);
     }
@@ -74,6 +65,8 @@ const AccountSetting: React.FC = () => {
   }, [userInfo]);
 
   return (
+    <>
+    <HeaderNavigation type={'secondary'} title="Account Setting" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
     <View style={styles.container}>
       <ImageBackground style={styles.cameraIconContainer} source={userInfo?.data?.image ? { uri: userInfo.data.image[0] } : require('../../assets/images/avt.jpg')}>
       {isLoading && <ActivityIndicator size="large" color="#FA7189" />}
@@ -103,6 +96,7 @@ const AccountSetting: React.FC = () => {
       </View>
       <InfoModal title={selectedInfor.title} value={selectedInfor.value} closeModal={() => setModalVisible(false)} modalVisible={modalVisible} />
     </View>
+    </>
   );
 };
 

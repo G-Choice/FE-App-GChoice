@@ -93,13 +93,13 @@ const ProductDetail = () => {
             </View>
           </View>
           <View style={styles.shopInfoContainer}>
-            <View style={styles.shopAvatarContainer}>
-              {/* {productDetails.shop.shop_image ? (
+            {/* <View style={styles.shopAvatarContainer}>
+              {productDetails.shop.shop_image ? (
                 <Image source={{ uri: productDetails.shop.shop_image }} style={styles.shopAvatar} />
               ) : (
                 <Text>No Image Available</Text>
-              )} */}
-            </View>
+              )}
+            </View> */}
             <View style={styles.shopDetailsContainer}>
               <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
               <View style={styles.shopAddressContainer}>
@@ -176,7 +176,6 @@ const ProductDetail = () => {
           <Text style={styles.buttonText}>Buy Now</Text>
         </TouchableOpacity>
       </View>
-
     </>
   );
 };
