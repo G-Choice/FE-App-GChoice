@@ -100,6 +100,7 @@ const ProductDetail = () => {
                 <Text>No Image Available</Text>
               )}
             </View> */}
+            
             <View style={styles.shopDetailsContainer}>
               <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
               <View style={styles.shopAddressContainer}>
