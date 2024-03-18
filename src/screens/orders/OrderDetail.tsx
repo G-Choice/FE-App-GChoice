@@ -1,17 +1,68 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
 import Icon from 'react-native-vector-icons/Feather';
 import { Colors } from '../../assets/colors';
 import { useRoute } from '@react-navigation/native';
 import IconFont from 'react-native-vector-icons/FontAwesome';
+import IconEntypo from 'react-native-vector-icons/Entypo';
 import { Image } from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
 import Timeline from 'react-native-timeline-flatlist';
-
-
+import { useSelector } from 'react-redux';
+import GchoiceAxios from '../../api';
+import { formattedPrice } from '../../utils';
 const OrderDtail = () => {
   const navigation = useNavigation<any>()
+  const groupCartData = useSelector((state: any) => state.cartGroup);
+  const [orderDetails, setOrderDetails] = useState<any>(null);
+  const route = useRoute<any>()
+  const groupId = route.params || {}
+
+  console.log(groupId, 'gro')
+  const fetchProductDetails = async () => {
+    try {
+      // setLoading(true);
+      const response = await GchoiceAxios.get(`groups/statusGroup/${groupId.groupId}`);
+      setOrderDetails(response?.data?.data);
+    } catch (error) {
+      // setLoading(false);
+      console.error('Error fetching product details:', error);
+    }
+  };
+  useEffect(() => {
+    fetchProductDetails();
+  }, []);
+  // console.log(orderDetails,'123')
+  console.log(groupCartData.groupCart?.products, 'tets');
+  let statusColor: string;
+  let statusText: string;
+
+  switch (orderDetails?.status) {
+    case 'waiting_for_user':
+      statusColor = '#F28076';
+      statusText = 'Waiting user';
+      break;
+    case 'waiting_for_payment':
+      statusColor = 'blue';
+      statusText = 'Waiting payment';
+      break;
+    case 'confirmation_order':
+      statusColor = '#FAE0C7';
+      statusText = 'Payment success';
+      break;
+    case 'waiting_delivery':
+      statusColor = '#F44000'; 
+      statusText = 'Waiting delivery';
+      break;
+    case 'done':
+      statusColor = '#70C2B4'; 
+      statusText = 'Done';
+      break;
+    default:
+      statusColor = 'green'; 
+      statusText = 'Nothing';
+  }
   return (
     <>
       <HeaderNavigation type={'secondary'} title="Confirm order" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
@@ -26,8 +77,8 @@ const OrderDtail = () => {
         <View style={styles.section}>
           <View style={styles.shipInfor}>
             <Text style={styles.sectionTitle}><Icon name="truck" size={18} color="#FF69B4" style={styles.editIcon} />  Shipping information</Text>
-            <TouchableOpacity onPress={() =>navigation.navigate('TrackStatus') }><Text style={styles.viewDetail}>View detail</Text>
-            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={() =>navigation.navigate('TrackStatus',{groupId: groupId}) }><Text style={styles.viewDetail}>View detail</Text> */}
+            {/* </TouchableOpacity> */}
           </View>
           <View style={styles.icon_location}>
             <View>
@@ -37,6 +88,19 @@ const OrderDtail = () => {
                 <Text style={styles.checkItem}>< IconFont name="check-square" size={18} color="#FF69B4" style={styles.editIcon} />
                   Đồng kiểm  </Text>
                 <Text> Parcel is eligible for co-check</Text>
+              </View>
+              <View>
+              </View>
+              <View style={styles.statusText}>
+                <IconEntypo name="dot-single" size={39} color="green"/>
+                <Text style={[
+                  {
+                    marginTop: 10,
+                    color: statusColor,
+                    fontWeight: '700',
+                    fontSize: 16
+                  }]}>{statusText}</Text>
+
               </View>
             </View>
           </View>
@@ -48,25 +112,25 @@ const OrderDtail = () => {
           <View style={styles.icon_location}>
             <IconFont name="map-marker" size={24} color="#FF69B4" style={styles.icon} />
             <View>
-              <Text>Ut Vien</Text>
-              <Text>(+84 982 99292)</Text>
-              <Text>101b Le Huu Trac, Phuoc My</Text>
+              {/* <Text>Ut Vien</Text> */}
+              <Text>{orderDetails?.phoneNumber}</Text>
+              <Text>{orderDetails?.deliveryAddress}</Text>
             </View>
 
           </View>
         </View>
         <View style={styles.sectionBill}>
-          <Text style={styles.shopName}>LALA SHOP</Text>
+          <Text style={styles.shopName}>{orderDetails?.products.brand}</Text>
           <View style={styles.line}></View>
           <View style={styles.productInfor}>
             <Image
-              source={require('../../assets/images/avt.jpg')}
+              source={{ uri: groupCartData.groupCart?.productByGroup?.images[0] }}
               style={styles.productImage}
             />
             <View>
-              <Text style={styles.name}>Bamboo bowl </Text>
-              <Text style={styles.quantity}>x2 </Text>
-              <Text style={styles.price}>$2300 </Text>
+              <Text style={styles.name}>{orderDetails?.products?.product_name} </Text>
+              <Text style={styles.quantity}>X{groupCartData.groupCart?.totalPrice.quantity}</Text>
+              <Text style={styles.price}>{formattedPrice(groupCartData.groupCart?.productByGroup.price)} </Text>
             </View>
           </View>
           <View>
@@ -75,27 +139,10 @@ const OrderDtail = () => {
               <Text style={styles.sectionTitle}>
                 Order Total
               </Text>
-              <Text style={styles.totalPrice}> $41.101</Text>
+              <Text style={styles.totalPrice}>{formattedPrice(groupCartData.groupCart?.totalPrice.price)}</Text>
             </View>
           </View>
         </View>
-
-        {/* <View style={[styles.checkout, styles.horizontal]}>
-          <View style={styles.left}>
-            <Text style={styles.sub}>Sub - Total</Text>
-            <Text style={styles.charge}>Delivery Charge</Text>
-            <Text style={styles.discount}>Discount</Text>
-            <Text style={styles.total}>Total</Text>
-          </View>
-          <View style={styles.right}>
-            <Text style={styles.price}>120 $</Text>
-            <Text style={styles.price}>10 $</Text>
-            <Text style={styles.price}>20 $</Text>
-            <Text style={styles.Total_price}>150 $</Text>
-          </View>
-        </View> */}
-
-
       </ScrollView>
     </>
   );
@@ -213,7 +260,8 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: '700',
     fontSize: 18,
-    marginTop: 20
+    marginTop: 20,
+    textAlign: "right"
   },
   line: {
     height: 0.5,
@@ -237,6 +285,9 @@ const styles = StyleSheet.create({
   shipInfor: {
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  statusText: {
+    flexDirection: 'row'
   }
 });
 

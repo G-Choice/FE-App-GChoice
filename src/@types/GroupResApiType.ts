@@ -3,13 +3,17 @@ interface GroupResApiType {
   image?: string,
   group_name?: string,
   description?: string,
-  groupSize?: number,
+  expected_quantity?: number,
+  current_quantity?: number,
   groupTime?: string,
   carts:{
     total_quantity?: number
   },
   remainingHours?: number,
-  isJoined ?: boolean
+  isJoined ?: boolean,
+  status: string
+  products:[
+  ]
 
 }
 

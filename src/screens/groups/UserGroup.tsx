@@ -1,5 +1,5 @@
 import {Button, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Card, Group, TextFormat} from "../../components";
+import { Group, TextFormat} from "../../components";
 import {HeaderNavigation} from "../../components/navigation/HeaderNavigation.tsx";
 import React, {useEffect, useState} from "react";
 import { useFocusEffect } from '@react-navigation/native';
@@ -11,52 +11,37 @@ import GchoiceAxios from "../../api/index.ts";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateGroupList} from '../../redux/actions/action.ts'
 import { RootState } from "../../redux/store/store.ts";
-const GroupEachProduct = () => {
+import { CardGroup } from "../../components/group/card.tsx";
+const UserGroup = () => {
   const route = useRoute()
   const navigation = useNavigation<any>();
-  const dispatch = useDispatch();
-  const groupList = useSelector((state: RootState) => state.group.groupList);
-
-  // useEffect(() => {
-  //   const fetchGroups = async () => {
-  //     try {
-  //       const response = await GchoiceAxios.get(`/groups?product_id=${route.params}`);
-  //       dispatch(updateGroupList(response.data.data));
-  //     } catch (error) {
-  //       console.error('Error fetching groups:', error);
-  //     }
-  //   };
-  //   fetchGroups();
-  // }, [dispatch, route.params]);
+  const [groupList, setGroupList] = useState<any>(null);
   useFocusEffect(
     React.useCallback(() => {
-      console.log(route.params,'aaa')
       const fetchGroups = async () => {
         try {
-          const response = await GchoiceAxios.get(`/groups/${route.params}`);
-          dispatch(updateGroupList(response.data.data));
+          const response = await GchoiceAxios.get(`/groups`);
+          const updatedGroupList = response.data.data.map((group: any) => ({
+            ...group,
+            isJoined: true,
+          }));
+          setGroupList(updatedGroupList);
         } catch (error) {
           console.error('Error fetching groups:', error);
         }
       };
       fetchGroups();
-    }, [dispatch, route.params])
+    }, [])
   );
-  const handleBack = () => {};
-  const handleOnPressIn = () => {};
-  const handleSearch = () => {};
-  const renderItem = ({ item }: { item: any }) => <Group {...item} />;
+
+
+console.log(groupList,'bdbdbd')
+  const renderItem = ({ item }: { item: any }) => <CardGroup {...item} />;
   return (
     <View style={{backgroundColor: "white"}}>
-      <HeaderNavigation type={'secondary'} title="Available Groups" wrapperStyle={{paddingTop: 1, marginBottom: 10}}/>
       <View style={styles.groupGeneralWrapper}>
         <TextFormat weight={300} numberOfLines={1} color={'darkBlack'} size={'md'}>Groups ({groupList?.length})</TextFormat>
-        <TouchableOpacity style={{flexDirection: "row", gap: 2, borderRadius: 5, borderColor: Colors.primaryColor, borderWidth: 1, padding: 8}}    onPress={() => navigation.navigate("CreateGroup", route.params )}>
-          <Icon name="plus" size={20} style={{ color: Colors.primaryColor, paddingTop: 2 }}/>
-          <TextFormat weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>Create new group</TextFormat>
-        </TouchableOpacity>
       </View>
-      <SearchBar placeholder="Search..." onSubmit={handleSearch} onPressIn={handleOnPressIn} />
       <FlatList data={groupList} renderItem={renderItem}
                 style={styles.groupContainer} />
     </View>
@@ -84,4 +69,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export {GroupEachProduct}
+export {UserGroup};

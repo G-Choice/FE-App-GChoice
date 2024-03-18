@@ -1,16 +1,60 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../../assets/colors';
 import { useRoute } from '@react-navigation/native';
+import { useStripe } from '@stripe/stripe-react-native';
+import { formattedPrice } from '../../utils';
+import GchoiceAxios from '../../api';
+import { useSelector } from 'react-redux'; 
 
 export interface ConfirmOrderParams {
   address?: string;
 }
 const ConfirmOrder = ({ navigation }: any) => {
-  const route = useRoute<ConfirmOrderParams>();
-  const { name, phoneNumber, address, selectedLocation } = route.params || {};
+  const route = useRoute<any>();
+  const { phoneNumber, address, selectedLocation } = route.params || {};
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const groupCartData = useSelector((state: any) => state.cartGroup); 
+
+  console.log(groupCartData.groupCart,'groupCartDatahchck')
+  const onCheckout = async () => {
+    const response = await GchoiceAxios.post('/payment/intents',{
+      amount: (`${groupCartData.groupCart?.totalPrice.price}00`),
+    });
+    if (response.error) {
+      Alert.alert('Something went wrong');
+      return;
+    }
+    const initResponse = await initPaymentSheet({
+      merchantDisplayName: 'notJust.dev',
+      paymentIntentClientSecret: response.data.paymentIntent,
+    });
+    if (initResponse.error) {
+      console.log(initResponse.error);
+      Alert.alert('Something went wrong');
+      return;
+    }
+    const paymentResponse = await presentPaymentSheet();
+
+    if (paymentResponse.error) {
+      return;
+    }
+
+    onCreateOrder();
+  };
+  const onCreateOrder = async () => {
+    const result = await GchoiceAxios.post('/groups/saveDataPayment', {
+      deliveryAddress: address ,
+      phoneNumber: phoneNumber,
+      group_id: groupCartData.groupCart?.totalPrice.group_id
+    });
+    console.log(result.status,'test')
+    if (result.status ===201) {
+      navigation.navigate('OrderDetail', {groupId: groupCartData.groupCart?.totalPrice.group_id})
+    }
+  };
   return (
     <>
       <HeaderNavigation type={'secondary'} title="Shopping Bag" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
@@ -18,19 +62,20 @@ const ConfirmOrder = ({ navigation }: any) => {
         <View style={styles.sectionBill}>
           <View style={styles.productInfor}>
             <Image
-              source={require('../../assets/images/avt.jpg')}
+              source={{ uri: groupCartData.groupCart?.productByGroup?.images[0] }}
               style={styles.productImage}
             />
             <View style={styles.inforProduct}>
-              <Text style={styles.title}>Bamboo bowl </Text>
-              <Text style={styles.quantity}>x2 </Text>
-              <Text style={styles.price}>$2300 </Text>
+              <Text style={styles.title}>{groupCartData.groupCart?.productByGroup?.product_name} </Text>
+              <Text style={styles.quantity}>x {groupCartData.groupCart?.totalPrice?.quantity} </Text>
+              <Text style={styles.price}>{formattedPrice(groupCartData.groupCart?.productByGroup?.price) }</Text>
             </View>
           </View>
           <View>
           </View>
         </View>
-        <View style={styles.section}>
+        { groupCartData?.groupCart?.totalPrice?.role === "leader" && (
+          <View style={styles.section}>
           <Text style={styles.sectionTitle}> Deliver To</Text>
           <TouchableOpacity onPress={() => navigation.navigate('SetLocation')}>
             <Icon name="edit" size={18} color="#FF69B4" style={styles.editIcon} />
@@ -38,12 +83,12 @@ const ConfirmOrder = ({ navigation }: any) => {
           <View style={styles.icon_location}>
             <Icon name="map-marker" size={24} color="#FF69B4" style={styles.icon} />
             <View>
-              <Text style={styles.infor}>{name}</Text>
               <Text style={styles.infor}>{phoneNumber}</Text>
               <Text style={styles.infor}>{address}</Text>
             </View>
           </View>
         </View>
+        )}
         <View style={styles.sectionBill}>
           <Text style={styles.sectionTitle}>Order Payment Details</Text>
           <View style={styles.line}></View>
@@ -53,7 +98,7 @@ const ConfirmOrder = ({ navigation }: any) => {
               <Text style={styles.title}>Delivery Free </Text>
             </View>
             <View style={styles.valueInfor}>
-              <Text style={styles.price}>$46,00 </Text>
+              <Text style={styles.price}>{formattedPrice(groupCartData.groupCart?.totalPrice.price)} </Text>
               <Text style={styles.price}>Free </Text>
             </View>
           </View>
@@ -62,7 +107,7 @@ const ConfirmOrder = ({ navigation }: any) => {
         </View>
 
         <View style={styles.button}>
-          <TouchableOpacity style={styles.buttonPayment} onPress={() => navigation.navigate('OrderDetail')}>
+          <TouchableOpacity style={styles.buttonPayment} onPress={onCheckout}>
             <Text style={styles.paymentText}>Process to Payment
             </Text></TouchableOpacity>
         </View>

@@ -28,7 +28,7 @@ const Card = (props: ProductCardProps) => {
       <Image style={styles.productImgPreview} source={{ uri: imageUrl }} />
         <View style={{margin: 5}}>
           <Text style={styles.productTitle} numberOfLines={2}>{props.product_name}</Text>
-          <View style={{height: 25}}></View>
+          {/*<View style={{height: 25}}></View>*/}
           <Text style={styles.productPrice}>{formattedPrice(props.price)}</Text>
           <View style={{flexDirection: "row", justifyContent: "space-between"}}>
             <View style={{flexDirection: "row", gap: 2, alignItems: "center"}}>

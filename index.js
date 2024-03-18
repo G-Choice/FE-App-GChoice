@@ -54,11 +54,11 @@ global.HermesInternal = true;
 //       console.log(mess);
 //   })
 // }
-// messaging().setBackgroundMessageHandler(async mess => {
+messaging().setBackgroundMessageHandler(async mess => {
 
-// })
+})
 
-// messaging().onNotificationOpenedApp(mess => {
-//     console.log(mess);
-// })
+messaging().onNotificationOpenedApp(mess => {
+    console.log(mess);
+})
 AppRegistry.registerComponent(appName, () => App);

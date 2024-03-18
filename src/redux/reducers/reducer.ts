@@ -6,6 +6,7 @@ interface GroupState {
   
   const initialState: GroupState = {
     groupList: [],
+    groupCart: null,
   };
   
   type GroupAction = { type: 'UPDATE_GROUP_LIST'; payload: GroupResApiType[] };
@@ -22,5 +23,18 @@ interface GroupState {
     }
   };
   
-  export default groupReducer;
+  const cartreducer = (state = initialState, action: any) => {
+    switch (action.type) {
+      case 'SAVE_GROUP_CART':
+        return {
+          ...state,
+          groupCart: action.payload,
+        };
+      default:
+        return state;
+    }
+  };
+  
+  
+  export {groupReducer,cartreducer} ;
   

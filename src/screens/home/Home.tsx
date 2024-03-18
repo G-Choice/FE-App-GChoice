@@ -16,7 +16,6 @@ const Home = () => {
 
   const navigateToSearch = useNavigation<any>()
 
-
   return (
     <View style={styles.container}>
       <View style={styles.stickyHeader}>

@@ -1,35 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
 import { Colors } from '../../assets/colors';
 import { Image } from 'react-native-animatable';
 import Timeline from 'react-native-timeline-flatlist';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios';
+import GchoiceAxios from '../../api';
+import { useRoute } from '@react-navigation/native';
+
+interface TimelineItem {
+  time: string;
+  title: string;
+  description: string;
+  status: string;
+}
 
 const TrackStatus = ({ navigation }: any) => {
-  const data = [
-    { time: '09:00', title: 'Order Placed', description: 'Your order has been placed.', status: 'pending' },
-    { time: '10:30', title: 'Processing', description: 'Your order is being processed.', status: 'pending' },
-    { time: '12:00', title: 'Shipped', description: 'Your order has been shipped.', status: 'shipped' },
-    { time: '14:00', title: 'Out for Delivery', description: 'Your order is out for delivery.', status: 'outForDelivery' },
-    { time: '16:00', title: 'Delivered', description: 'Your order has been delivered.', status: 'delivered' },
+  const [groupStatus, setGroupStatus] = useState('');
+  const [timelineData, setTimelineData] = useState<TimelineItem[]>([]); // Sử dụng kiểu dữ liệu TimelineItem[]
+
+  const route = useRoute<any>();
+  const groupId = route.params.groupId;
+
+  useEffect(() => {
+    GchoiceAxios.get(`groups/statusGroup/${groupId.groupId}`)
+      .then(response => {
+        setGroupStatus(response.data.data.status);
+      })
+      .catch(error => {
+        console.error('Error fetching group status:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const updatedData = data.map(item => {
+      const iconColor = item.status === groupStatus ? 'green' : '#ccc';
+      return { ...item, iconColor };
+    });
+    setTimelineData(updatedData);
+
+    // Kiểm tra nếu groupStatus và status của mỗi item trong timelineData giống nhau, thì thay đổi màu của circle
+    const newCircleColor = groupStatus === timelineData[0]?.status ? 'green' : Colors.primaryColor;
+    setCircleColor(newCircleColor);
+  }, [groupStatus]);
+
+  const data: TimelineItem[] = [
+    { time: '09:00', title: 'Order Placed', description: 'Your order has been placed.', status: 'waiting_for_user' },
+    { time: '10:30', title: 'Processing', description: 'Your order is being processed.', status: 'waiting_for_payment' },
+    { time: '12:00', title: 'Shipped', description: 'Your order has been shipped.', status: 'payment_success' },
+    { time: '14:00', title: 'Out for Delivery', description: 'Your order is out for delivery.', status: 'confirmation_order' },
+    { time: '16:00', title: 'Delivered', description: 'Your order has been delivered.', status: 'waiting_delivery' },
   ];
-
-  const renderDetail = (rowData: any, sectionID: any, rowID: any) => {
-    let iconColor = Colors.primaryColor;
-    let iconName = 'done';
-    console.log(rowData,' vien')
-    if (rowData.title === 'Order Placed') {
-      iconColor = '#ccc'; 
-      iconName = 'schedule';
-    }
-
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Icon name={iconName} size={24} color={iconColor} />
-      </View>
-    );
-  };
 
   return (
     <>
@@ -43,23 +65,19 @@ const TrackStatus = ({ navigation }: any) => {
             />
             <View>
               <Text style={styles.infor}>Receive by <Text style={styles.date}> Fri, 03 Dec 2023</Text>  </Text>
-              <Text style={styles.infor}>Shipping with Nhanh - SPX Express </Text>
+              <Text style={styles.infor}>Shipping with Nganh - SPX Express </Text>
             </View>
           </View>
         </View>
         <View style={styles.sectionBill}>
           <Timeline
-            data={data}
+            data={timelineData}
             circleSize={20}
-            circleColor={Colors.primaryColor}
+            circleColor={circleColor} // Sử dụng màu circleColor đã được xác định
             lineColor="#ccc"
             timeContainerStyle={{ minWidth: 52 }}
             timeStyle={{ textAlign: 'center', backgroundColor: '#ff9797', color: 'white', padding: 5, borderRadius: 13 }}
             descriptionStyle={{ color: 'gray' }}
-            options={{
-              style: { paddingTop: 5 },
-              renderDetail,
-            }}
           />
         </View>
       </ScrollView>

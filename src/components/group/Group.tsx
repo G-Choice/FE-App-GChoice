@@ -30,8 +30,7 @@ const Group = (props: GroupResApiType) => {
   const hours = Math.floor(duration.asHours());
   const minutes = duration.minutes();
   const seconds = duration.seconds();
-
-  const process = (props.carts?.total_quantity ?? 0) /(props.groupSize || 1);
+  const process = (props.current_quantity ?? 0) /(props.expected_quantity || 1);
   return (
     <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart", {data: props})}>
       <View style={{flexDirection: "row", justifyContent: "space-between"}}>
@@ -73,9 +72,9 @@ const Group = (props: GroupResApiType) => {
       </View>
       <JoinModal visible={showPicker} onClose={handleClosePicker} onJoin={handleConfirmJoin} groupId={props.id} groupName={props.group_name} />
       <View>
-        {props.carts && (
+        {props && (
           <>
-            <TextFormat>{props.carts.total_quantity}/{props?.groupSize}</TextFormat>
+            <TextFormat>{props.current_quantity}/{props?.expected_quantity}</TextFormat>
             <ProgressBarAndroid
               styleAttr="Horizontal"
               indeterminate={false}

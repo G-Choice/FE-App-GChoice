@@ -1991,6 +1991,11 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
+"@stripe/stripe-react-native@^0.37.1":
+  version "0.37.1"
+  resolved "https://registry.npmjs.org/@stripe/stripe-react-native/-/stripe-react-native-0.37.1.tgz"
+  integrity sha512-ABXsSCdPh3kXMZS5PhNdLpWNs9eyKLKTFR4OUk7xo5pq7waLv8iTUpG88Hm+8DmHRrK7k6ojRrwEKbfFm09dXQ==
+
 "@types/babel__core@^7.1.14":
   version "7.20.5"
   resolved "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.5.tgz"
