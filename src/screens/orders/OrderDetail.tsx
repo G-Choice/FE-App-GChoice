@@ -86,7 +86,7 @@ const OrderDtail = () => {
               <Text style={styles.infor}>SPX Epress - SPXVN0291b </Text>
               <View style={styles.checkInfor}>
                 <Text style={styles.checkItem}>< IconFont name="check-square" size={18} color="#FF69B4" style={styles.editIcon} />
-                  Đồng kiểm  </Text>
+                  Co-check  </Text>
                 <Text> Parcel is eligible for co-check</Text>
               </View>
               <View>
@@ -105,7 +105,9 @@ const OrderDtail = () => {
             </View>
           </View>
         </View>
-        <View style={styles.section}>
+        {orderDetails?.phoneNumber && orderDetails?.deliveryAddress && (
+          <>
+              <View style={styles.section}>
           <Text style={styles.sectionTitle}>Delivery Address</Text>
           <TouchableOpacity>
           </TouchableOpacity>
@@ -119,6 +121,10 @@ const OrderDtail = () => {
 
           </View>
         </View>
+          </>
+        )}
+
+     
         <View style={styles.sectionBill}>
           <Text style={styles.shopName}>{orderDetails?.products.brand}</Text>
           <View style={styles.line}></View>

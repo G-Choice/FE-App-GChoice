@@ -16,7 +16,6 @@ export interface SetLocationParams {
 }
 
 const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
-    const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [location, setLocation] = useState('');
     const [selectedLocation, setSelectedLocation] = useState<any>(null);
@@ -66,7 +65,7 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
     };
 
     const saveLocation = () => {
-        navigation.navigate('ConfirmOrder', { name, phoneNumber, address: location, selectedLocation });
+        navigation.navigate('ConfirmOrder', { phoneNumber, address: location, selectedLocation });
         if (selectedLocation) {
             const { latitude, longitude } = selectedLocation;
             setLocation(`Latitude: ${latitude}, Longitude: ${longitude}`);
@@ -87,6 +86,7 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
                     style={styles.input}
                     placeholder="Enter your phone number"
                     value={phoneNumber}
+                    keyboardType='numeric'
                     onChangeText={(text) => setPhoneNumber(text)}
                 />
                 <TextInput
