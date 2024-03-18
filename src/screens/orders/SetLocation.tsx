@@ -16,7 +16,6 @@ export interface SetLocationParams {
 }
 
 const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
-    const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [location, setLocation] = useState('');
     const [selectedLocation, setSelectedLocation] = useState<any>(null);
@@ -52,21 +51,21 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
         }
     };
 
-    // const getCurrentLocation = () => {
-    //     Geolocation.getCurrentPosition(
-    //         (position) => {
-    //             const { latitude, longitude } = position.coords;
-    //             setSelectedLocation({ latitude, longitude });
-    //         },
-    //         (error) => {
-    //             console.error('Error getting current location:', error);
-    //         },
-    //         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    //     );
-    // };
+    const getCurrentLocation = () => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                setSelectedLocation({ latitude, longitude });
+            },
+            (error) => {
+                console.error('Error getting current location:', error);
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+    };
 
     const saveLocation = () => {
-        navigation.navigate('ConfirmOrder', { name, phoneNumber, address: location, selectedLocation });
+        navigation.navigate('ConfirmOrder', { phoneNumber, address: location, selectedLocation });
         if (selectedLocation) {
             const { latitude, longitude } = selectedLocation;
             setLocation(`Latitude: ${latitude}, Longitude: ${longitude}`);
@@ -85,19 +84,14 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
                 <Text style={styles.title}>Set Delivery Location</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Enter your name"
-                    value={name}
-                    onChangeText={(text) => setName(text)}
-                />
-                <TextInput
-                    style={styles.input}
                     placeholder="Enter your phone number"
                     value={phoneNumber}
+                    keyboardType='numeric'
                     onChangeText={(text) => setPhoneNumber(text)}
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder="Enter your delivery address"
+                    placeholder="Enter your delivery address or get from map"
                     value={location}
                     onChangeText={(text) => setLocation(text)}
                 />
@@ -117,7 +111,7 @@ const SetLocation: React.FC<SetLocationProps> = ({ navigation, route }) => {
                 </MapView>
 
                 <TouchableOpacity onPress={saveLocation} style={styles.button}>
-                    <Text style={styles.buttonText}>Save location</Text>
+                    <Text style={styles.buttonText}>Save</Text>
                 </TouchableOpacity>
             </View>
         </>
@@ -156,7 +150,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 18,
     },
 });
 

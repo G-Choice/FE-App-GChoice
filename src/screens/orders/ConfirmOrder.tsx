@@ -1,64 +1,124 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { HeaderNavigation } from '../../components/navigation/HeaderNavigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../../assets/colors';
 import { useRoute } from '@react-navigation/native';
+import { useStripe } from '@stripe/stripe-react-native';
+import { formattedPrice } from '../../utils';
+import GchoiceAxios from '../../api';
+import { useSelector } from 'react-redux'; 
 
 export interface ConfirmOrderParams {
   address?: string;
 }
 const ConfirmOrder = ({ navigation }: any) => {
-  const route = useRoute<ConfirmOrderParams>();
-  const { name, phoneNumber, address, selectedLocation } = route.params || {};
+  const route = useRoute<any>();
+  const { phoneNumber, address, selectedLocation } = route.params || {};
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const groupCartData = useSelector((state: any) => state.cartGroup); 
+
+  console.log(groupCartData.groupCart,'groupCartDatahchck')
+  const onCheckout = async () => {
+    
+    if (groupCartData?.groupCart?.totalPrice?.role === "leader") {
+      if (!phoneNumber || !address) {
+        Alert.alert('Please fill in the phone number and address');
+        return;
+      };
+    }
+    const response = await GchoiceAxios.post('/payment/intents',{
+      amount: (`${groupCartData.groupCart?.totalPrice.price}00`),
+    });
+    if (response.error) {
+      Alert.alert('Something went wrong');
+      return;
+    }
+    const initResponse = await initPaymentSheet({
+      merchantDisplayName: 'notJust.dev',
+      paymentIntentClientSecret: response.data.paymentIntent,
+    });
+    if (initResponse.error) {
+      console.log(initResponse.error);
+      Alert.alert('Something went wrong');
+      return;
+    }
+    const paymentResponse = await presentPaymentSheet();
+
+    if (paymentResponse.error) {
+      return;
+    }
+
+    onCreateOrder();
+  };
+  const onCreateOrder = async () => {
+    const result = await GchoiceAxios.post('/groups/saveDataPayment', {
+      deliveryAddress: address ,
+      phoneNumber: phoneNumber,
+      group_id: groupCartData.groupCart?.totalPrice.group_id
+    });
+    console.log(result.status,'test')
+    if (result.status ===201) {
+      navigation.navigate('OrderDetail', {groupId: groupCartData.groupCart?.totalPrice.group_id})
+    }
+  };
   return (
     <>
-      <HeaderNavigation type={'secondary'} title="Confirm order" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
-      <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Deliver To</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('SetLocation')}>
-          <Icon name="edit" size={18} color="#FF69B4" style={styles.editIcon} />
-        </TouchableOpacity>
-        <View style={styles.icon_location}>
-          <Icon name="map-marker" size={24} color="#6B50F6" style={styles.icon} />
+      <HeaderNavigation type={'secondary'} title="Shopping Bag" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
+      <View style={styles.container}>
+        <View style={styles.sectionBill}>
+          <View style={styles.productInfor}>
+            <Image
+              source={{ uri: groupCartData.groupCart?.productByGroup?.images[0] }}
+              style={styles.productImage}
+            />
+            <View style={styles.inforProduct}>
+              <Text style={styles.title}>{groupCartData.groupCart?.productByGroup?.product_name} </Text>
+              <Text style={styles.quantity}>x {groupCartData.groupCart?.totalPrice?.quantity} </Text>
+              <Text style={styles.price}>{formattedPrice(groupCartData.groupCart?.productByGroup?.price) }</Text>
+            </View>
+          </View>
           <View>
-          <Text style={styles.infor}>{name }</Text>
-          <Text style={styles.infor}>{phoneNumber }</Text>
-          <Text style={styles.infor}>{address }</Text>
           </View>
         </View>
-      </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Payment Method</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Payment')}>
-          <Icon name="edit" size={18} color="#FF69B4" style={styles.editIcon} />
+        { groupCartData?.groupCart?.totalPrice?.role === "leader" && (
+          <View style={styles.section}>
+          <Text style={styles.sectionTitle}> Deliver To</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SetLocation')}>
+            <Icon name="edit" size={18} color="#FF69B4" style={styles.editIcon} />
           </TouchableOpacity>
           <View style={styles.icon_location}>
-            <Icon name="credit-card" size={24} color="#6B50F6" style={styles.icon} />
-            <Text style={styles.seri}>2121 6352 8465 ****</Text>
+            <Icon name="map-marker" size={24} color="#FF69B4" style={styles.icon} />
+            <View>
+              <Text style={styles.infor}>{phoneNumber}</Text>
+              <Text style={styles.infor}>{address}</Text>
+            </View>
+          </View>
+        </View>
+        )}
+        <View style={styles.sectionBill}>
+          <Text style={styles.sectionTitle}>Order Payment Details</Text>
+          <View style={styles.line}></View>
+          <View style={styles.bill}>
+            <View style={styles.titleInfor}>
+              <Text style={styles.title}>Order Amounts </Text>
+              <Text style={styles.title}>Delivery Free </Text>
+            </View>
+            <View style={styles.valueInfor}>
+              <Text style={styles.price}>{formattedPrice(groupCartData.groupCart?.totalPrice.price)} </Text>
+              <Text style={styles.price}>Free </Text>
+            </View>
+          </View>
+          <View>
           </View>
         </View>
 
-        <View style={[styles.checkout, styles.horizontal]}>
-          <View style={styles.left}>
-            <Text style={styles.sub}>Sub - Total</Text>
-            <Text style={styles.charge}>Delivery Charge</Text>
-            <Text style={styles.discount}>Discount</Text>
-            <Text style={styles.total}>Total</Text>
-          </View>
-          <View style={styles.right}>
-            <Text style={styles.price}>120 $</Text>
-            <Text style={styles.price}>10 $</Text>
-            <Text style={styles.price}>20 $</Text>
-            <Text style={styles.Total_price}>150 $</Text>
-          </View>
+        <View style={styles.button}>
+          <TouchableOpacity style={styles.buttonPayment} onPress={onCheckout}>
+            <Text style={styles.paymentText}>Process to Payment
+            </Text></TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Finish_Order')}>
-          <Text style={styles.plOrder}>Confirm Order</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      </View>
     </>
   );
 };
@@ -66,12 +126,11 @@ const ConfirmOrder = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    backgroundColor:"#fff"
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 5,
     backgroundColor: '#fff',
-    borderRadius: 15,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: {
@@ -100,80 +159,121 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
   },
+  inforProduct: {
+    marginLeft: 20,
+    fontSize: 15,
+    marginTop:20
+  },
   infor: {
-    marginLeft: 10,
-    // fontWeight: 'bold',
+    marginLeft: 20,
     fontSize: 15,
   },
-  seri: {
-    marginLeft: 10,
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
-  checkout: {
-    flexDirection: 'row',
+  sectionBill: {
     backgroundColor: '#fff',
-    borderRadius: 25,
     padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  productImage: {
+    width: 100,
+    height: 100,
     marginTop: 20,
+    borderRadius: 16,
+    marginBottom: 20
   },
-  horizontal: {
-    justifyContent: 'space-between',
+  productInfor: {
+    flexDirection: 'row',
   },
-  left: {
-    flex: 1,
-  },
-  right: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  sub: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginBottom: 10,
-    color: Colors.darkGrey,
+  title: {
+    color: Colors.darkBlack,
+    fontSize: 18,
+    marginBottom: 5,
+    textAlign: 'left'
   },
   price: {
     fontWeight: 'bold',
-    fontSize: 14,
-    marginBottom: 5,
-    color: Colors.darkGrey,
-  },
-  charge: {
-    fontWeight: 'bold',
-    fontSize: 14,
-    marginBottom: 5,
-    color: Colors.darkGrey,
-  },
-  discount: {
-    fontWeight: 'bold',
-    fontSize: 14,
-    marginBottom: 5,
-    color: Colors.darkGrey,
-  },
-  total: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginBottom: 5,
-    color: Colors.darkGrey,
-  },
-  Total_price: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: Colors.darkGrey,
-  },
-  button: {
-    backgroundColor: Colors.primaryColor,
-    borderRadius: 14,
-    marginTop: 20,
-    padding: 15,
-    alignItems: 'center',
-  },
-  plOrder: {
+    color: '#F83758',
     fontSize: 18,
-    fontWeight: 'bold',
-    color: Colors.secondaryColor,
+    marginBottom: 5,
+    textAlign: 'left'
   },
+  quantity: {
+    fontWeight: '700',
+    fontSize: 18,
+    textAlign: 'left',
+    marginTop: 5,
+    marginBottom: 5
+  },
+  bill: {
+    flexDirection: 'row',
+    justifyContent: "space-between"
+  },
+  titleInfor: {
+    fontSize: 18,
+    marginTop: 20
+  },
+  valueInfor: {
+    fontWeight: '700',
+    fontSize: 18,
+    marginTop: 20
+  },
+
+  button: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: '100%',
+    backgroundColor: '#F8F8F8',
+    padding: 60,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderWidth:0.5,
+    borderColor:Colors.darkBlack
+  },
+  buttonPayment: {
+    borderRadius: 6,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: Colors.primaryColor,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    margin:10
+  },
+  paymentText: {
+    color: Colors.secondaryColor,
+    textAlign: 'center',
+    justifyContent: 'center',
+    fontSize: 20,
+    fontWeight:'700'
+  },
+  line:{
+    height:1,
+    backgroundColor:Colors.darkBlack
+  }
+
 });
 
 export { ConfirmOrder };
+

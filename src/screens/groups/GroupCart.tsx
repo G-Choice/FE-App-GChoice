@@ -18,13 +18,17 @@ import GchoiceAxios from "../../api";
 import {useRoute} from "@react-navigation/native";
 import moment from "moment/moment";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { saveGroupCart } from "../../redux/actions/action.ts";
+
 type RouteParams = {
   data: any;
 };
 
 const GroupCart  = () => {
   const route = useRoute()
-  const navigation = useNavigation()
+  const dispatch = useDispatch();
+  const navigation = useNavigation<any>()
   const { data } = route.params as RouteParams;
   const [groupCart, setGroupCart] = useState<any>(null)
   const [buyingInfo, setBuyingInfo] = useState<any>(null)
@@ -33,26 +37,30 @@ const GroupCart  = () => {
     setLoading(true);
     GchoiceAxios({
       method: "get",
-      url: `groups/cart_group?group_id=${data.id}`,
+      // url: `groups/cart_group?group_id=${data.id}`,
+      url: `groups/itemGroup/${data.id}`,
       responseType: "json",
     })
       .then((res) => {
         setBuyingInfo(res.data.data)
         setGroupCart(res.data)
+        dispatch(saveGroupCart(res.data));
         setLoading(false);
       })
       .catch((e) => {
         console.log(e);
       });
   }, []);
-
+  const handleConfirmOrder = ()=>{
+    navigation.navigate("ConfirmOrder");
+  }
   const duration = moment.duration(data?.remainingHours, 'hours');
   const hours = Math.floor(duration.asHours());
   const minutes = duration.minutes();
   const seconds = duration.seconds();
 
-  const process = (data?.carts?.total_quantity ?? 0) /(data?.groupSize || 1);
-  const renderCart = ({ item }: { item: any }) => <Cart {...item} />;
+  const process = (data?.current_quantity ?? 0) /(data?.expected_quantity || 1);
+  const renderCart = ({ item }: { item: any }) => <Cart {...item} priceEachProduct={groupCart?.productByGroup?.price} />;
 
   if (!groupCart) {
     return (
@@ -67,7 +75,7 @@ const GroupCart  = () => {
         <HeaderNavigation type={'secondary'} title="Group Information" wrapperStyle={{ paddingTop: 1 }} />
         <View style={{backgroundColor: Colors.secondaryColor, margin: 5}}>
           <View style={{flexDirection: "row", justifyContent: "space-between",alignItems: "center", marginHorizontal: 5}}>
-            <Text style={{color: Colors.primaryColor, fontWeight: "500"}}>{data.carts?.total_quantity}/{data?.groupSize}</Text>
+            <Text style={{color: Colors.primaryColor, fontWeight: "500"}}>{data?.current_quantity}/{data?.expected_quantity}</Text>
             <CountDown hours={hours} minutes={minutes} seconds={seconds} />
           </View>
           <ProgressBarAndroid
@@ -114,15 +122,15 @@ const GroupCart  = () => {
           width: "70%",
           backgroundColor: Colors.primaryColor,
         }}
-        onPress={() => navigation.navigate("ConfirmOrder")}
-      >
+        onPress={handleConfirmOrder}
+        >
         <TextFormat
           weight={400}
           size="md"
           color="secondaryColor"
           style={styles.textStyle}
         >
-          Confirm with {data.carts?.total_quantity} products
+          Confirm with {data.expected_quantity} products
         </TextFormat>
         <TextFormat
           weight={500}
@@ -130,7 +138,7 @@ const GroupCart  = () => {
           color="secondaryColor"
           style={styles.textStyle}
         >
-          {formattedPrice(groupCart?.totalPrice)}
+          {formattedPrice(groupCart?.totalPrice.price)}
         </TextFormat>
       </TouchableOpacity>
     </>

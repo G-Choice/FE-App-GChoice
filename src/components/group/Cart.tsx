@@ -14,9 +14,9 @@ interface CartProp {
   users: {
     username: string,
     image: string
-  }
+  },
+  priceEachProduct:number
 }
-
 const Cart = (props: CartProp) => {
   return (
     <View style={[styles.aCartContainer, styles.elevation]}>
@@ -26,7 +26,7 @@ const Cart = (props: CartProp) => {
           <Text>{props?.users?.username}</Text>
         </View>
         <View style={{flexDirection: "row", gap: 3, alignItems: "center"}}>
-          <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{formattedPrice(props.price)}</TextFormat>
+          <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{formattedPrice(props.priceEachProduct)}</TextFormat>
           <Text>x</Text>
           <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{props.quantity}</TextFormat>
         </View>

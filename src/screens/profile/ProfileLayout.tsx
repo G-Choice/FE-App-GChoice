@@ -9,6 +9,10 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconSimple from 'react-native-vector-icons/SimpleLineIcons';
 
+// import messaging, {
+//     FirebaseMessagingTypes,
+//     firebase
+//   } from "@react-native-firebase/messaging";
 
 const statusData = [
     { id: 1, name: 'Chờ xác nhận', icon: 'hourglass', color: '#777171', quantity: 1 },
@@ -51,6 +55,43 @@ const ProfileScreen = () => {
             </View>
         </View>
     );
+
+    // console.log('firebase apps', firebase.apps);
+
+// if (firebase.apps.length === 0) {
+  // const firebaseConfig = {
+  //   apiKey: 'AIzaSyBsY7IiTyRsdUm_vMFTzQzIRmW2IdwIneM',
+  //   storageBucket: 'gchoice-3b866.appspot.com',
+  //   projectId: 'gchoice-3b866',
+  //   authDomain: 'gchoice-3b866.firebaseapp.com',
+  //   messagingSenderId: '578702676032',
+  //   appId: '1:578702676032:android:1ff526c5c6728f6628cfa5',
+  //   databaseURL: 'https://gchoice-3b866.firebaseio.com'
+  // };
+//   const firebaseConfig = {
+//     "apiKey": "AIzaSyBsY7IiTyRsdUm_vMFTzQzIRmW2IdwIneM",
+//     "appId": "1:578702676032:android:1ff526c5c6728f6628cfa5",
+//     "databaseURL": 'https://gchoice-3b866.firebaseio.com',
+//     "gaTrackingId": null,
+//     "messagingSenderId": "578702676032",
+//     "projectId": "gchoice-3b866",
+//     "storageBucket": "gchoice-3b866.appspot.com"
+//   }
+//   console.log('initializarion', firebase.initializeApp(firebaseConfig));
+//   console.log('firebase configured');
+// }
+    
+//     console.log('firebase app in profile blublu', firebase.apps);
+// if (firebase.apps.length > 0) {
+//     console.log('configuring notifications');
+//     messaging().setBackgroundMessageHandler(async mess => {
+  
+//     })
+  
+//     messaging().onNotificationOpenedApp(mess => {
+//         console.log(mess);
+//     })
+//   }
 
     return (
         <ScrollView style={styles.container}>
