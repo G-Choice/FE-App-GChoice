@@ -93,13 +93,13 @@ const ProductDetail = () => {
             </View>
           </View>
           <View style={styles.shopInfoContainer}>
-            {/* <View style={styles.shopAvatarContainer}>
+            <View style={styles.shopAvatarContainer}>
               {productDetails.shop.shop_image ? (
-                <Image source={{ uri: productDetails.shop.shop_image }} style={styles.shopAvatar} />
+                <Image source={{ uri: productDetails.shop.shop_image[0] }} style={styles.shopAvatar} />
               ) : (
                 <Text>No Image Available</Text>
               )}
-            </View> */}
+            </View>
             
             <View style={styles.shopDetailsContainer}>
               <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
@@ -108,13 +108,13 @@ const ProductDetail = () => {
                 <Text style={styles.shopAddress}>{productDetails.shop.shop_address}</Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.viewShopButton} onPress={()=> navToGroup.navigate('ShopInfor', {shopId: productDetails.shop.id}) }>
-              <Text style={styles.viewShopButtonText}>Xem cửa hàng</Text>
+            <TouchableOpacity style={styles.viewShopButton} onPress={()=> navToGroup.navigate("ShopInfor",{shopId:productDetails.shop.id })}>
+              <Text style={styles.viewShopButtonText}>View Shop</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.titleReviews}>Mô tả sản phẩm</Text>
+          <Text style={styles.titleReviews}>Product Description</Text>
           <Text style={styles.productDescription}>{productDetails.description}</Text>
-          <Text style={styles.titleReviews}>Đánh giá</Text>
+          <Text style={styles.titleReviews}>Product reviews</Text>
           <View style={styles.ratingContainer}>
             <Text style={styles.numberRating}>{productDetails.avgrating}/5</Text>
             <Rating type="custom" ratingCount={5} imageSize={20} startingValue={productDetails.avgrating} readonly tintColor="#f4f4f4" />
@@ -141,11 +141,11 @@ const ProductDetail = () => {
               </View>
             ))}
           </View>
-          <Text style={styles.titleReviews}>Ưu đãi</Text>
+          <Text style={styles.titleReviews}>Discounts</Text>
           <View style={styles.discountTableContainer}>
             <View style={styles.discountTableHeader}>
-              <Text style={styles.discountTableHeaderCell}>Số lượng</Text>
-              <Text style={styles.discountTableHeaderCell}>Giá</Text>
+              <Text style={styles.discountTableHeaderCell}>Quantity</Text>
+              <Text style={styles.discountTableHeaderCell}>Price</Text>
             </View>
             {productDetails?.discounts.map((discount: Discount, index: number) => (
               <View key={index} style={styles.discountTableRow}>
@@ -171,10 +171,10 @@ const ProductDetail = () => {
           <Text> 2030</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.joinGroupButton} onPress={() => navToGroup.navigate("GroupEachProduct", route.params)}>
-          <Text style={styles.buttonText}>Mua nhóm</Text>
+          <Text style={styles.buttonText}>Join Group</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buyNowButton}>
-          <Text style={styles.buttonText}>Mua ngay</Text>
+          <Text style={styles.buttonText}>Buy Now</Text>
         </TouchableOpacity>
       </View>
     </>

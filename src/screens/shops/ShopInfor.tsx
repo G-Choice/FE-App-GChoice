@@ -5,6 +5,7 @@ import { CardContainer } from "../../components";
 import { ScrollView } from "react-native-virtualized-view";
 import GchoiceAxios from "../../api/index.ts";
 import { useRoute } from "@react-navigation/native";
+import {ProductList} from "./ProductList.tsx";
 const { width } = Dimensions.get("screen");
 
 const ShopInfor = () => {
@@ -58,10 +59,10 @@ console.log(shopInfo,'123')
         </View>
       </ImageBackground>
       <View style={styles.container}>
-        <Text style={styles.title}> Sản phẩm</Text>
+        <Text style={styles.title}>Products</Text>
         <View style={styles.stickyHeader} />
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <CardContainer />
+        <ProductList shopId={shopInfo ? shopInfo.id : ''} />
         </ScrollView>
       </View>
     </>

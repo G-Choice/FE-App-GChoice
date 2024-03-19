@@ -18,11 +18,11 @@ interface TabItem {
 }
 
 const TabArr: TabItem[] = [
-  { route: 'Home', label: 'Trang chủ', type: Icons.Feather, icon: 'home', component: Home },
+  { route: 'Home', label: 'Home', type: Icons.Feather, icon: 'home', component: Home },
   // { route: 'Suggestion', label: 'Suggestion', type: Icons.MaterialCommunityIcons, icon: 'post-outline', component: GroupEachProduct },
-  { route: 'Group', label: 'Nhóm', type: Icons.MaterialCommunityIcons, icon: 'select-group', component: UserGroup },
-  { route: 'Chat', label: 'Diễn đàn', type: Icons.MaterialCommunityIcons, icon: 'chat-processing-outline', component: Forum },
-  { route: 'Profile', label: 'Cá nhân', type: Icons.FontAwesome, icon: 'user-circle-o', component: ProfileScreen },
+  { route: 'Group', label: 'Group', type: Icons.MaterialCommunityIcons, icon: 'select-group', component: UserGroup },
+  { route: 'Chat', label: 'Chat', type: Icons.MaterialCommunityIcons, icon: 'chat-processing-outline', component: Forum },
+  { route: 'Profile', label: 'Profile', type: Icons.FontAwesome, icon: 'user-circle-o', component: ProfileScreen },
 ];
 
 const Tab = createBottomTabNavigator();
