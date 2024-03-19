@@ -190,22 +190,22 @@ const CreateGroup = () => {
               <Modal visible={isTimeModalVisible} animationType="slide" transparent={true}>
                 <View style={styles.modalContainer}>
                   <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>Select Time</Text>
+                    <Text style={styles.modalTitle}>Chọn thời gian</Text>
                     <View style={styles.timeOptionsContainer}>{renderTimeOptions()}</View>
                     <TouchableOpacity style={styles.closeButton} onPress={() => setTimeModalVisible(false)}>
-                      <Text style={styles.closeButtonText}>Close</Text>
+                      <Text style={styles.closeButtonText}>Đóng</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
               </Modal>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Quantity <Text style={{ color: 'red' }}>*</Text></Text>
+                <Text style={styles.label}>Số lượng <Text style={{ color: 'red' }}>*</Text></Text>
                 <TextInput style={styles.input} placeholder="Quantity" keyboardType="numeric" onEndEditing={(e) => setQuantity(e.nativeEvent.text)} defaultValue={quantity} />
                 {quantityError ? <Text style={styles.errorText}> {quantityError}</Text> : null}
               </View>
               <TouchableOpacity style={styles.button} onPress={postDataToApi} >
-                <Text style={styles.buttonText}>CREATE</Text>
+                <Text style={styles.buttonText}>TẠO</Text>
               </TouchableOpacity>
             </ImageBackground>
           </ScrollView>
