@@ -8,17 +8,11 @@ import { logout  } from '../../global-states/data-states/AuthSlice';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconSimple from 'react-native-vector-icons/SimpleLineIcons';
-
-// import messaging, {
-//     FirebaseMessagingTypes,
-//     firebase
-//   } from "@react-native-firebase/messaging";
-
 const statusData = [
-    { id: 1, name: 'Chờ xác nhận', icon: 'hourglass', color: '#777171', quantity: 1 },
-    { id: 2, name: 'Chờ lấy hàng', icon: 'shopping-cart', color: '#777171', quantity: 0 },
-    { id: 3, name: 'Đang giao', icon: 'truck', color: '#777171', quantity: 0 },
-    { id: 4, name: 'Đã giao', icon: 'check-circle', color: '#777171', quantity: 0 },
+    { id: 1, name: 'Confirm', icon: 'hourglass', color: '#777171', quantity: 1 },
+    { id: 2, name: 'Delivery', icon: 'shopping-cart', color: '#777171', quantity: 0 },
+    { id: 3, name: 'Delivering', icon: 'truck', color: '#777171', quantity: 0 },
+    { id: 4, name: 'Delivered', icon: 'check-circle', color: '#777171', quantity: 0 },
 ];
 
 const orderHistoryData = [
@@ -55,44 +49,6 @@ const ProfileScreen = () => {
             </View>
         </View>
     );
-
-    // console.log('firebase apps', firebase.apps);
-
-// if (firebase.apps.length === 0) {
-  // const firebaseConfig = {
-  //   apiKey: 'AIzaSyBsY7IiTyRsdUm_vMFTzQzIRmW2IdwIneM',
-  //   storageBucket: 'gchoice-3b866.appspot.com',
-  //   projectId: 'gchoice-3b866',
-  //   authDomain: 'gchoice-3b866.firebaseapp.com',
-  //   messagingSenderId: '578702676032',
-  //   appId: '1:578702676032:android:1ff526c5c6728f6628cfa5',
-  //   databaseURL: 'https://gchoice-3b866.firebaseio.com'
-  // };
-//   const firebaseConfig = {
-//     "apiKey": "AIzaSyBsY7IiTyRsdUm_vMFTzQzIRmW2IdwIneM",
-//     "appId": "1:578702676032:android:1ff526c5c6728f6628cfa5",
-//     "databaseURL": 'https://gchoice-3b866.firebaseio.com',
-//     "gaTrackingId": null,
-//     "messagingSenderId": "578702676032",
-//     "projectId": "gchoice-3b866",
-//     "storageBucket": "gchoice-3b866.appspot.com"
-//   }
-//   console.log('initializarion', firebase.initializeApp(firebaseConfig));
-//   console.log('firebase configured');
-// }
-    
-//     console.log('firebase app in profile blublu', firebase.apps);
-// if (firebase.apps.length > 0) {
-//     console.log('configuring notifications');
-//     messaging().setBackgroundMessageHandler(async mess => {
-  
-//     })
-  
-//     messaging().onNotificationOpenedApp(mess => {
-//         console.log(mess);
-//     })
-//   }
-
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
@@ -120,7 +76,7 @@ const ProfileScreen = () => {
                 <Icon name="history" size={20} color={Colors.primaryColor} style={{ marginRight: 5 }} />
                 <Text style={styles.infoTitle}>History Order</Text>
             </View>
-            <View style={styles.orderHistory}>
+            {/* <View style={styles.orderHistory}>
                 <FlatList
                     data={orderHistoryData}
                     renderItem={renderOrderItem}
@@ -128,7 +84,7 @@ const ProfileScreen = () => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                 />
-            </View>
+            </View> */}
             <TouchableOpacity style={styles.menuItem} onPress={()=>navigation.navigate('AccountSetting')}>
                 <IconSimple name="settings" size={20} color={Colors.primaryColor} style={{ marginRight: 5 }} />
                 <Text style={styles.infoTitle}>Account Setting</Text>
@@ -157,7 +113,6 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         backgroundColor: Colors.primaryColor,
         flexDirection: 'row',
-        // justifyContent: 'space-between',
 
     },
     avatar: {
@@ -293,16 +248,11 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 16,
         marginRight: 5,
-        // color: Colors.primaryColor  
     },
     historyItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        // marginBottom: 10,
         padding: 16,
-        // borderWidth: 1,
-        // borderColor: '#ddd',
-        // borderRadius: 5,
     },
     menuItem: {
         flexDirection: 'row',
