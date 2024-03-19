@@ -64,9 +64,9 @@ const Group = (props: GroupResApiType) => {
             numberOfLines={1}
             style={{ marginTop: 12 }}
             color={"secondaryColor"}
-            size={"md"}
+            size={"sm"}
           >
-            {props.isJoined ? "Joined" : "Join"}
+            {props.isJoined ? "Đã tham gia" : "Tham gia"}
           </TextFormat>
         </TouchableOpacity>
       </View>

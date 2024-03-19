@@ -93,13 +93,13 @@ const ProductDetail = () => {
             </View>
           </View>
           <View style={styles.shopInfoContainer}>
-            {/* <View style={styles.shopAvatarContainer}>
+            <View style={styles.shopAvatarContainer}>
               {productDetails.shop.shop_image ? (
-                <Image source={{ uri: productDetails.shop.shop_image }} style={styles.shopAvatar} />
+                <Image source={{ uri: productDetails.shop.shop_image[0] }} style={styles.shopAvatar} />
               ) : (
                 <Text>No Image Available</Text>
               )}
-            </View> */}
+            </View>
             
             <View style={styles.shopDetailsContainer}>
               <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text>
@@ -108,7 +108,7 @@ const ProductDetail = () => {
                 <Text style={styles.shopAddress}>{productDetails.shop.shop_address}</Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.viewShopButton}>
+            <TouchableOpacity style={styles.viewShopButton} onPress={()=> navToGroup.navigate("ShopInfor",{shopId:productDetails.shop.id })}>
               <Text style={styles.viewShopButtonText}>View Shop</Text>
             </TouchableOpacity>
           </View>
