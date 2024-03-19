@@ -108,7 +108,7 @@ const ProductDetail = () => {
                 <Text style={styles.shopAddress}>{productDetails.shop.shop_address}</Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.viewShopButton}>
+            <TouchableOpacity style={styles.viewShopButton} onPress={()=> navToGroup.navigate('ShopInfor', {shopId: productDetails.shop.id}) }>
               <Text style={styles.viewShopButtonText}>View Shop</Text>
             </TouchableOpacity>
           </View>

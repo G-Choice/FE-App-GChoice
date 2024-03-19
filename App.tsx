@@ -44,6 +44,7 @@ import messaging, {
 import NotificationPopup from "react-native-push-notification-popup";
 import { Platform } from 'react-native';
 import { StripeProvider } from '@stripe/stripe-react-native';
+import { ShopInfor } from './src/screens/shops/ShopInfor.tsx';
 
 const STRIPE_KEY =
   'pk_test_51OuEF7Ex4IqeBbkk3aXFjexlLG0PAGD8cLzHvZTVXMdV50hvM8OhFO2yOjbp2XdAZiorIuU00ErGyTq64BV77YRv00W52VrSxr';
@@ -94,6 +95,7 @@ const MainStack = () => {
         <Stack.Screen options={{ title: '', headerShown: false }} name='AccountSetting' component={AccountSetting} />
         <Stack.Screen options={{ title: '', headerShown: false }} name='OrderDetail' component={OrderDtail} />
         <Stack.Screen options={{ title: '', headerShown: false }} name='TrackStatus' component={TrackStatus} />
+        <Stack.Screen options={{ title: '', headerShown: false }} name='ShopInfor' component={ShopInfor} />
       </Stack.Navigator>
       <NotificationPopup ref={notificationPopupRef} />
     </>
