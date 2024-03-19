@@ -8,7 +8,7 @@ import { useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { ScrollView } from 'react-native-virtualized-view';
 import { useDispatch } from 'react-redux';
-import { updateGroupList } from '../../redux/actions/groupAction';
+import { updateGroupList } from '../../redux/actions/action';
 import { useNavigation } from '@react-navigation/native';
 const CreateGroup = () => {
   const route = useRoute()
@@ -87,17 +87,17 @@ const CreateGroup = () => {
         quantity_product: quantity,
         product_id: productId,
       });
+      console.log(response.data.message,'tammmm')
       if (response.data.message === 'Group created successfully!') {
         Toast.show({
           type: 'success',
           position: 'top',
           text1: 'Create group successfully!',
           visibilityTime: 2000,
-          
           autoHide: true,
         });
         console.log('id:', route.params)
-        const updatedGroupList = await GchoiceAxios.get(`/groups?product_id=${route.params}`);
+        const updatedGroupList = await GchoiceAxios.get(`/groups/${route.params}`);
         dispatch(updateGroupList(updatedGroupList.data.data));
         // navigation.navigate("GroupEachProduct", {data: updatedGroupList.data.data});
         navigation.navigate("GroupEachProduct",  route.params );

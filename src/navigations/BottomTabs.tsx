@@ -6,6 +6,7 @@ import * as Animatable from 'react-native-animatable';
 import { Colors } from '../assets/colors';
 import { Home, Suggestion, GroupEachProduct, ProfileScreen } from '../screens';
 import {Forum} from "../screens/forum/Forum.tsx";
+import { UserGroup } from '../screens/groups/UserGroup';
 
 interface TabItem {
   route: string;
@@ -18,8 +19,8 @@ interface TabItem {
 
 const TabArr: TabItem[] = [
   { route: 'Home', label: 'Home', type: Icons.Feather, icon: 'home', component: Home },
-  { route: 'Forums', label: 'Forums', type: Icons.MaterialCommunityIcons, icon: 'post-outline', component: Forum },
-  { route: 'Group', label: 'Group', type: Icons.MaterialCommunityIcons, icon: 'select-group', component: Suggestion },
+  { route: 'Suggestion', label: 'Suggestion', type: Icons.MaterialCommunityIcons, icon: 'post-outline', component: GroupEachProduct },
+  { route: 'Group', label: 'Group', type: Icons.MaterialCommunityIcons, icon: 'select-group', component: UserGroup },
   { route: 'Chat', label: 'Chat', type: Icons.MaterialCommunityIcons, icon: 'chat-processing-outline', component: Suggestion },
   { route: 'Profile', label: 'Profile', type: Icons.FontAwesome, icon: 'user-circle-o', component: ProfileScreen },
 ];

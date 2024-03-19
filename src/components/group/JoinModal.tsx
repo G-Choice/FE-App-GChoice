@@ -5,7 +5,7 @@ import { Colors } from '../../assets/colors';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import GchoiceAxios from '../../api';
 import { useDispatch } from 'react-redux';
-import { updateGroupList } from '../../redux/actions/groupAction';
+import { updateGroupList } from '../../redux/actions/action';
 
 interface JoinModalProps {
   visible: boolean;
@@ -39,7 +39,7 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
       if (response.data.message === 'Joined group successfully') {
         onJoin(quantity);
         // navigation.navigate('GroupCart', {data :response.data.data });
-        const updatedGroupList = await GchoiceAxios.get(`/groups?product_id=${route.params}`);
+        const updatedGroupList = await GchoiceAxios.get(`/groups/${route.params}`);
         dispatch(updateGroupList(updatedGroupList.data.data));
         // navigation.navigate("GroupEachProduct", {data: updatedGroupList.data.data});
         navigation.navigate("GroupEachProduct",  route.params );

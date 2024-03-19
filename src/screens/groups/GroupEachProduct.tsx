@@ -9,7 +9,7 @@ import {SearchBar} from "../../components/input/SearchBar.tsx";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import GchoiceAxios from "../../api/index.ts";
 import { useSelector, useDispatch } from 'react-redux';
-import { updateGroupList} from '../../redux/actions/groupAction.ts'
+import { updateGroupList} from '../../redux/actions/action.ts'
 import { RootState } from "../../redux/store/store.ts";
 const GroupEachProduct = () => {
   const route = useRoute()
@@ -33,7 +33,7 @@ const GroupEachProduct = () => {
       console.log(route.params,'aaa')
       const fetchGroups = async () => {
         try {
-          const response = await GchoiceAxios.get(`/groups?product_id=${route.params}`);
+          const response = await GchoiceAxios.get(`/groups/${route.params}`);
           dispatch(updateGroupList(response.data.data));
         } catch (error) {
           console.error('Error fetching groups:', error);
