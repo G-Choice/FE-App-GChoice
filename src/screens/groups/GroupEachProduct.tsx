@@ -48,15 +48,15 @@ const GroupEachProduct = () => {
   const renderItem = ({ item }: { item: any }) => <Group {...item} />;
   return (
     <View style={{backgroundColor: "white"}}>
-      <HeaderNavigation type={'secondary'} title="Available Groups" wrapperStyle={{paddingTop: 1, marginBottom: 10}}/>
+      <HeaderNavigation type={'secondary'} title="Nhóm có sẵn" wrapperStyle={{paddingTop: 1, marginBottom: 10}}/>
       <View style={styles.groupGeneralWrapper}>
-        <TextFormat weight={300} numberOfLines={1} color={'darkBlack'} size={'md'}>Groups ({groupList?.length})</TextFormat>
+        <TextFormat weight={300} numberOfLines={1} color={'darkBlack'} size={'md'}>Nhóm ({groupList?.length})</TextFormat>
         <TouchableOpacity style={{flexDirection: "row", gap: 2, borderRadius: 5, borderColor: Colors.primaryColor, borderWidth: 1, padding: 8}}    onPress={() => navigation.navigate("CreateGroup", route.params )}>
           <Icon name="plus" size={20} style={{ color: Colors.primaryColor, paddingTop: 2 }}/>
-          <TextFormat weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>Create new group</TextFormat>
+          <TextFormat weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>Tạo nhóm mới</TextFormat>
         </TouchableOpacity>
       </View>
-      <SearchBar placeholder="Search..." onSubmit={handleSearch} onPressIn={handleOnPressIn} />
+      <SearchBar placeholder="Tìm kiếm..." onSubmit={handleSearch} onPressIn={handleOnPressIn} />
       <FlatList data={groupList} renderItem={renderItem}
                 style={styles.groupContainer} />
     </View>

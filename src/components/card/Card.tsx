@@ -38,7 +38,7 @@ const Card = (props: ProductCardProps) => {
               />
               <Text style={{borderRightWidth: 0.5, paddingRight: 2, borderColor: Colors.lightGrey}}>4.6</Text>
               {/*<Text>{props.avgRating}</Text>*/}
-              <Text>Sold {props.quantity_inventory}</Text>
+              <Text>Đã bán {props.quantity_inventory}</Text>
             </View>
           </View>
         </View>

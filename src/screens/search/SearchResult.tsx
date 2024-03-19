@@ -86,7 +86,7 @@ const SearchResult = () => {
             <TouchableOpacity style={{paddingVertical: 8}} onPress={handleBack}>
               <Icon name='chevron-left' size={30}/>
             </TouchableOpacity>
-            <SearchBar ref={searchRef} placeholder="Search..." onSubmit={handleSearch}
+            <SearchBar ref={searchRef} placeholder="Tìm kiếm..." onSubmit={handleSearch}
                        onChangeText={(text: string) => setSearch({value: text.trim(), error: ''})}
                        onPressIn={() => navigate.navigate("Search")} wrapperStyle={styles.searchBarStyle}/>
           </View>

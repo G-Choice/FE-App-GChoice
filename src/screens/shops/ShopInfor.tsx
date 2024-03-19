@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   followText: {
-    color: Colors.white,
+    color: Colors.secondaryColor,
     fontWeight: 'bold'
   }
 });

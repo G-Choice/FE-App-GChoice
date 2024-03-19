@@ -109,12 +109,12 @@ const ProductDetail = () => {
               </View>
             </View>
             <TouchableOpacity style={styles.viewShopButton} onPress={()=> navToGroup.navigate('ShopInfor', {shopId: productDetails.shop.id}) }>
-              <Text style={styles.viewShopButtonText}>View Shop</Text>
+              <Text style={styles.viewShopButtonText}>Xem cửa hàng</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.titleReviews}>Product Description</Text>
+          <Text style={styles.titleReviews}>Mô tả sản phẩm</Text>
           <Text style={styles.productDescription}>{productDetails.description}</Text>
-          <Text style={styles.titleReviews}>Product reviews</Text>
+          <Text style={styles.titleReviews}>Đánh giá</Text>
           <View style={styles.ratingContainer}>
             <Text style={styles.numberRating}>{productDetails.avgrating}/5</Text>
             <Rating type="custom" ratingCount={5} imageSize={20} startingValue={productDetails.avgrating} readonly tintColor="#f4f4f4" />
@@ -141,11 +141,11 @@ const ProductDetail = () => {
               </View>
             ))}
           </View>
-          <Text style={styles.titleReviews}>Discounts</Text>
+          <Text style={styles.titleReviews}>Ưu đãi</Text>
           <View style={styles.discountTableContainer}>
             <View style={styles.discountTableHeader}>
-              <Text style={styles.discountTableHeaderCell}>Quantity</Text>
-              <Text style={styles.discountTableHeaderCell}>Price</Text>
+              <Text style={styles.discountTableHeaderCell}>Số lượng</Text>
+              <Text style={styles.discountTableHeaderCell}>Giá</Text>
             </View>
             {productDetails?.discounts.map((discount: Discount, index: number) => (
               <View key={index} style={styles.discountTableRow}>
@@ -171,10 +171,10 @@ const ProductDetail = () => {
           <Text> 2030</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.joinGroupButton} onPress={() => navToGroup.navigate("GroupEachProduct", route.params)}>
-          <Text style={styles.buttonText}>Join Group</Text>
+          <Text style={styles.buttonText}>Mua nhóm</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buyNowButton}>
-          <Text style={styles.buttonText}>Buy Now</Text>
+          <Text style={styles.buttonText}>Mua ngay</Text>
         </TouchableOpacity>
       </View>
     </>
