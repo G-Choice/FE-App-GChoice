@@ -51,9 +51,14 @@ const GroupCart  = () => {
         console.log(e);
       });
   }, []);
-  const handleConfirmOrder = ()=>{
-    navigation.navigate("ConfirmOrder");
+  const handleConfirmOrder = () => {
+    if (groupCart?.totalPrice.ispayment === false) {
+      navigation.navigate("ConfirmOrder");
+    } else {
+      navigation.navigate("OrderDetail",{groupId: groupCart?.totalPrice.group_id});
+    }
   }
+  console.log(groupCart,'vivi')
   const duration = moment.duration(data?.remainingHours, 'hours');
   const hours = Math.floor(duration.asHours());
   const minutes = duration.minutes();
