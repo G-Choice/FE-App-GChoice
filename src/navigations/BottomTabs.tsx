@@ -5,6 +5,7 @@ import Icon, { Icons } from '../components/icons/Icons';
 import * as Animatable from 'react-native-animatable';
 import { Colors } from '../assets/colors';
 import { Home, Suggestion, GroupEachProduct, ProfileScreen } from '../screens';
+import {Forum} from "../screens/forum/Forum.tsx";
 import { UserGroup } from '../screens/groups/UserGroup';
 
 interface TabItem {
