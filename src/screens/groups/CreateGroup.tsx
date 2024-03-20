@@ -41,15 +41,15 @@ const CreateGroup = () => {
       console.error('Error fetching receiving stations:', error);
     }
   };
-  const handleStationChange = (selectedStation:any) => {
+  const handleStationChange = (selectedStation: any) => {
     const [selectedStationName, selectedStationAddress] = selectedStation.split(' - ');
     const station = stations.find((station) => station.name === selectedStationName || station.address === selectedStationAddress);
     if (station) {
       setSelectedStationId(station.id);
     }
   };
-  
-  console.log(selectedStationId,'nânna')
+
+  console.log(selectedStationId, 'nânna')
   const handleTimeChange = (time: string) => {
     setSelectedTime(time);
     setTimeModalVisible(false);
@@ -185,7 +185,7 @@ const CreateGroup = () => {
                 <Text style={styles.label}>Description</Text>
                 <TextInput style={styles.input} placeholder="Description" onEndEditing={(e) => setDescription(e.nativeEvent.text)} defaultValue={description} />
               </View>
-              
+
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Quantity expected <Text style={{ color: 'red' }}>*</Text></Text>
                 <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
@@ -218,23 +218,23 @@ const CreateGroup = () => {
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Station</Text>
                 <SelectDropdown
-                data={stations.map(station => `${station.name} - ${station.address}`)}
-                defaultValue={selectedStation}
-                onSelect={(selectedItem) => {
-                  setSelectedStation(selectedItem);
-                  handleStationChange(selectedItem);
-                }}
-                buttonTextAfterSelection={(selectedStation) => {
-                  return selectedStation;
-                }}
-                rowTextForSelection={(item) => {
-                  return item;
-                }}
-                buttonStyle={[styles.dropdownButton, { width: '100%' }]} 
-                buttonTextStyle={styles.dropdownButtonText}
-                dropdownStyle={styles.dropdown}
-                renderDropdownIcon={() => <Icon name="chevron-down" size={18} color={Colors.darkGrey} />} // Sử dụng icon từ thư viện react-native-vector-icons
-              />
+                  data={stations.map(station => `${station.name} - ${station.address}`)}
+                  defaultValue={selectedStation}
+                  onSelect={(selectedItem) => {
+                    setSelectedStation(selectedItem);
+                    handleStationChange(selectedItem);
+                  }}
+                  buttonTextAfterSelection={(selectedStation) => {
+                    return selectedStation;
+                  }}
+                  rowTextForSelection={(item) => {
+                    return item;
+                  }}
+                  buttonStyle={[styles.dropdownButton, { width: '100%' }]}
+                  buttonTextStyle={styles.dropdownButtonText}
+                  dropdownStyle={styles.dropdown}
+                  renderDropdownIcon={() => <Icon name="chevron-down" size={18} color={Colors.darkGrey} />} // Sử dụng icon từ thư viện react-native-vector-icons
+                />
               </View>
               <TouchableOpacity style={styles.button} onPress={postDataToApi} >
                 <Text style={styles.buttonText}>CREATE</Text>
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
   dropdownButtonText: {
     fontSize: 16,
     color: Colors.darkBlack,
-    textAlign:'left',
+    textAlign: 'left',
   },
   dropdown: {
     marginTop: 10,
