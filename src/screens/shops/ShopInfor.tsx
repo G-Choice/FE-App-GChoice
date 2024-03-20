@@ -59,7 +59,7 @@ console.log(shopInfo,'123')
         </View>
       </ImageBackground>
       <View style={styles.container}>
-        <Text style={styles.title}>Products</Text>
+        <Text style={styles.title}>Products of shop</Text>
         <View style={styles.stickyHeader} />
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <ProductList shopId={shopInfo ? shopInfo.id : ''} />
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   scrollView: {
-    marginTop: 30,
+    marginTop: 20,
   },
   backgroundImage: {
     height: 150,
@@ -111,8 +111,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: '400',
-    color: Colors.darkBlack
+    fontWeight: '600',
+    color: Colors.darkBlack,
+    marginLeft: 10,
+    marginTop: 10
   },
   changeBackgroundButton: {
     backgroundColor: Colors.primaryColor,
