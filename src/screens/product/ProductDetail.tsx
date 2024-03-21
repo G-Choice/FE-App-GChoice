@@ -70,7 +70,7 @@ const ProductDetail = () => {
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.productPrice}>{formattedPrice(productDetails.price)}</Text>
-            <TouchableOpacity style={styles.groupInfoContainer} onPress={() => navToGroup.navigate("GroupEachProduct")}>
+            <TouchableOpacity style={styles.groupInfoContainer} onPress={() => navToGroup.navigate("GroupEachProduct", route.params)}>
               <Text style={styles.groupInfo}>{groupInfo}</Text>
             </TouchableOpacity>
           </View>

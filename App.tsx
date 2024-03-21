@@ -114,8 +114,6 @@ const AuthSelector = () => {
 }
 
 const App = () => {
-
-  // console.log('firebase apps in App', firebase.apps);
   useEffect(() => {
     const requestPermission = async () => {
       await requestUserPermission();

@@ -20,13 +20,6 @@ const ConfirmOrder = ({ navigation }: any) => {
 
   console.log(groupCartData.groupCart,'groupCartDatahchck')
   const onCheckout = async () => {
-    
-    if (groupCartData?.groupCart?.totalPrice?.role === "leader") {
-      if (!phoneNumber || !address) {
-        Alert.alert('Please fill in the phone number and address');
-        return;
-      };
-    }
     const response = await GchoiceAxios.post('/payment/intents',{
       amount: (`${groupCartData.groupCart?.totalPrice.price}00`),
     });
@@ -51,7 +44,6 @@ const ConfirmOrder = ({ navigation }: any) => {
 
     onCreateOrder();
   };
-  console.log(groupCartData,'89983')
   const onCreateOrder = async () => {
     const result = await GchoiceAxios.post('/groups/saveDataPayment', {
       deliveryAddress: groupCartData.groupCart?.receingStation.address ,
