@@ -12,10 +12,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateGroupList} from '../../redux/actions/action.ts'
 import { RootState } from "../../redux/store/store.ts";
 import { CardGroup } from "../../components/group/card.tsx";
+import { ScrollView } from "react-native-virtualized-view";
 const UserGroup = () => {
   const route = useRoute()
   const navigation = useNavigation<any>();
   const [groupList, setGroupList] = useState<any>(null);
+  
   useFocusEffect(
     React.useCallback(() => {
       const fetchGroups = async () => {
@@ -37,13 +39,19 @@ const UserGroup = () => {
 
   const renderItem = ({ item }: { item: any }) => <CardGroup {...item} />;
   return (
-    <View style={{backgroundColor: "white"}}>
+    <>
+    <HeaderNavigation type={'secondary'} title="Joined Groups" wrapperStyle={{ paddingTop: 1, marginBottom: 5 }} />
+    <ScrollView >
+     <View style={{backgroundColor: "white"}}>
       <View style={styles.groupGeneralWrapper}>
         <TextFormat weight={300} numberOfLines={1} color={'darkBlack'} size={'md'}>My Groups ({groupList?.length})</TextFormat>
       </View>
       <FlatList data={groupList} renderItem={renderItem}
                 style={styles.groupContainer} />
     </View>
+    </ScrollView>
+    </>
+   
   )
 }
 

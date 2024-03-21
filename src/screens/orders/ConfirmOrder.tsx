@@ -30,6 +30,7 @@ const ConfirmOrder = ({ navigation }: any) => {
       merchantDisplayName: 'notJust.dev',
       paymentIntentClientSecret: response.data.paymentIntent,
     });
+    
     if (initResponse.error) {
       console.log(initResponse.error);
       Alert.alert('Something went wrong');

@@ -36,7 +36,9 @@ const Group = (props: GroupResApiType) => {
     <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart", { data: props })}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={styles.groupContent}>
+          <View style ={styles.avatar}>
           <AvatarBubble />
+          </View>
           <View>
             <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{props.group_name}</TextFormat>
             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
@@ -45,7 +47,9 @@ const Group = (props: GroupResApiType) => {
             </View>
           </View>
         </View>
+        <View style ={styles.countdown}>
         <CountDown hours={hours} minutes={minutes} seconds={seconds} />
+        </View>
         <TouchableOpacity
           style={[
             {
@@ -149,6 +153,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  countdown:{
+    alignSelf: "center"
+  },
+  avatar:{
+    alignSelf: "center"
   }
 })
 

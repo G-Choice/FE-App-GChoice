@@ -29,8 +29,6 @@ const CreateGroup = () => {
   const [stations, setStations] = useState([]);
   const [selectedStationId, setSelectedStationId] = useState(null);
   const [selectedStation, setSelectedStation] = useState('Select station');
-  const [selectedItem, setSelectedItem] = useState(null); // Thêm state mới
-
   useEffect(() => {
     fetchReceivingStations();
   }, []);
@@ -54,9 +52,7 @@ const CreateGroup = () => {
   const handleTimeChange = (time: string) => {
     setSelectedTime(time);
     setTimeModalVisible(false);
-    setSelectedItem(item);
   };
-  
   const validateInputs = () => {
     let isValid = true;
     if (!groupName.trim()) {

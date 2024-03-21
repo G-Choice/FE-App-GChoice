@@ -77,10 +77,10 @@ const CardGroup = (props: GroupResApiType) => {
                         <Text style={{ color: statusColor, fontWeight: '400', fontSize: 17 }}>
                             {statusText}
                         </Text>
-
                     </View>
-                    <CountDown hours={hours} minutes={minutes} seconds={seconds} />
-
+                </View>
+                <View style={styles.countdown}>
+                <CountDown hours={hours} minutes={minutes} seconds={seconds} />
                 </View>
             </View>
             <View>
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 20,
         marginBottom: 8,
+        justifyContent: "space-between",
     },
     timeStyle: {
         backgroundColor: Colors.darkBlack,
@@ -161,6 +162,9 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 35 / 2
+    },
+    countdown:{
+       alignSelf:"center"
     }
 });
 
