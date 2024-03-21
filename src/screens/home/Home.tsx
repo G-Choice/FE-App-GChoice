@@ -25,7 +25,6 @@ const Home = () => {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-    
         <PromotionSlider />
         <CardContainer />
       </ScrollView>
@@ -46,9 +45,10 @@ const styles = StyleSheet.create({
     right: 5,
     zIndex: 10,
     elevation: 2,
+    marginBottom: 30
   },
   scrollView: {
-    marginTop: 100, 
+    marginTop: 110, 
   },
   categoriesHeader:{
     marginLeft: 10,

@@ -65,7 +65,7 @@ const CardContainer = () => {
 
 const styles = StyleSheet.create({
   productContainer: {
-    margin: 5,
+    margin: 10,
     marginBottom: 100,
   },
   loadingContainer: {

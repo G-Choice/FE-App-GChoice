@@ -39,10 +39,9 @@ const Group = (props: GroupResApiType) => {
           <AvatarBubble />
           <View>
             <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{props.group_name}</TextFormat>
-            {/* <TextFormat weight={300} numberOfLines={1} color={'lightBlue'} size={'md'}>Online Payment</TextFormat> */}
             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
-              <IconFontAwesome name="warehouse" size={14} color={Colors.primaryColor} style={{ marginRight: 5 }} />
-              <TextFormat style={{ flexWrap: "wrap"}} weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>{props.receiving_station.name} </TextFormat>
+              <IconFontAwesome name="warehouse" size={10} color={Colors.primaryColor} style={{ marginRight: 5 }} />
+              <TextFormat style={{ flexWrap: "wrap"}} weight={400} numberOfLines={1} color={'lightBlue'} size={'xs'}>{props.receiving_station.name} </TextFormat>
             </View>
           </View>
         </View>

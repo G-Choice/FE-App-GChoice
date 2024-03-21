@@ -185,7 +185,7 @@ const RegisterLayout = () => {
           </Text>
           <InputComponent
             value={emailInput.value}
-            placeholder="Enter Email"
+            placeholder="Enter email"
             onChangeText={text => setEmailInput({ value: text })}
           />
           {emailError.length > 0 && (
@@ -203,7 +203,7 @@ const RegisterLayout = () => {
           <InputComponent
             secureTextEntry={!showPassword}
             value={passwordInput.value}
-            placeholder="Enter Password"
+            placeholder="Enter password"
             onChangeText={(text) => setPasswordInput({ value: text })}
           />
           {passwordError.length > 0 && (
@@ -230,7 +230,7 @@ const RegisterLayout = () => {
 
           <InputComponent
             value={fullNameInput.value}
-            placeholder="Enter Name"
+            placeholder="Enter name"
             onChangeText={text => setFullNameInput({ value: text })}
           />
           <Text
@@ -241,7 +241,7 @@ const RegisterLayout = () => {
 
           <InputComponent
             value={phoneInput.value}
-            placeholder="Enter Phone Number"
+            placeholder="Enter phone number"
             onChangeText={text => setPhoneInput({ value: text })}
           />
           {phoneError.length > 0 && (
@@ -263,7 +263,7 @@ const RegisterLayout = () => {
           </View>
           <View style={styles.separatorContainer}>
             <View style={styles.separatorLine} />
-            <Text style={styles.separatorText}>Or Sign Up With</Text>
+            <Text style={styles.separatorText}>Or sign up with</Text>
             <View style={styles.separatorLine} />
           </View>
           <View style={styles.socialButtonsContainer}>
@@ -346,6 +346,7 @@ const styles = StyleSheet.create({
   haveAccountText: {
     color: Colors.darkBlack,
     fontWeight: '400',
+    marginRight: 5
   },
   loginLink: {
     fontWeight: '600',

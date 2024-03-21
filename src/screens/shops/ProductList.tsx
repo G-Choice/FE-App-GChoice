@@ -14,7 +14,6 @@ interface ProductListProps {
 const ProductList = ({ shopId }: ProductListProps) => {
   const [productList, setProductList] = useState<ProductsResApiType[]>([]);
   const navigation = useNavigation<any>();
-
   useEffect(() => {
     fetchData();
   }, [shopId]);
@@ -63,8 +62,8 @@ const ProductList = ({ shopId }: ProductListProps) => {
                 source={require('../../assets/icons/rating.jpg')}
                 style={{ width: 15, height: 15 }}
               />
-              <Text style={{borderRightWidth: 0.5, paddingRight: 2, borderColor: Colors.lightGrey}}>4.6</Text>
-              <Text>Đã bán {item.quantity_inventory}</Text>
+              <Text style={{borderRightWidth: 0.5, paddingRight: 2, borderColor: Colors.primaryColor}}>{item?.avgRating}</Text>
+              <Text>Sold {item.quantity_sold}</Text>
             </View>
           </View>
         </View>
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
   },
   productImgPreview: {
     width: "100%",
-    height: (getWidthOfScreen - 5*3) * 0.5 + 10,
+    height: (getWidthOfScreen - 5*3) * 0.4 + 10,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5
   },

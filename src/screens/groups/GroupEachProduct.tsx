@@ -18,7 +18,7 @@ const GroupEachProduct = () => {
   const groupList = useSelector((state: RootState) => state.group.groupList);
   const [buttonData, setButtonData] = useState([])
   const [selectedStationId, setSelectedStationId] = useState("");
-  const [selectedAddress, setSelectedAddress] = useState(""); // State lưu trữ địa chỉ được chọn
+  const [selectedAddress, setSelectedAddress] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -76,7 +76,7 @@ const GroupEachProduct = () => {
       setSelectedAddress(stationId);
     }
   };
-  
+
   return (
     <View style={{ backgroundColor: "white" }}>
       <HeaderNavigation type={'secondary'} title="Available Groups" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
@@ -87,20 +87,11 @@ const GroupEachProduct = () => {
           <TextFormat weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>Create new group</TextFormat>
         </TouchableOpacity>
       </View>
-      {/* <SearchBar placeholder="Search..." onSubmit={handleSearch} onPressIn={handleOnPressIn} /> */}
-      {/* <FlatList
-        data={buttonData}
-        renderItem={renderButton}
-        keyExtractor={item => item.id}
-        horizontal
-        style={{ marginTop: 10 }}
-      /> */}
-      {/* <TouchableOpacity><Text>jshj</Text></TouchableOpacity> */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.buttonContainer}>
-              {renderButtons()}
-            </View>
-          </ScrollView>
+        <View style={styles.buttonContainer}>
+          {renderButtons()}
+        </View>
+      </ScrollView>
       {groupList.length === 0 ? (
         <Text style={styles.noGroupText}>There are no groups available</Text>
       ) : (
@@ -134,7 +125,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 10,
     alignItems: 'center',
-    marginLeft: 30,
     justifyContent: 'center',
   },
   button: {

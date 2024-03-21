@@ -233,7 +233,7 @@ const CreateGroup = () => {
                   buttonStyle={[styles.dropdownButton, { width: '100%' }]}
                   buttonTextStyle={styles.dropdownButtonText}
                   dropdownStyle={styles.dropdown}
-                  renderDropdownIcon={() => <Icon name="chevron-down" size={18} color={Colors.darkGrey} />} // Sử dụng icon từ thư viện react-native-vector-icons
+                  renderDropdownIcon={() => <Icon name="chevron-down" size={18} color={Colors.darkGrey} />} 
                 />
               </View>
               <TouchableOpacity style={styles.button} onPress={postDataToApi} >

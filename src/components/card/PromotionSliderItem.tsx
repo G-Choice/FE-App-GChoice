@@ -24,7 +24,7 @@ const SlideItem = (item: SlideItemProps) => {
   return (
     <View style={styles.container}>
       <Animated.Image
-        source={require("../../assets/images/banner/top1.jpg")}
+        source={require("../../assets/images/banner/top5.jpg")}
         resizeMode="contain"
         style={[
           styles.image,
