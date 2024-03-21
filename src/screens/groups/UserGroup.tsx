@@ -35,12 +35,11 @@ const UserGroup = () => {
   );
 
 
-console.log(groupList,'bdbdbd')
   const renderItem = ({ item }: { item: any }) => <CardGroup {...item} />;
   return (
     <View style={{backgroundColor: "white"}}>
       <View style={styles.groupGeneralWrapper}>
-        <TextFormat weight={300} numberOfLines={1} color={'darkBlack'} size={'md'}>Groups ({groupList?.length})</TextFormat>
+        <TextFormat weight={300} numberOfLines={1} color={'darkBlack'} size={'md'}>My Groups ({groupList?.length})</TextFormat>
       </View>
       <FlatList data={groupList} renderItem={renderItem}
                 style={styles.groupContainer} />
@@ -62,7 +61,8 @@ const styles = StyleSheet.create({
     marginLeft:'auto',
     marginRight:'auto',
     justifyContent: "space-between",
-    marginBottom: 10
+    marginBottom: 10,
+    marginTop: 30
   },
   button: {
     backgroundColor: 'transparent'

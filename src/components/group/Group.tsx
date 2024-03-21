@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import JoinModal from "./JoinModal.tsx";
 import moment from 'moment';
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome5'
 import { CountDown } from "../time";
 const Group = (props: GroupResApiType) => {
   const navigation = useNavigation<any>()
@@ -30,15 +31,19 @@ const Group = (props: GroupResApiType) => {
   const hours = Math.floor(duration.asHours());
   const minutes = duration.minutes();
   const seconds = duration.seconds();
-  const process = (props.current_quantity ?? 0) /(props.expected_quantity || 1);
+  const process = (props.current_quantity ?? 0) / (props.expected_quantity || 1);
   return (
-    <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart", {data: props})}>
-      <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+    <TouchableOpacity style={styles.groupWrapper} onPress={() => navigation.navigate("GroupCart", { data: props })}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={styles.groupContent}>
           <AvatarBubble />
           <View>
             <TextFormat weight={400} numberOfLines={1} color={'darkBlack'} size={'md'}>{props.group_name}</TextFormat>
-            <TextFormat weight={300} numberOfLines={1} color={'lightBlue'} size={'md'}>Online Payment</TextFormat>
+            {/* <TextFormat weight={300} numberOfLines={1} color={'lightBlue'} size={'md'}>Online Payment</TextFormat> */}
+            <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
+              <IconFontAwesome name="warehouse" size={14} color={Colors.primaryColor} style={{ marginRight: 5 }} />
+              <TextFormat style={{ flexWrap: "wrap"}} weight={400} numberOfLines={1} color={'primaryColor'} size={'md'}>{props.receiving_station.name} </TextFormat>
+            </View>
           </View>
         </View>
         <CountDown hours={hours} minutes={minutes} seconds={seconds} />

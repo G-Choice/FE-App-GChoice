@@ -17,20 +17,8 @@ const GroupEachProduct = () => {
   const dispatch = useDispatch();
   const groupList = useSelector((state: RootState) => state.group.groupList);
 
-  // useEffect(() => {
-  //   const fetchGroups = async () => {
-  //     try {
-  //       const response = await GchoiceAxios.get(`/groups?product_id=${route.params}`);
-  //       dispatch(updateGroupList(response.data.data));
-  //     } catch (error) {
-  //       console.error('Error fetching groups:', error);
-  //     }
-  //   };
-  //   fetchGroups();
-  // }, [dispatch, route.params]);
   useFocusEffect(
     React.useCallback(() => {
-      console.log(route.params,'aaa')
       const fetchGroups = async () => {
         try {
           const response = await GchoiceAxios.get(`/groups/${route.params}`);

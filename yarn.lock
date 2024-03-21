@@ -2107,7 +2107,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.2.25", "@types/react@^18.2.6":
+"@types/react@*", "@types/react@^18.2.25", "@types/react@^18.2.6", "@types/react@>=16.8.24":
   version "18.2.45"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.2.45.tgz"
   integrity sha512-TtAxCNrlrBp8GoeEp1npd5g+d/OejJHFxS3OWmrPBMFaVQMSN0OFySozJio5BHxTuTeug00AVXVAjfDSfk+lUg==
@@ -6302,6 +6302,11 @@ react-devtools-core@^4.27.7:
     shell-quote "^1.6.1"
     ws "^7"
 
+react-fast-compare@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-2.0.4.tgz"
+  integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
+
 react-freeze@^1.0.0:
   version "1.0.3"
   resolved "https://registry.npmjs.org/react-freeze/-/react-freeze-1.0.3.tgz"
@@ -6518,6 +6523,14 @@ react-native-virtualized-view@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/react-native-virtualized-view/-/react-native-virtualized-view-1.0.0.tgz"
   integrity sha512-7YyFMMkNzJ787/giGkKcm0JEx0IcLEE/XHREGz2I4K1RISQGFjEDe6iWsapOnHSR/e1vhebZJ8VmqhSpg5YPzg==
+
+react-native-walkthrough-tooltip@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.npmjs.org/react-native-walkthrough-tooltip/-/react-native-walkthrough-tooltip-1.6.0.tgz"
+  integrity sha512-8DHpcqsF+2VULYnKJCSZtllhlFUFiZcWCwOlw5RLkS451ElxPWJn9ShOFVZtkPMcwQAirq3SovumVM7Y/li0Fw==
+  dependencies:
+    prop-types "^15.6.1"
+    react-fast-compare "^2.0.4"
 
 react-native-wheel-scrollview-picker@^2.0.4:
   version "2.0.4"

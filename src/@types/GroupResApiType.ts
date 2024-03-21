@@ -13,7 +13,11 @@ interface GroupResApiType {
   isJoined ?: boolean,
   status: string
   products:[
-  ]
+  ],
+  receiving_station:{
+    name: string,
+    address: string
+  }
 
 }
 
