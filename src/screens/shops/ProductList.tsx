@@ -95,12 +95,15 @@ const ProductList = ({ shopId }: ProductListProps) => {
   );
 };
 
-const formattedPrice = (price: number) => {
-  return new Intl.NumberFormat("en-US", {
+const formattedPrice = (props: number) => {
+  return new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
-  }).format(price);
+    minimumFractionDigits: 3, 
+  }).format(props);
 };
+
+export { formattedPrice };
 
 const styles = StyleSheet.create({
   productContainer: {

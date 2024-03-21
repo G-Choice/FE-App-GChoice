@@ -29,6 +29,8 @@ const CreateGroup = () => {
   const [stations, setStations] = useState([]);
   const [selectedStationId, setSelectedStationId] = useState(null);
   const [selectedStation, setSelectedStation] = useState('Select station');
+  const [selectedItem, setSelectedItem] = useState(null); // Thêm state mới
+
   useEffect(() => {
     fetchReceivingStations();
   }, []);
@@ -49,11 +51,12 @@ const CreateGroup = () => {
     }
   };
 
-  console.log(selectedStationId, 'nânna')
   const handleTimeChange = (time: string) => {
     setSelectedTime(time);
     setTimeModalVisible(false);
+    setSelectedItem(item);
   };
+  
   const validateInputs = () => {
     let isValid = true;
     if (!groupName.trim()) {
@@ -114,7 +117,6 @@ const CreateGroup = () => {
         product_id: productId,
         receingStation_id: selectedStationId
       });
-      console.log(response.data.message, 'tammmm')
       if (response.data.message === 'Group created successfully!') {
         Toast.show({
           type: 'success',
@@ -352,10 +354,10 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: Colors.secondaryColor
   },
   dropdownButtonText: {
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.darkBlack,
     textAlign: 'left',
   },
@@ -364,11 +366,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   dropdownRow: {
-    padding: 10,
+    // padding: 10,
     backgroundColor: '#f9f9f9',
   },
   dropdownRowText: {
-    fontSize: 16,
+    fontSize: 26,
     color: Colors.darkBlack,
   },
 });

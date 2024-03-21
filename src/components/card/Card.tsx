@@ -4,18 +4,28 @@ import {ProductsResApiType} from "../../@types/ProductsResApiType.ts";
 import { useNavigation } from '@react-navigation/native';
 import React from "react";
 
+
 const getWidthOfScreen = Dimensions.get("screen").width
 
 interface ProductCardProps extends ProductsResApiType {}
 
 const Card = (props: ProductCardProps) => {
   const navigation = useNavigation<any>();
-  const formattedPrice = (props: any) => {
-    return new Intl.NumberFormat("en-US", {
+
+  // const formattedPrice = (props: any) => {
+  //   return new Intl.NumberFormat("en-US", {
+  //     style: "currency",
+  //     currency: "VND",
+  //   }).format(props);
+  // }
+  const formattedPrice = (props: number) => {
+    return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
+      minimumFractionDigits: 3, // Số chữ số thập phân tối thiểu
     }).format(props);
-  }
+  };
+  
   const avgRating = parseFloat(props.avgRating).toFixed(1); 
 
    const handleCardPress = () => {

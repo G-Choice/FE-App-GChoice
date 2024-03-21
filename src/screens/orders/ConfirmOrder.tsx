@@ -18,7 +18,6 @@ const ConfirmOrder = ({ navigation }: any) => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const groupCartData = useSelector((state: any) => state.cartGroup); 
 
-  console.log(groupCartData.groupCart,'groupCartDatahchck')
   const onCheckout = async () => {
     const response = await GchoiceAxios.post('/payment/intents',{
       amount: (`${groupCartData.groupCart?.totalPrice.price}00`),

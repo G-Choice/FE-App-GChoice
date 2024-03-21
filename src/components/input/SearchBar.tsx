@@ -38,7 +38,9 @@ const SearchBar = React.forwardRef<TextInput, SearchBarProps>((props, ref) => {
 
 const defaultStyle = StyleSheet.create({
   wrapper: {
-    margin: 5
+    margin: 5,
+    marginLeft: 10,
+    marginRight: 10,
   },
   searchBar: {
     backgroundColor: "white",
@@ -46,7 +48,7 @@ const defaultStyle = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: Colors.primaryColor,
-    borderRadius: 16
+    borderRadius: 12
   }
 })
 

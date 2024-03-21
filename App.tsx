@@ -11,6 +11,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Home } from "./src/screens/home";
 import { BottomTabs } from "./src/navigations";
+import { LogBox } from "react-native";
 
 import {
   RegisterLayout,
@@ -26,7 +27,8 @@ import {
   SetLocation,
   AccountSetting,
   OrderDtail,
-  TrackStatus
+  TrackStatus,
+  ProfileScreen
 
 } from './src/screens';
 import { RootState } from './src/app/store'
@@ -51,8 +53,6 @@ const STRIPE_KEY =
 
 export const Stack = createNativeStackNavigator();
 
-console.log('App is starting, blublu');
-
 const AuthStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -63,6 +63,7 @@ const AuthStack = () => {
     </Stack.Navigator>
   );
 };
+LogBox.ignoreLogs([]); // Bỏ qua tất cả các cảnh báo
 
 const MainStack = () => {
   const notificationPopupRef = useRef<NotificationPopup | null>(null);
@@ -96,10 +97,10 @@ const MainStack = () => {
         <Stack.Screen options={{ title: '', headerShown: false }} name='OrderDetail' component={OrderDtail} />
         <Stack.Screen options={{ title: '', headerShown: false }} name='TrackStatus' component={TrackStatus} />
         <Stack.Screen options={{ title: '', headerShown: false }} name='ShopInfor' component={ShopInfor} />
+        <Stack.Screen options={{ title: '', headerShown: false }} name='ProfileScreen' component={ProfileScreen} />
       </Stack.Navigator>
       <NotificationPopup ref={notificationPopupRef} />
     </>
-
   );
 };
 

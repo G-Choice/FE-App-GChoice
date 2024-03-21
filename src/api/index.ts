@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const GchoiceAxios = axios.create({
-  baseURL: 'https://2bae-113-176-99-140.ngrok-free.app',
+  baseURL: 'https://8cda-2001-ee0-211-dc0f-784b-258f-6307-aecc.ngrok-free.app',
   // baseURL: 'http://10.0.2.2:3000',
 });
 
