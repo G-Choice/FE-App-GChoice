@@ -22,18 +22,15 @@ const OrderDtail = () => {
   console.log(groupId, 'gro')
   const fetchProductDetails = async () => {
     try {
-      // setLoading(true);
       const response = await GchoiceAxios.get(`groups/statusGroup/${groupId.groupId}`);
       setOrderDetails(response?.data?.data);
     } catch (error) {
-      // setLoading(false);
       console.error('Error fetching product details:', error);
     }
   };
   useEffect(() => {
     fetchProductDetails();
   }, []);
-  // console.log(orderDetails,'123')
   console.log(groupCartData.groupCart?.products, 'tets');
   let statusColor: string;
   let statusText: string;
@@ -77,8 +74,6 @@ const OrderDtail = () => {
         <View style={styles.section}>
           <View style={styles.shipInfor}>
             <Text style={styles.sectionTitle}><Icon name="truck" size={18} color="#FF69B4" style={styles.editIcon} />  Shipping information</Text>
-            {/* <TouchableOpacity onPress={() =>navigation.navigate('TrackStatus',{groupId: groupId}) }><Text style={styles.viewDetail}>View detail</Text> */}
-            {/* </TouchableOpacity> */}
           </View>
           <View style={styles.icon_location}>
             <View>
@@ -114,7 +109,6 @@ const OrderDtail = () => {
           <View style={styles.icon_location}>
             <IconFont name="map-marker" size={24} color="#FF69B4" style={styles.icon} />
             <View>
-              {/* <Text>Ut Vien</Text> */}
               <Text>{orderDetails?.phoneNumber}</Text>
               <Text>{orderDetails?.deliveryAddress}</Text>
             </View>
@@ -217,7 +211,6 @@ const styles = StyleSheet.create({
   },
   infor: {
     marginLeft: 10,
-    // fontWeight: 'bold',
     fontSize: 15,
   },
   text: {
@@ -225,7 +218,6 @@ const styles = StyleSheet.create({
   },
   price: {
     fontWeight: 'bold',
-    // color: '#F83758',
     fontSize: 18,
     marginBottom: 5,
     textAlign: 'right'

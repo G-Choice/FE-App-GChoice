@@ -18,7 +18,7 @@ interface TimelineItem {
 
 const TrackStatus = ({ navigation }: any) => {
   const [groupStatus, setGroupStatus] = useState('');
-  const [timelineData, setTimelineData] = useState<TimelineItem[]>([]); // Sử dụng kiểu dữ liệu TimelineItem[]
+  const [timelineData, setTimelineData] = useState<TimelineItem[]>([]);
 
   const route = useRoute<any>();
   const groupId = route.params.groupId;
@@ -39,8 +39,6 @@ const TrackStatus = ({ navigation }: any) => {
       return { ...item, iconColor };
     });
     setTimelineData(updatedData);
-
-    // Kiểm tra nếu groupStatus và status của mỗi item trong timelineData giống nhau, thì thay đổi màu của circle
     const newCircleColor = groupStatus === timelineData[0]?.status ? 'green' : Colors.primaryColor;
     setCircleColor(newCircleColor);
   }, [groupStatus]);
@@ -73,7 +71,7 @@ const TrackStatus = ({ navigation }: any) => {
           <Timeline
             data={timelineData}
             circleSize={20}
-            circleColor={circleColor} // Sử dụng màu circleColor đã được xác định
+            circleColor={circleColor} 
             lineColor="#ccc"
             timeContainerStyle={{ minWidth: 52 }}
             timeStyle={{ textAlign: 'center', backgroundColor: '#ff9797', color: 'white', padding: 5, borderRadius: 13 }}

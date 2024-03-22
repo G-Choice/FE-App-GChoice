@@ -11,18 +11,11 @@ interface ProductCardProps extends ProductsResApiType {}
 
 const Card = (props: ProductCardProps) => {
   const navigation = useNavigation<any>();
-
-  // const formattedPrice = (props: any) => {
-  //   return new Intl.NumberFormat("en-US", {
-  //     style: "currency",
-  //     currency: "VND",
-  //   }).format(props);
-  // }
   const formattedPrice = (props: number) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
-      minimumFractionDigits: 3, // Số chữ số thập phân tối thiểu
+      minimumFractionDigits: 3, 
     }).format(props);
   };
   

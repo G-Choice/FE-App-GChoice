@@ -38,10 +38,8 @@ const JoinModal: React.FC<JoinModalProps> = ({ visible, onClose, onJoin, groupId
       console.log(route.params,'aaasss')
       if (response.data.message === 'Joined group successfully') {
         onJoin(quantity);
-        // navigation.navigate('GroupCart', {data :response.data.data });
         const updatedGroupList = await GchoiceAxios.get(`/groups/${route.params}`);
         dispatch(updateGroupList(updatedGroupList.data.data));
-        // navigation.navigate("GroupEachProduct", {data: updatedGroupList.data.data});
         navigation.navigate("GroupEachProduct",  route.params );
       } else {
         console.error('Failed to join the group:', response.data.message);

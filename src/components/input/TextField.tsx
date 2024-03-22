@@ -1,7 +1,6 @@
 import React from 'react';
 import { TextInput, View, StyleSheet } from 'react-native';
 
-// InputComponent receives value and onChangeText as props
 const InputComponent = ({ value, onChangeText, placeholder, secureTextEntry }) => {
   return (
     <View style={styles.inputContainer}>
@@ -16,7 +15,6 @@ const InputComponent = ({ value, onChangeText, placeholder, secureTextEntry }) =
   );
 };
 
-// Define styles for the component
 const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 10,
@@ -29,5 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// Export the component
 export { InputComponent };
