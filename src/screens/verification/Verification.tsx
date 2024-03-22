@@ -86,9 +86,8 @@ const Verification: React.FC<VerificationProps> = ({ route }) => {
             Verification
           </Text>
           <Text style={{ color: Colors.darkBlack, marginLeft: 10, fontWeight: '300', fontSize: 16 }}>
-            We will send you the code {'/br'} verification to your mobile
+            We will send you the code verification to your mobile
           </Text>
-
           <View style={styles.otpContainer}>
             {otpValues.map((value, index) => (
               <TextInput
@@ -102,9 +101,6 @@ const Verification: React.FC<VerificationProps> = ({ route }) => {
               />
             ))}
           </View>
-          <TouchableOpacity style={styles.sendAgainButton}>
-            <Text style={styles.sendAgainText}>Send again</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.signUpButton} onPress={submitVerification}>
             {loading ? (
               <ActivityIndicator size="small" color={Colors.secondaryColor} />

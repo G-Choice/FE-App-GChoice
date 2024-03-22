@@ -18,15 +18,7 @@ const ConfirmOrder = ({ navigation }: any) => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const groupCartData = useSelector((state: any) => state.cartGroup); 
 
-  console.log(groupCartData.groupCart,'groupCartDatahchck')
   const onCheckout = async () => {
-    
-    if (groupCartData?.groupCart?.totalPrice?.role === "leader") {
-      if (!phoneNumber || !address) {
-        Alert.alert('Please fill in the phone number and address');
-        return;
-      };
-    }
     const response = await GchoiceAxios.post('/payment/intents',{
       amount: (`${groupCartData.groupCart?.totalPrice.price}00`),
     });
@@ -38,6 +30,7 @@ const ConfirmOrder = ({ navigation }: any) => {
       merchantDisplayName: 'notJust.dev',
       paymentIntentClientSecret: response.data.paymentIntent,
     });
+    
     if (initResponse.error) {
       console.log(initResponse.error);
       Alert.alert('Something went wrong');
@@ -53,10 +46,11 @@ const ConfirmOrder = ({ navigation }: any) => {
   };
   const onCreateOrder = async () => {
     const result = await GchoiceAxios.post('/groups/saveDataPayment', {
-      deliveryAddress: address ,
-      phoneNumber: phoneNumber,
+      deliveryAddress: groupCartData.groupCart?.receingStation.address ,
+      phoneNumber:  groupCartData.groupCart?.receingStation.phone,
       group_id: groupCartData.groupCart?.totalPrice.group_id
     });
+    
     console.log(result.status,'test')
     if (result.status ===201) {
       navigation.navigate('OrderDetail', {groupId: groupCartData.groupCart?.totalPrice.group_id})
@@ -81,21 +75,18 @@ const ConfirmOrder = ({ navigation }: any) => {
           <View>
           </View>
         </View>
-        { groupCartData?.groupCart?.totalPrice?.role === "leader" && (
           <View style={styles.section}>
           <Text style={styles.sectionTitle}> Deliver To</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SetLocation')}>
-            <Icon name="edit" size={18} color="#FF69B4" style={styles.editIcon} />
-          </TouchableOpacity>
+          <View style={styles.line}></View>
           <View style={styles.icon_location}>
             <Icon name="map-marker" size={24} color="#FF69B4" style={styles.icon} />
             <View>
-              <Text style={styles.infor}>{phoneNumber}</Text>
-              <Text style={styles.infor}>{address}</Text>
+            <Text style={styles.infor}>{groupCartData.groupCart?.receingStation.name}</Text>
+              <Text style={styles.infor}>{groupCartData.groupCart?.receingStation.address}</Text>
+              <Text style={styles.infor}>{groupCartData.groupCart?.receingStation.phone}</Text>
             </View>
           </View>
         </View>
-        )}
         <View style={styles.sectionBill}>
           <Text style={styles.sectionTitle}>Order Payment Details</Text>
           <View style={styles.line}></View>
@@ -165,8 +156,10 @@ const styles = StyleSheet.create({
     marginTop:20
   },
   infor: {
-    marginLeft: 20,
+    // marginLeft: 20,
     fontSize: 15,
+    fontWeight: "400",
+    color: Colors.darkBlack
   },
   sectionBill: {
     backgroundColor: '#fff',

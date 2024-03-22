@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Modal, ImageBackground, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { Colors } from '../../assets/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -10,6 +10,8 @@ import { ScrollView } from 'react-native-virtualized-view';
 import { useDispatch } from 'react-redux';
 import { updateGroupList } from '../../redux/actions/action';
 import { useNavigation } from '@react-navigation/native';
+import SelectDropdown from 'react-native-select-dropdown';
+
 const CreateGroup = () => {
   const route = useRoute()
   const dispatch = useDispatch()
@@ -24,6 +26,29 @@ const CreateGroup = () => {
   const [quantityExpectedError, setQuantityExpectedError] = useState('');
   const [selectedTimeError, setSelectedTimeError] = useState('');
   const [quantityError, setQuantityError] = useState('');
+  const [stations, setStations] = useState([]);
+  const [selectedStationId, setSelectedStationId] = useState(null);
+  const [selectedStation, setSelectedStation] = useState('Select station');
+  useEffect(() => {
+    fetchReceivingStations();
+  }, []);
+
+  const fetchReceivingStations = async () => {
+    try {
+      const response = await GchoiceAxios.get('/receiving-station');
+      setStations(response.data.data);
+    } catch (error) {
+      console.error('Error fetching receiving stations:', error);
+    }
+  };
+  const handleStationChange = (selectedStation: any) => {
+    const [selectedStationName, selectedStationAddress] = selectedStation.split(' - ');
+    const station = stations.find((station) => station.name === selectedStationName || station.address === selectedStationAddress);
+    if (station) {
+      setSelectedStationId(station.id);
+    }
+  };
+
   const handleTimeChange = (time: string) => {
     setSelectedTime(time);
     setTimeModalVisible(false);
@@ -86,8 +111,8 @@ const CreateGroup = () => {
         hours: parsedTime,
         quantity_product: quantity,
         product_id: productId,
+        receingStation_id: selectedStationId
       });
-      console.log(response.data.message,'tammmm')
       if (response.data.message === 'Group created successfully!') {
         Toast.show({
           type: 'success',
@@ -99,8 +124,7 @@ const CreateGroup = () => {
         console.log('id:', route.params)
         const updatedGroupList = await GchoiceAxios.get(`/groups/${route.params}`);
         dispatch(updateGroupList(updatedGroupList.data.data));
-        // navigation.navigate("GroupEachProduct", {data: updatedGroupList.data.data});
-        navigation.navigate("GroupEachProduct",  route.params );
+        navigation.navigate("GroupEachProduct", route.params);
       } else if (response.data.message === 'Group already exists ') {
         Toast.show({
           type: 'error',
@@ -142,24 +166,13 @@ const CreateGroup = () => {
         style={{ flex: 1 }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="handled">
             <ImageBackground source={require('../../assets/images/background.jpg')} style={styles.container}>
               <View style={styles.avatarContainer}>
-              <Image source={require('../../assets/images/defaultGroup.jpg')} style={styles.avatar} />
-                {/* <View style={styles.avatarWrapper}>
-                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
-                  <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
-                </View>
-                <View style={styles.avatarWrapper}>
-                  <Image source={require('../../assets/images/avt.jpg')} style={styles.avatar} />
-                  <Icon name="circle" size={20} color={Colors.activeIconColor} style={styles.activeIcon} />
-                </View> */}
-            
+                <Image source={require('../../assets/images/defaultGroup.jpg')} style={styles.avatar} />
               </View>
-
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Group name <Text style={{ color: 'red' }}>*</Text></Text>
                 <TextInput style={styles.input} placeholder="Group name" onEndEditing={(e) => setGroupName(e.nativeEvent.text)} defaultValue={groupName} />
@@ -170,11 +183,7 @@ const CreateGroup = () => {
                 <Text style={styles.label}>Description</Text>
                 <TextInput style={styles.input} placeholder="Description" onEndEditing={(e) => setDescription(e.nativeEvent.text)} defaultValue={description} />
               </View>
-              {/* <View style={styles.inputContainer}>
-                <Text style={styles.label}>Quantity Expected</Text>
-                <TextInput style={styles.input} placeholder="Quantity Expected" keyboardType='numeric' onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
-                {quantityExpectedError ? <Text style={styles.errorText}> {quantityExpectedError}</Text> : null}
-              </View> */}
+
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Quantity expected <Text style={{ color: 'red' }}>*</Text></Text>
                 <TextInput style={styles.input} placeholder="Quantity expected" keyboardType="numeric" onEndEditing={(e) => setQuantityExpected(e.nativeEvent.text)} defaultValue={quantityExpected} />
@@ -204,6 +213,27 @@ const CreateGroup = () => {
                 <TextInput style={styles.input} placeholder="Quantity" keyboardType="numeric" onEndEditing={(e) => setQuantity(e.nativeEvent.text)} defaultValue={quantity} />
                 {quantityError ? <Text style={styles.errorText}> {quantityError}</Text> : null}
               </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Station</Text>
+                <SelectDropdown
+                  data={stations.map(station => `${station.name} - ${station.address}`)}
+                  defaultValue={selectedStation}
+                  onSelect={(selectedItem) => {
+                    setSelectedStation(selectedItem);
+                    handleStationChange(selectedItem);
+                  }}
+                  buttonTextAfterSelection={(selectedStation) => {
+                    return selectedStation;
+                  }}
+                  rowTextForSelection={(item) => {
+                    return item;
+                  }}
+                  buttonStyle={[styles.dropdownButton, { width: '100%' }]}
+                  buttonTextStyle={styles.dropdownButtonText}
+                  dropdownStyle={styles.dropdown}
+                  renderDropdownIcon={() => <Icon name="chevron-down" size={18} color={Colors.darkGrey} />} 
+                />
+              </View>
               <TouchableOpacity style={styles.button} onPress={postDataToApi} >
                 <Text style={styles.buttonText}>CREATE</Text>
               </TouchableOpacity>
@@ -231,22 +261,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  // avatarWrapper: {
-  //   marginRight: 3,
-  //   overflow: 'hidden',
-  //   borderRadius: 25,
-  //   position: 'relative',
-  // },
   avatar: {
     width: 100,
     height: 50,
     borderRadius: 25,
   },
-  // activeIcon: {
-  //   position: 'absolute',
-  //   bottom: 0,
-  //   right: 0,
-  // },
   inputContainer: {
     marginBottom: 20,
   },
@@ -262,6 +281,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     backgroundColor: Colors.secondaryColor,
+    color: Colors.darkBlack
   },
   button: {
     backgroundColor: Colors.primaryColor,
@@ -324,7 +344,31 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     fontSize: 14,
-  }
+  },
+  dropdownButton: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    backgroundColor: Colors.secondaryColor
+  },
+  dropdownButtonText: {
+    fontSize: 18,
+    color: Colors.darkBlack,
+    textAlign: 'left',
+  },
+  dropdown: {
+    marginTop: 10,
+    backgroundColor: 'white',
+  },
+  dropdownRow: {
+    // padding: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  dropdownRowText: {
+    fontSize: 26,
+    color: Colors.darkBlack,
+  },
 });
 
 export { CreateGroup };

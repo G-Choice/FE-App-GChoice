@@ -4,31 +4,42 @@ import {ProductsResApiType} from "../../@types/ProductsResApiType.ts";
 import { useNavigation } from '@react-navigation/native';
 import React from "react";
 
+
 const getWidthOfScreen = Dimensions.get("screen").width
 
 interface ProductCardProps extends ProductsResApiType {}
 
 const Card = (props: ProductCardProps) => {
   const navigation = useNavigation<any>();
-  const formattedPrice = (props: any) => {
-    return new Intl.NumberFormat("en-US", {
+
+  // const formattedPrice = (props: any) => {
+  //   return new Intl.NumberFormat("en-US", {
+  //     style: "currency",
+  //     currency: "VND",
+  //   }).format(props);
+  // }
+  const formattedPrice = (props: number) => {
+    return new Intl.NumberFormat("vi-VN", {
       style: "currency",
-      currency: "USD",
+      currency: "VND",
+      minimumFractionDigits: 3, // Số chữ số thập phân tối thiểu
     }).format(props);
-  }
+  };
+  
+  const avgRating = parseFloat(props.avgRating).toFixed(1); 
 
    const handleCardPress = () => {
        navigation.navigate('ProductDetail',  props.id );
      };
      const imageUrl = props.images && props.images.length > 0 ? props.images[0] : '';
      
+     console.log(props,'56879')
   return (
     <TouchableOpacity style={{ width: '50%' }} onPress={handleCardPress}>
       <View style={styles.cardWrapper}>
       <Image style={styles.productImgPreview} source={{ uri: imageUrl }} />
         <View style={{margin: 5}}>
           <Text style={styles.productTitle} numberOfLines={2}>{props.product_name}</Text>
-          {/*<View style={{height: 25}}></View>*/}
           <Text style={styles.productPrice}>{formattedPrice(props.price)}</Text>
           <View style={{flexDirection: "row", justifyContent: "space-between"}}>
             <View style={{flexDirection: "row", gap: 2, alignItems: "center"}}>
@@ -36,9 +47,8 @@ const Card = (props: ProductCardProps) => {
                 source={require('../../assets/icons/rating.jpg')}
                 style={{ width: 15, height: 15 }}
               />
-              <Text style={{borderRightWidth: 0.5, paddingRight: 2, borderColor: Colors.lightGrey}}>4.6</Text>
-              {/*<Text>{props.avgRating}</Text>*/}
-              <Text>Đã bán {props.quantity_inventory}</Text>
+              <Text style={{borderRightWidth: 0.5, paddingRight: 2, borderColor: Colors.primaryColor}}>{avgRating}</Text>
+              <Text>Sold {props.quantity_sold}</Text>
             </View>
           </View>
         </View>
@@ -58,7 +68,7 @@ const styles = StyleSheet.create({
   },
   productImgPreview: {
     width: "100%",
-    height: (getWidthOfScreen - 5*3) * 0.5 + 10,
+    height: (getWidthOfScreen - 5*3) * 0.4 + 10,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5
   },

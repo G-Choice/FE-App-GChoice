@@ -9,11 +9,11 @@ const promotionSliderData = [
   },
   {
     id: 3,
-    img: "../../assets/images/banner/top1.jpg"
+    img: "../../assets/images/banner/top3.jpg"
   },
   {
     id: 4,
-    img: "../../assets/images/banner/top2.jpg"
+    img: "../../assets/images/banner/top4.jpg"
   }
 ]
 

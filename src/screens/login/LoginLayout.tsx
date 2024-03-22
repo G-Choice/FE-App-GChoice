@@ -176,7 +176,7 @@ const LoginLayout: React.FC = () => {
           </Text>
           <InputComponent
             value={emailInput.value}
-            placeholder="Enter Email"
+            placeholder="Enter email"
             onChangeText={text => setEmailInput({ value: text })}
           />
           {emailError.length > 0 && (
@@ -193,7 +193,7 @@ const LoginLayout: React.FC = () => {
           <InputComponent
             secureTextEntry={!showPassword}
             value={passwordInput.value}
-            placeholder="Enter Password"
+            placeholder="Enter password"
             onChangeText={(text) => setPasswordInput({ value: text })}
           />
           {passwordError.length > 0 && (
@@ -215,7 +215,7 @@ const LoginLayout: React.FC = () => {
           )}
           <View style={styles.haveAccountContainer}>
             <Text style={styles.haveAccountText}>
-              Do not have an account?
+              Don't have an account?
             </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('RegisterScreen')}>
@@ -224,7 +224,7 @@ const LoginLayout: React.FC = () => {
           </View>
           <View style={styles.separatorContainer}>
             <View style={styles.separatorLine} />
-            <Text style={styles.separatorText}>Or Sign In With</Text>
+            <Text style={styles.separatorText}>Or sign in with</Text>
             <View style={styles.separatorLine} />
           </View>
           <View style={styles.socialButtonsContainer}>
@@ -307,6 +307,7 @@ const styles = StyleSheet.create({
   haveAccountText: {
     color: Colors.darkBlack,
     fontWeight: '400',
+    marginRight: 4
   },
   loginLink: {
     fontWeight: '600',

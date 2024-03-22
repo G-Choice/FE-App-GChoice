@@ -29,7 +29,7 @@ const SearchBar = React.forwardRef<TextInput, SearchBarProps>((props, ref) => {
           onPressIn={props.onPressIn}
         />
         <TouchableOpacity onPress={props.onSubmit} style={{position: 'absolute', zIndex: 1, right: 0, padding: 8}}>
-          <Icon name='search' size={30} />
+          <Icon name='search' size={25} />
         </TouchableOpacity>
       </View>
     </View>
@@ -38,14 +38,17 @@ const SearchBar = React.forwardRef<TextInput, SearchBarProps>((props, ref) => {
 
 const defaultStyle = StyleSheet.create({
   wrapper: {
-    margin: 5
+    margin: 5,
+    marginLeft: 10,
+    marginRight: 10,
   },
   searchBar: {
     backgroundColor: "white",
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: Colors.primaryColor
+    borderColor: Colors.primaryColor,
+    borderRadius: 12
   }
 })
 

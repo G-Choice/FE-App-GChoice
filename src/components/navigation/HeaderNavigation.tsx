@@ -31,7 +31,7 @@ function HeaderNavigation(props: HeaderBackProps)
             : null
         }
         <TouchableOpacity>
-          {/* <Icon style={[style.iconRight, headerStyle[props.type || "primary"].iconRight]} name={props.iconRight || "more-vertical"} size={27} color={Colors.primaryColor}/> */}
+          <Icon style={[style.iconRight, headerStyle[props.type || "primary"].iconRight]} name={props.iconRight || "more-vertical"} size={27} color={Colors.secondaryColor}/>
         </TouchableOpacity>
       </View>
     </View>

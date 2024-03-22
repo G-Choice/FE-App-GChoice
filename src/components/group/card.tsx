@@ -36,34 +36,6 @@ const CardGroup = (props: GroupResApiType) => {
     const process = (props.current_quantity ?? 0) / (props.expected_quantity || 1);
     const firstImage = props.products[0]?.images[0];
 
-    //   let buttonColor: string;
-    //   let buttonText: string;
-
-    //   switch (props.status) {
-    //     case 'waiting_for_user':
-    //       buttonColor = '#F28076';
-    //       buttonText = 'Waiting user';
-    //       break;
-    //     case 'waiting_for_payment':
-    //       buttonColor = '#FFD273';
-    //       buttonText = 'Waiting payment';
-    //       break;
-    //     case 'confirmation_order':
-    //       buttonColor = '#FAE0C7';
-    //       buttonText = 'Payment success';
-    //       break;
-    //     case 'waiting_delivery':
-    //       buttonColor = '#F44000'; 
-    //       buttonText = 'Waiting delivery';
-    //       break;
-    //     case 'done':
-    //       buttonColor = '#70C2B4';
-    //       buttonText = 'Done';
-    //       break;
-    //     default:
-    //       buttonColor = 'green'; 
-    //       buttonText = 'Nothing';
-    //   }
     let statusColor: string;
     let statusText: string;
 
@@ -105,36 +77,11 @@ const CardGroup = (props: GroupResApiType) => {
                         <Text style={{ color: statusColor, fontWeight: '400', fontSize: 17 }}>
                             {statusText}
                         </Text>
-
                     </View>
-                    <CountDown hours={hours} minutes={minutes} seconds={seconds} />
-
                 </View>
-                {/* <TouchableOpacity
-          style={[
-            {
-            //   width: 120,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              borderRadius: 48,
-              backgroundColor: buttonColor,
-              padding: 5,
-            //   borderColor: buttonColor
-            },
-          ]}
-          onPress={handlePressJoin}
-          disabled={props.status === 'waiting_user'}
-        >
-          <TextFormat
-            weight={600}
-            numberOfLines={1}
-            style={{ marginTop: 10 }}
-            color={'secondaryColor'}
-            size={'md'}
-          >
-            {buttonText}
-          </TextFormat>
-        </TouchableOpacity> */}
+                <View style={styles.countdown}>
+                <CountDown hours={hours} minutes={minutes} seconds={seconds} />
+                </View>
             </View>
             <View>
                 {props && (
@@ -158,7 +105,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         margin: 'auto',
         borderColor: Colors.lightGrey,
-        // backgroundColor: Colors.secondaryColor,
         borderWidth: 1,
         borderRadius: 15,
         paddingHorizontal: 15,
@@ -169,6 +115,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 20,
         marginBottom: 8,
+        justifyContent: "space-between",
     },
     timeStyle: {
         backgroundColor: Colors.darkBlack,
@@ -215,6 +162,9 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 35 / 2
+    },
+    countdown:{
+       alignSelf:"center"
     }
 });
 

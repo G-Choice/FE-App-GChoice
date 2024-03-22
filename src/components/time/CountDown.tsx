@@ -43,7 +43,7 @@ const CountDown = (props: InitialCountDownTime) => {
   }, [timerActive, hours, minutes, seconds]);
 
   return (
-    <View style={{ flexDirection: "row", gap: 3, height: 20, marginTop: 15 }}>
+    <View style={{ flexDirection: "row", gap: 3, height: 20 }}>
       <Text style={styles.timeStyle}>{hours.toString().padStart(2, '0')}</Text>
       <Text>:</Text>
       <Text style={styles.timeStyle}>{minutes.toString().padStart(2, '0')}</Text>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     color: Colors.secondaryColor,
     fontWeight: "500",
     borderRadius: 2,
-    paddingHorizontal: 2
+    paddingHorizontal: 2,
   },
 })
 export {CountDown};

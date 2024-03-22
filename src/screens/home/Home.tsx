@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Dimensions,Text, StyleSheet, TouchableOpacity, View} from "react-native";
 import { Header } from "../../components/child";
 import { Colors } from "../../assets/colors";
 import { CardContainer } from "../../components";
@@ -26,7 +26,6 @@ const Home = () => {
       </View>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <PromotionSlider />
-        {/*<Deal />*/}
         <CardContainer />
       </ScrollView>
     </View>
@@ -37,6 +36,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.semiLightGrey,
     flex: 1,
+    // padding: 10
   },
   stickyHeader: {
     position: "absolute",
@@ -45,10 +45,16 @@ const styles = StyleSheet.create({
     right: 5,
     zIndex: 10,
     elevation: 2,
+    marginBottom: 30
   },
   scrollView: {
-    marginTop: 100, 
+    marginTop: 110, 
   },
+  categoriesHeader:{
+    marginLeft: 10,
+    fontWeight: '800',
+    marginTop: 10
+  }
 });
 
 export { Home };

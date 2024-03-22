@@ -53,7 +53,7 @@ const ProductDetail = () => {
     <>
       <HeaderNavigation type={'secondary'} title="Product" wrapperStyle={{ paddingTop: 1, marginBottom: 10 }} />
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <CustomSliderBox
             images={productDetails.images}
             sliderBoxHeight={200}
@@ -63,14 +63,12 @@ const ProductDetail = () => {
             <View style={styles.textInfoContainer}>
               <View style={styles.nameContainer}>
                 <Text style={styles.productName}>{productDetails.product_name}</Text>
-                {/* <Icon name="home" size={20} color={Colors.primaryColor} style={styles.icon} /> */}
-                {/* <Text style={styles.shopName}>{productDetails.shop.shop_name}</Text> */}
               </View>
             </View>
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.productPrice}>{formattedPrice(productDetails.price)}</Text>
-            <TouchableOpacity style={styles.groupInfoContainer} onPress={() => navToGroup.navigate("GroupEachProduct")}>
+            <TouchableOpacity style={styles.groupInfoContainer} onPress={() => navToGroup.navigate("GroupEachProduct", route.params)}>
               <Text style={styles.groupInfo}>{groupInfo}</Text>
             </TouchableOpacity>
           </View>
@@ -150,7 +148,7 @@ const ProductDetail = () => {
             {productDetails?.discounts.map((discount: Discount, index: number) => (
               <View key={index} style={styles.discountTableRow}>
                 <Text style={styles.discountTableCell}> {">"}{discount.minQuantity}</Text>
-                <Text style={styles.discountTableCell}> {discount.discountPrice} $</Text>
+                <Text style={styles.discountTableCell}> {discount.discountPrice} VND</Text>
               </View>
             ))}
           </View>
