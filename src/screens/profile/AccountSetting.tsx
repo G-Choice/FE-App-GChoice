@@ -6,7 +6,6 @@ import { InfoModal } from '../../components/group/InforModal';
 import { UseDispatch, useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import ImageCropPicker from 'react-native-image-crop-picker';
-// import DocumentPicker from 'react-native-document-picker';
 
 import GchoiceAxios from '../../api';
 import { updateUserInfo } from '../../global-states';

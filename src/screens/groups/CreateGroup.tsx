@@ -362,7 +362,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   dropdownRow: {
-    // padding: 10,
     backgroundColor: '#f9f9f9',
   },
   dropdownRowText: {

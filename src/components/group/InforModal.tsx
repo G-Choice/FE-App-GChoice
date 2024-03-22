@@ -15,7 +15,7 @@ interface InfoModalProps {
 const InfoModal: React.FC<InfoModalProps> = ({ title, value, closeModal, modalVisible }) => {
   const [editedValue, setEditedValue] = useState(value);
     const [error, setError] = useState<string | null>(null); 
-    const [loading, setLoading] = useState(false); // Trạng thái loading bên ngoài modal
+    const [loading, setLoading] = useState(false); 
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -38,7 +38,6 @@ const InfoModal: React.FC<InfoModalProps> = ({ title, value, closeModal, modalVi
     }
   };
   const isUsernameValid = (username: string): boolean => {
-    // Biểu thức chính quy để kiểm tra xem username có chỉ chứa các ký tự chữ cái không
     const regex = /^[a-zA-Z\s]*$/;
     return regex.test(username);
   };
@@ -50,7 +49,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ title, value, closeModal, modalVi
   
   const handleConfirm = async () => {
     setError(null); 
-    setLoading(true); // Bắt đầu hiển thị indicator loading bên ngoài modal
+    setLoading(true); 
     if (title === 'username' && !isUsernameValid(editedValue)) {
       setError('Name is not valid!');
       setLoading(false)
@@ -76,7 +75,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ title, value, closeModal, modalVi
     } catch (error) {
       console.error('Update failed', error);
     } finally {
-      setLoading(false); // Dừng hiển thị indicator loading bên ngoài modal
+      setLoading(false); 
     }
   };
   

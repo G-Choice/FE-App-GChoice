@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     marginTop:20
   },
   infor: {
-    // marginLeft: 20,
     fontSize: 15,
     fontWeight: "400",
     color: Colors.darkBlack

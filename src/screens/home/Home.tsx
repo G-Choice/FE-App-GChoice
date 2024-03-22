@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.semiLightGrey,
     flex: 1,
-    // padding: 10
   },
   stickyHeader: {
     position: "absolute",
