@@ -184,7 +184,7 @@ console.log(data,'oeioeieeq12')
                 color={Colors.secondaryColor}
                 style={styles.iconLogout}
               />
-              <TextFormat style={styles.textCancel}> Cancel join</TextFormat>
+              <TextFormat style={styles.textCancel}>Leave join</TextFormat>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
