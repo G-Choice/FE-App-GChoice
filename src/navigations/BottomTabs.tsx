@@ -7,6 +7,7 @@ import { Colors } from '../assets/colors';
 import { Home, Suggestion, GroupEachProduct, ProfileScreen } from '../screens';
 import {Forum} from "../screens/forum/Forum.tsx";
 import { UserGroup } from '../screens/groups/UserGroup';
+import {Notifications} from "../screens/notifications";
 
 interface TabItem {
   route: string;
@@ -19,9 +20,9 @@ interface TabItem {
 
 const TabArr: TabItem[] = [
   { route: 'Home', label: 'Home', type: Icons.Feather, icon: 'home', component: Home },
-  // { route: 'Suggestion', label: 'Suggestion', type: Icons.MaterialCommunityIcons, icon: 'post-outline', component: GroupEachProduct },
+  { route: 'Forum', label: 'Forum', type: Icons.MaterialCommunityIcons, icon: 'post-outline', component: Forum },
   { route: 'Group', label: 'Group', type: Icons.MaterialCommunityIcons, icon: 'select-group', component: UserGroup },
-  { route: 'forum', label: 'Forum', type: Icons.MaterialCommunityIcons, icon: 'post-outline', component: Forum },
+  { route: 'Notifications', label: 'Notifications', type: Icons.Ionicons, icon: 'notifications', component: Notifications },
   { route: 'Profile', label: 'Profile', type: Icons.FontAwesome, icon: 'user-circle-o', component: ProfileScreen },
 ];
 
