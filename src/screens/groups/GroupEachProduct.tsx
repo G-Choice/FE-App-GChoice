@@ -31,8 +31,6 @@ const GroupEachProduct = () => {
       console.log("Error fetching data:", error)
     }
   }
-
-  console.log(buttonData, 'tam din')
   useFocusEffect(
     React.useCallback(() => {
       const fetchGroups = async () => {
@@ -97,7 +95,6 @@ const GroupEachProduct = () => {
       ) : (
         <>
           <FlatList data={groupList} renderItem={renderItem} style={styles.groupContainer} />
-
         </>
       )}
     </View>

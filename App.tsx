@@ -67,19 +67,19 @@ const AuthStack = () => {
 
 const MainStack = () => {
   const notificationPopupRef = useRef<NotificationPopup | null>(null);
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(
-      async (mess: FirebaseMessagingTypes.RemoteMessage) => {
-        if (Platform.OS === "android" && notificationPopupRef.current) {
-          notificationPopupRef.current.show({
-            title: mess.notification?.title,
-            body: mess.notification?.body,
-          });
-        }
-      }
-    );
-    return unsubscribe;
-  });
+  // useEffect(() => {
+  //   const unsubscribe = messaging().onMessage(
+  //     async (mess: FirebaseMessagingTypes.RemoteMessage) => {
+  //       if (Platform.OS === "android" && notificationPopupRef.current) {
+  //         notificationPopupRef.current.show({
+  //           title: mess.notification?.title,
+  //           body: mess.notification?.body,
+  //         });
+  //       }
+  //     }
+  //   );
+  //   return unsubscribe;
+  // });
   return (
     <>
       <Stack.Navigator>
